@@ -6,6 +6,7 @@ import { Toaster } from '@/components/ui/toaster';
 export const metadata: Metadata = {
   title: 'FormAssist AI',
   description: 'AI-powered farming assistance.',
+  manifest: '/manifest.json',
 };
 
 export default function RootLayout({
@@ -22,6 +23,7 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap"
           rel="stylesheet"
         />
+        <meta name="theme-color" content="#f39c12" />
       </head>
       <body className="font-body antialiased">
         <AppShell>{children}</AppShell>
