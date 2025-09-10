@@ -11,6 +11,7 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
+import { farmingData } from '@/lib/farm-data';
 
 const MultilingualChatbotAssistanceInputSchema = z.object({
   query: z.string().describe('The question asked by the farmer in their local language.'),
@@ -35,6 +36,8 @@ export async function multilingualChatbotAssistance(
   return multilingualChatbotAssistanceFlow(input);
 }
 
+const farmingDataContext = JSON.stringify(farmingData);
+
 const prompt = ai.definePrompt({
   name: 'multilingualChatbotAssistancePrompt',
   input: {
@@ -43,12 +46,20 @@ const prompt = ai.definePrompt({
   output: {
     schema: MultilingualChatbotAssistanceOutputSchema,
   },
-  prompt: `You are a helpful AI chatbot assistant for farmers.
+  prompt: `You are a helpful AI chatbot assistant for farmers in India.
       The farmer will ask a question in their local language, and you will respond in the same language.
+
+      You have access to a local dataset with general information about Indian farming. Use this as your primary source of knowledge, especially for questions about crops, soil, and fertilizers. This allows you to answer questions even if you cannot access external information.
+
+      Local Farming Dataset:
+      \`\`\`json
+      ${farmingDataContext}
+      \`\`\`
 
       Language: {{{language}}}
       Question: {{{query}}}
 
+      Based on the provided dataset and your general knowledge, answer the farmer's question.
       Answer: `,
 });
 
