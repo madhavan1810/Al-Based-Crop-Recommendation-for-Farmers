@@ -25,7 +25,7 @@ export default function CropPricesCard() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <LineChart className="size-6 text-primary" />
-          <span>Live Crop Prices</span>
+          <span>Today Crop Prices</span>
         </CardTitle>
         <CardDescription>
           Today's Mandi prices for key agricultural commodities.
