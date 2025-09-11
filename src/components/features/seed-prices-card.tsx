@@ -36,7 +36,7 @@ export default function SeedPricesCard() {
             <TableRow>
               <TableHead>Crop</TableHead>
               <TableHead>Variety</TableHead>
-              <TableHead className="text-right">Price (per Quintal)</TableHead>
+              <TableHead className="text-right">Price (₹ per Quintal)</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

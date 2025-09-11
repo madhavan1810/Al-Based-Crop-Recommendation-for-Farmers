@@ -36,7 +36,7 @@ export default function CropPricesCard() {
           <TableHeader>
             <TableRow>
               <TableHead>Crop</TableHead>
-              <TableHead className="text-right">Price (per Quintal)</TableHead>
+              <TableHead className="text-right">Price (₹ per Quintal)</TableHead>
               <TableHead className="text-right">24h Change</TableHead>
             </TableRow>
           </TableHeader>
