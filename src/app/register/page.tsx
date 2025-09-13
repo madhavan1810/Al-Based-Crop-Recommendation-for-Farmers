@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -28,18 +27,12 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { LoaderCircle, UserPlus } from 'lucide-react';
 import { Logo } from '@/components/layout/logo';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Check, ChevronsUpDown } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
-import { indianDistricts } from '@/lib/indian-districts';
+import { getFirebaseAuth } from '@/lib/firebase';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
   email: z.string().email({ message: 'Please enter a valid email.' }),
   password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
-  location: z.string({ required_error: 'Please select a location.' }),
-  landSize: z.coerce.number().min(0, { message: 'Please enter a valid land size.' }),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -53,7 +46,6 @@ export default function RegisterPage() {
       name: '',
       email: '',
       password: '',
-      landSize: 0,
     },
   });
 
@@ -63,6 +55,7 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: FormData) => {
     try {
+      const auth = getFirebaseAuth();
       await createUserWithEmailAndPassword(auth, data.email, data.password);
       toast({
         title: 'Registration Successful',
@@ -133,82 +126,6 @@ export default function RegisterPage() {
                   </FormItem>
                 )}
               />
-              <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="location"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel>Location</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant="outline"
-                              role="combobox"
-                              className={cn(
-                                "w-full justify-between",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value
-                                ? indianDistricts.find(
-                                    (district) => district === field.value
-                                  )
-                                : "Select district"}
-                              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-full p-0">
-                          <Command>
-                            <CommandInput placeholder="Search district..." />
-                            <CommandList>
-                              <CommandEmpty>No district found.</CommandEmpty>
-                              <CommandGroup>
-                                {indianDistricts.map((district) => (
-                                  <CommandItem
-                                    value={district}
-                                    key={district}
-                                    onSelect={() => {
-                                      form.setValue("location", district);
-                                    }}
-                                  >
-                                    <Check
-                                      className={cn(
-                                        "mr-2 h-4 w-4",
-                                        district === field.value
-                                          ? "opacity-100"
-                                          : "opacity-0"
-                                      )}
-                                    />
-                                    {district}
-                                  </CommandItem>
-                                ))}
-                              </CommandGroup>
-                            </CommandList>
-                          </Command>
-                        </PopoverContent>
-                      </Popover>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="landSize"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Land Size (acres)</FormLabel>
-                      <FormControl>
-                        <Input type="number" placeholder="e.g., 5.5" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
               <Button type="submit" className="w-full" disabled={isSubmitting}>
                 {isSubmitting ? (
                   <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
