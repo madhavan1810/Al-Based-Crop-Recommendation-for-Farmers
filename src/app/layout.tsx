@@ -4,7 +4,7 @@ import { AppShell } from '@/components/layout/app-shell';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'FormAssist AI',
+  title: 'FarmBharat.AI',
   description: 'AI-powered farming assistance.',
   manifest: '/manifest.json',
 };

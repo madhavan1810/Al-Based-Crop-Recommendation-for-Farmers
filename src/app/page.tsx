@@ -54,7 +54,7 @@ export default function DashboardPage() {
         <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
         <div className="absolute inset-0 flex flex-col justify-end p-6">
           <h1 className="font-headline text-3xl font-bold md:text-5xl">
-            Welcome to FormAssist AI
+            Welcome to FarmBharat.AI
           </h1>
           <p className="mt-2 max-w-2xl text-lg text-foreground/80">
             Your smart partner in modern farming. Powerful AI tools to boost your yield and protect your crops.

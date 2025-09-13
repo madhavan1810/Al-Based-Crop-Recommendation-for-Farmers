@@ -187,7 +187,7 @@ export default function Chatbot() {
       <DialogContent className="max-w-lg p-0">
         <DialogHeader className="p-6 pb-2">
           <DialogTitle className="flex items-center gap-2 font-headline text-2xl">
-            <Wheat className="text-primary" /> FormAssist AI Chat
+            <Wheat className="text-primary" /> FarmBharat.AI Chat
           </DialogTitle>
           <DialogDescription>
             Ask me anything about farming in your language.
