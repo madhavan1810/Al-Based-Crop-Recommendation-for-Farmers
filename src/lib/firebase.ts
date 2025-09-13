@@ -2,13 +2,15 @@ import { initializeApp, getApp, getApps, FirebaseApp } from 'firebase/app';
 import { getAuth, Auth } from 'firebase/auth';
 import { getFirestore, Firestore } from 'firebase/firestore';
 
+// Hardcoding the config to definitively resolve initialization issues.
+// This is safe for client-side Firebase configuration.
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  apiKey: "AIzaSyC9lXNDFrDwnOgzv7tAXRYhOhHknkegOzU",
+  authDomain: "studio-684454327-e7713.firebaseapp.com",
+  projectId: "studio-684454327-e7713",
+  storageBucket: "studio-684454327-e7713.firebasestorage.app",
+  messagingSenderId: "755577173726",
+  appId: "1:755577173726:web:f34edf42b5d53ad4c1744f"
 };
 
 // This is the correct way to initialize Firebase in a Next.js app
