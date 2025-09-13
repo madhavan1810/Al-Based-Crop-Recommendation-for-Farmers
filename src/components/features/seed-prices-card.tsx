@@ -1,5 +1,8 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 import {
   Card,
   CardContent,
@@ -15,10 +18,37 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { seedPrices } from '@/lib/market-data';
-import { Package } from 'lucide-react';
+import { Package, LoaderCircle } from 'lucide-react';
+
+type SeedPrice = {
+  name: string;
+  variety: string;
+  price: number;
+};
 
 export default function SeedPricesCard() {
+  const [seedPrices, setSeedPrices] = useState<SeedPrice[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSeedPrices = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'seed-prices'));
+        const prices: SeedPrice[] = [];
+        querySnapshot.forEach((doc) => {
+          prices.push(doc.data() as SeedPrice);
+        });
+        setSeedPrices(prices);
+      } catch (error) {
+        console.error("Error fetching seed prices: ", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSeedPrices();
+  }, []);
+
   return (
     <Card>
       <CardHeader>
@@ -31,24 +61,30 @@ export default function SeedPricesCard() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Crop</TableHead>
-              <TableHead>Variety</TableHead>
-              <TableHead className="text-right">Price (₹ per Quintal)</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {seedPrices.map((seed) => (
-              <TableRow key={`${seed.name}-${seed.variety}`}>
-                <TableCell className="font-medium">{seed.name}</TableCell>
-                <TableCell>{seed.variety}</TableCell>
-                <TableCell className="text-right">₹{seed.price.toLocaleString('en-IN')}</TableCell>
+        {loading ? (
+          <div className="flex items-center justify-center h-40">
+            <LoaderCircle className="size-8 animate-spin text-primary" />
+          </div>
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Crop</TableHead>
+                <TableHead>Variety</TableHead>
+                <TableHead className="text-right">Price (₹ per Quintal)</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {seedPrices.map((seed) => (
+                <TableRow key={`${seed.name}-${seed.variety}`}>
+                  <TableCell className="font-medium">{seed.name}</TableCell>
+                  <TableCell>{seed.variety}</TableCell>
+                  <TableCell className="text-right">₹{seed.price.toLocaleString('en-IN')}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
       </CardContent>
     </Card>
   );
