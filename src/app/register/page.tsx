@@ -80,7 +80,7 @@ export default function RegisterPage() {
           <CardTitle className="text-2xl">Register</CardTitle>
           <CardDescription>
             Create a new account to get started with personalized farming advice.
-          </dCardDescription>
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
