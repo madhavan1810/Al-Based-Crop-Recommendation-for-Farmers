@@ -18,7 +18,6 @@ export async function updateCropPrices(prices: CropPrice[]): Promise<void> {
   const batch = writeBatch(db);
   const cropPricesRef = collection(db, 'crop-prices');
 
-  // Optional: Delete existing documents to prevent stale data
   const existingDocs = await getDocs(cropPricesRef);
   existingDocs.forEach((doc) => {
     batch.delete(doc.ref);
@@ -37,7 +36,6 @@ export async function updateSeedPrices(prices: SeedPrice[]): Promise<void> {
   const batch = writeBatch(db);
   const seedPricesRef = collection(db, 'seed-prices');
 
-  // Optional: Delete existing documents to prevent stale data
   const existingDocs = await getDocs(seedPricesRef);
   existingDocs.forEach((doc) => {
     batch.delete(doc.ref);

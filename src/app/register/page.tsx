@@ -85,7 +85,7 @@ export default function RegisterPage() {
       toast({
         variant: 'destructive',
         title: 'Registration Failed',
-        description: error.message || 'An unexpected error occurred.',
+        description: error.code === 'auth/email-already-in-use' ? 'This email is already registered.' : 'An unexpected error occurred.',
       });
     }
   };

@@ -64,7 +64,7 @@ export default function LoginPage() {
       toast({
         variant: 'destructive',
         title: 'Login Failed',
-        description: error.message || 'An unexpected error occurred.',
+        description: 'Invalid email or password.',
       });
     }
   };

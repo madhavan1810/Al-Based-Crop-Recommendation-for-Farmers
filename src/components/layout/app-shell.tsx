@@ -90,7 +90,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter>
-          {/* Footer content can go here */}
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
