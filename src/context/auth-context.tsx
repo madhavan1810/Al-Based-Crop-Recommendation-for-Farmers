@@ -56,11 +56,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   
   const isPublicPage = publicPages.includes(pathname);
 
-  if (isPublicPage && !user) {
+  if (!user && isPublicPage) {
     return <>{children}</>;
   }
 
-  if (!isPublicPage && user) {
+  if (user && !isPublicPage) {
      return <AuthContext.Provider value={{ user, loading }}>{children}</AuthContext.Provider>;
   }
 
