@@ -56,17 +56,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   
   const isPublicPage = publicPages.includes(pathname);
 
-  if (!user && isPublicPage) {
+  // If we are on a public page and not logged in, show the page.
+  if (isPublicPage && !user) {
     return <>{children}</>;
   }
 
-  if (user && !isPublicPage) {
+  // If we are on a private page and logged in, show the page.
+  if (!isPublicPage && user) {
      return <AuthContext.Provider value={{ user, loading }}>{children}</AuthContext.Provider>;
   }
 
-  // If we are on a public page with a user, or a private page without a user,
-  // the useEffect above is handling redirection, so we can render a loading state
-  // to avoid flashing content.
+  // In other cases (like being on a public page while logged in, or private page while not logged in),
+  // the redirection is in progress, so we show a loader.
   return (
       <div className="flex h-screen items-center justify-center bg-background">
         <LoaderCircle className="h-12 w-12 animate-spin text-primary" />
