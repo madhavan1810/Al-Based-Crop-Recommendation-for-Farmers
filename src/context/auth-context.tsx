@@ -17,6 +17,8 @@ const AuthContext = createContext<AuthContextType>({
   loading: true,
 });
 
+const publicPages = ['/login', '/register'];
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -35,39 +37,41 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (loading) return;
 
-    const isAuthPage = pathname === '/login' || pathname === '/register';
+    const isPublicPage = publicPages.includes(pathname);
 
-    if (!user && !isAuthPage) {
+    if (!user && !isPublicPage) {
       router.push('/login');
-    } else if (user && isAuthPage) {
+    } else if (user && isPublicPage) {
       router.push('/');
     }
   }, [user, loading, router, pathname]);
 
   if (loading) {
     return (
-      <div className="flex h-screen items-center justify-center">
+      <div className="flex h-screen items-center justify-center bg-background">
         <LoaderCircle className="h-12 w-12 animate-spin text-primary" />
       </div>
     );
   }
-
-  const isAuthPage = pathname === '/login' || pathname === '/register';
   
-  // If we are on an auth page, we can render the children immediately.
-  // The useEffect above will handle redirection if the user is already logged in.
-  if (isAuthPage) {
+  const isPublicPage = publicPages.includes(pathname);
+
+  if (isPublicPage && !user) {
     return <>{children}</>;
   }
 
-  // If we are on a protected page, and there is a user, we provide the context.
-  if (!isAuthPage && user) {
+  if (!isPublicPage && user) {
      return <AuthContext.Provider value={{ user, loading }}>{children}</AuthContext.Provider>;
   }
 
-  // If on a protected page and no user, we render nothing,
-  // as the useEffect is already handling the redirection to the login page.
-  return null;
+  // If we are on a public page with a user, or a private page without a user,
+  // the useEffect above is handling redirection, so we can render a loading state
+  // to avoid flashing content.
+  return (
+      <div className="flex h-screen items-center justify-center bg-background">
+        <LoaderCircle className="h-12 w-12 animate-spin text-primary" />
+      </div>
+  );
 };
 
 export const useAuth = () => {

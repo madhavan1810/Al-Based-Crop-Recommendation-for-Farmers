@@ -1,4 +1,4 @@
-import DiseaseDetectionCard from '@/components/features/disease-detection-card';
+import DiseaseDetection from '@/components/features/disease-detection-card';
 import { AppShell } from '@/components/layout/app-shell';
 
 export default function DiseaseDetectionPage() {
@@ -10,10 +10,10 @@ export default function DiseaseDetectionPage() {
             Plant Disease Detection
           </h1>
           <p className="text-muted-foreground">
-            Upload an image of a plant leaf to detect diseases. This feature works even when you are offline.
+            Upload an image of a plant leaf to detect diseases using AI. This feature works even when you are offline.
           </p>
         </div>
-        <DiseaseDetectionCard />
+        <DiseaseDetection />
       </div>
     </AppShell>
   );

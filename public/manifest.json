@@ -1,7 +1,7 @@
 {
-  "name": "FormAssist AI",
-  "short_name": "FormAssist",
-  "description": "AI-powered farming assistance.",
+  "name": "FarmBharat.AI",
+  "short_name": "FarmBharat",
+  "description": "AI-powered farming assistance to boost your yield and protect your crops.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

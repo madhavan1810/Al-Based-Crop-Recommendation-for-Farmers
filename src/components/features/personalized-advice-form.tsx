@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { BrainCircuit, LoaderCircle, MessageSquare } from 'lucide-react';
+import { doc, getDoc } from 'firebase/firestore';
 
 import { getPersonalizedFarmingAdvice, type PersonalizedFarmingAdviceOutput } from '@/ai/flows/personalized-farming-advice';
 import { Button } from '@/components/ui/button';
@@ -22,6 +23,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { SpeakButton } from './speak-button';
+import { useAuth } from '@/context/auth-context';
+import { db } from '@/lib/firebase';
+import { type UserProfile } from '@/services/user-service';
 
 const formSchema = z.object({
   location: z.string().min(2, { message: 'Please provide a valid location.' }),
@@ -35,6 +39,7 @@ export default function PersonalizedAdviceForm() {
   const [isPending, startTransition] = useTransition();
   const [result, setResult] = useState<PersonalizedFarmingAdviceOutput | null>(null);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -45,17 +50,39 @@ export default function PersonalizedAdviceForm() {
     },
   });
 
+  useEffect(() => {
+    if (user) {
+      const fetchUserData = async () => {
+        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        if (userDoc.exists()) {
+          const userData = userDoc.data() as UserProfile;
+          form.setValue('location', userData.location);
+        }
+      };
+      fetchUserData();
+    }
+  }, [user, form]);
+
   const onSubmit = (data: FormData) => {
     startTransition(async () => {
       setResult(null);
-      const res = await getPersonalizedFarmingAdvice(data);
-      if (res) {
-        setResult(res);
-      } else {
+      try {
+        const res = await getPersonalizedFarmingAdvice(data);
+        if (res) {
+          setResult(res);
+        } else {
+          toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Failed to get advice. Please try again.',
+          });
+        }
+      } catch (error) {
+        console.error(error);
         toast({
           variant: 'destructive',
           title: 'Error',
-          description: 'Failed to get advice. Please try again.',
+          description: 'Failed to get advice. The weather service might be unavailable.',
         });
       }
     });
@@ -80,7 +107,7 @@ export default function PersonalizedAdviceForm() {
                       <Input placeholder="e.g., Punjab, India" {...field} />
                     </FormControl>
                     <FormDescription>
-                      Your city or region for local weather data.
+                      Your district for local weather data.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -113,7 +140,7 @@ export default function PersonalizedAdviceForm() {
                       />
                     </FormControl>
                     <FormDescription>
-                      Provide your latest soil test results.
+                      Provide your latest soil test results or a general description.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>

@@ -9,9 +9,10 @@ export type WeatherData = {
 export async function getWeatherData(location: string): Promise<WeatherData> {
   console.log(`Fetching weather for ${location}...`);
 
-  const apiKey = process.env.WEATHER_API_KEY;
+  const apiKey = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
   if (!apiKey) {
-    throw new Error('WEATHER_API_KEY is not set in the environment variables.');
+    console.error('WEATHER_API_KEY is not set in the environment variables.');
+    throw new Error('Server configuration error: Weather service is not available.');
   }
 
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric`;
@@ -19,15 +20,9 @@ export async function getWeatherData(location: string): Promise<WeatherData> {
   try {
     const response = await fetch(url);
     if (!response.ok) {
-      console.error('Failed to fetch weather data:', response.statusText);
-      // Return a default/error state if API fails
-      return {
-        temperature: 0,
-        humidity: 0,
-        windSpeed: 0,
-        precipitation: 0,
-        forecast: 'Could not fetch weather data.',
-      };
+      const errorData = await response.json();
+      console.error('Failed to fetch weather data:', response.statusText, errorData);
+      throw new Error(`Could not fetch weather data for ${location}. Reason: ${errorData.message}`);
     }
     const data = await response.json();
 
@@ -42,6 +37,9 @@ export async function getWeatherData(location: string): Promise<WeatherData> {
     return weatherData;
   } catch (error) {
     console.error('Error fetching weather data:', error);
-    throw new Error('Failed to fetch weather data.');
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error('An unknown error occurred while fetching weather data.');
   }
 }

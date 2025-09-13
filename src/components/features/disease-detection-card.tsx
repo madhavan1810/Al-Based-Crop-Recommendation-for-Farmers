@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState, useRef } from 'react';
+import { useState, useRef, useTransition } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,23 +9,20 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { LoaderCircle, ScanLine, Upload } from 'lucide-react';
+import { LoaderCircle, ScanLine, Upload, Bug } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { SpeakButton } from './speak-button';
+import { detectPlantDisease, type DiseaseDetectionOutput } from '@/ai/flows/disease-detection-flow';
+import { useToast } from '@/hooks/use-toast';
 
-type DetectionResult = {
-  disease: string;
-  confidence: number;
-  treatment: string;
-};
-
-export default function DiseaseDetectionCard() {
+export default function DiseaseDetection() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [result, setResult] = useState<DetectionResult | null>(null);
+  const [isAnalyzing, startTransition] = useTransition();
+  const [result, setResult] = useState<DiseaseDetectionOutput | null>(null);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const placeholderImage = PlaceHolderImages.find(img => img.id === 'plant-preview') || PlaceHolderImages[0];
+  const { toast } = useToast();
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -41,6 +38,11 @@ export default function DiseaseDetectionCard() {
       } else {
         setError('Please upload a valid image file.');
         setImagePreview(null);
+        toast({
+            variant: 'destructive',
+            title: 'Invalid File',
+            description: 'Please upload a valid image file.',
+        });
       }
     }
   };
@@ -48,31 +50,41 @@ export default function DiseaseDetectionCard() {
   const handleAnalyze = () => {
     if (!imagePreview) {
       setError('Please upload an image first.');
+      toast({
+            variant: 'destructive',
+            title: 'No Image',
+            description: 'Please upload an image first.',
+      });
       return;
     }
-    setIsAnalyzing(true);
+    
     setResult(null);
     setError(null);
 
-    // Simulate model analysis
-    setTimeout(() => {
-      // Mock result
-      const mockResult: DetectionResult = {
-        disease: 'Late Blight',
-        confidence: 92,
-        treatment: 'Apply a fungicide containing mancozeb or chlorothalonil. Ensure proper spacing between plants for better air circulation. Water at the base of the plant to avoid wet foliage.',
-      };
-      setResult(mockResult);
-      setIsAnalyzing(false);
-    }, 2500);
+    startTransition(async () => {
+      try {
+        const res = await detectPlantDisease({ photoDataUri: imagePreview });
+        setResult(res);
+      } catch (e) {
+        console.error(e);
+        setError('An error occurred during analysis. Please try again.');
+        toast({
+            variant: 'destructive',
+            title: 'Analysis Failed',
+            description: 'An unexpected error occurred. Please try again later.',
+        });
+      }
+    });
   };
+  
+  const isHealthy = result && result.disease.toLowerCase() === 'healthy';
 
   return (
     <Card className="mx-auto max-w-2xl">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>Upload Plant Image</span>
-          <Badge variant="outline">Offline Capable</Badge>
+          <Badge variant="outline">AI-Powered</Badge>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -124,39 +136,41 @@ export default function DiseaseDetectionCard() {
         </div>
 
         {isAnalyzing && (
-          <div className="pt-4">
-            <Progress value={undefined} className="h-2 animate-pulse" />
-            <p className="mt-2 text-center text-sm text-muted-foreground">
-              Running on-device model...
+          <div className="pt-4 text-center text-muted-foreground">
+            <LoaderCircle className="mx-auto h-8 w-8 animate-spin text-primary" />
+            <p className="mt-2 text-sm">
+              Analyzing with Gemini AI...
             </p>
           </div>
         )}
 
         {result && (
           <div className="pt-4">
-            <Alert>
-              <ScanLine className="h-4 w-4" />
+            <Alert variant={isHealthy ? 'default' : 'destructive'}>
+              <Bug className="h-4 w-4" />
               <AlertTitle className="flex items-center justify-between">
                 <span>Detection Complete</span>
-                <SpeakButton textToSpeak={`Disease detected: ${result.disease}. Confidence: ${result.confidence} percent. Recommended treatment: ${result.treatment}`} />
+                 <SpeakButton textToSpeak={`Disease detected: ${result.disease}. Confidence: ${result.confidence} percent. ${ isHealthy ? 'The plant appears to be healthy.' : `Recommended treatment: ${result.treatment}`}`} />
               </AlertTitle>
               <AlertDescription>
                 <div className="mt-4 space-y-4">
                   <div>
                     <h3 className="font-semibold">Detected Disease:</h3>
-                    <p>{result.disease}</p>
+                    <p className={cn(isHealthy && 'text-green-600 font-medium')}>{result.disease}</p>
                   </div>
-                  <div>
+                   <div>
                     <h3 className="font-semibold">Confidence:</h3>
                     <div className="flex items-center gap-2">
                       <Progress value={result.confidence} className="w-48" />
                       <span>{result.confidence}%</span>
                     </div>
                   </div>
-                  <div>
-                    <h3 className="font-semibold">Recommended Treatment:</h3>
-                    <p>{result.treatment}</p>
-                  </div>
+                  {!isHealthy && (
+                    <div>
+                        <h3 className="font-semibold">Recommended Treatment:</h3>
+                        <p>{result.treatment}</p>
+                    </div>
+                  )}
                 </div>
               </AlertDescription>
             </Alert>
