@@ -5,11 +5,9 @@ import { db } from '@/lib/firebase';
 export type UserProfile = {
   name: string;
   email: string;
-  location: string;
-  landSize: number;
 };
 
-export async function createUserProfile(userId: string, data: UserProfile): Promise<void> {
+export async function createUserProfile(userId: string, data: Omit<UserProfile, 'email'> & { email: string }): Promise<void> {
   try {
     const userDocRef = doc(db, 'users', userId);
     await setDoc(userDocRef, data);

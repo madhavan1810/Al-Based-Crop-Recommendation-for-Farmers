@@ -47,9 +47,6 @@ export default function PersonalizedAdviceForm() {
     },
   });
 
-  // Since user profile is no longer saved, this effect is removed.
-  // The user will have to manually enter their location.
-
   const onSubmit = (data: FormData) => {
     startTransition(async () => {
       setResult(null);

@@ -8,6 +8,8 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AppShell } from '@/components/layout/app-shell';
+import CropPricesCard from '@/components/features/crop-prices-card';
+import SeedPricesCard from '@/components/features/seed-prices-card';
 
 export default function DashboardPage() {
   const getImage = (id: string) =>
@@ -84,6 +86,10 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
           ))}
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <CropPricesCard />
+            <SeedPricesCard />
         </div>
       </div>
     </AppShell>
