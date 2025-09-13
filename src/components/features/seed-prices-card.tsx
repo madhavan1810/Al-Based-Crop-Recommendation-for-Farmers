@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import {
   Card,
@@ -31,22 +31,20 @@ export default function SeedPricesCard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchSeedPrices = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, 'seed-prices'));
-        const prices: SeedPrice[] = [];
-        querySnapshot.forEach((doc) => {
-          prices.push(doc.data() as SeedPrice);
-        });
-        setSeedPrices(prices);
-      } catch (error) {
-        console.error("Error fetching seed prices: ", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    const seedPricesRef = collection(db, 'seed-prices');
+    const unsubscribe = onSnapshot(seedPricesRef, (querySnapshot) => {
+      const prices: SeedPrice[] = [];
+      querySnapshot.forEach((doc) => {
+        prices.push(doc.data() as SeedPrice);
+      });
+      setSeedPrices(prices);
+      setLoading(false);
+    }, (error) => {
+      console.error("Error fetching seed prices: ", error);
+      setLoading(false);
+    });
 
-    fetchSeedPrices();
+    return () => unsubscribe();
   }, []);
 
   return (
@@ -64,6 +62,10 @@ export default function SeedPricesCard() {
         {loading ? (
           <div className="flex items-center justify-center h-40">
             <LoaderCircle className="size-8 animate-spin text-primary" />
+          </div>
+        ) : seedPrices.length === 0 ? (
+           <div className="flex items-center justify-center h-40">
+            <p className="text-muted-foreground">No seed prices found. Please refresh.</p>
           </div>
         ) : (
           <Table>

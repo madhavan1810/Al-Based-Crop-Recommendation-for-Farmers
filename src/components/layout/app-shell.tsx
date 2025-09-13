@@ -11,6 +11,7 @@ import {
   LogOut,
   User as UserIcon,
 } from 'lucide-react';
+import { signOut } from 'firebase/auth';
 
 import {
   SidebarProvider,
@@ -38,7 +39,6 @@ import { Logo } from './logo';
 import Chatbot from '../features/chatbot';
 import { useAuth } from '@/context/auth-context';
 import { auth } from '@/lib/firebase';
-import { signOut } from 'firebase/auth';
 
 const navItems = [
   { href: '/', label: 'Dashboard', icon: LayoutDashboard },
