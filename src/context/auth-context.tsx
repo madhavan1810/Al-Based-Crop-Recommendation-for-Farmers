@@ -53,14 +53,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const isAuthPage = pathname === '/login' || pathname === '/register';
-  if (isAuthPage && !user) {
+  
+  // If it's an auth page, render children for both authenticated and unauthenticated users.
+  // The useEffect above will handle the redirection.
+  if (isAuthPage) {
     return <>{children}</>;
   }
   
+  // If it's a protected page and the user is authenticated, provide the context.
   if (!isAuthPage && user) {
      return <AuthContext.Provider value={{ user, loading }}>{children}</AuthContext.Provider>;
   }
 
+  // If it's a protected page and there's no user, return null while redirecting.
   return null;
 };
 
