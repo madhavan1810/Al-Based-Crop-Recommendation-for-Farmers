@@ -56,10 +56,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   
   const isPublicPage = publicPages.includes(pathname);
 
-  if ((isPublicPage && !user) || (!isPublicPage && user)) {
+  // If we are on a public page and not logged in, show the page.
+  if (isPublicPage && !user) {
      return <AuthContext.Provider value={{ user, loading }}>{children}</AuthContext.Provider>;
   }
 
+  // If we are on a private page and logged in, show the page.
+  if (!isPublicPage && user) {
+     return <AuthContext.Provider value={{ user, loading }}>{children}</AuthContext.Provider>;
+  }
+
+  // In all other cases (e.g., loading, or redirecting), show a spinner.
   return (
       <div className="flex h-screen items-center justify-center bg-background">
         <LoaderCircle className="h-12 w-12 animate-spin text-primary" />

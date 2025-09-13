@@ -171,7 +171,7 @@ export default function PersonalizedAdviceForm() {
           <CardDescription>
             Personalized recommendations based on your input and live weather data.
           </CardDescription>
-        </CardHeader>
+        </Header>
         <CardContent className="flex flex-1 items-center justify-center">
           {isPending && (
             <div className="flex flex-col items-center gap-2 text-muted-foreground">
