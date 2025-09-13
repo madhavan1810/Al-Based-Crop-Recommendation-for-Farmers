@@ -12,24 +12,18 @@ const firebaseConfig = {
   messagingSenderId: "755577173726"
 };
 
-// Singleton instances
 let app: FirebaseApp;
 let auth: Auth;
 let db: Firestore;
 
-function initializeFirebase() {
-  if (!getApps().length) {
-    app = initializeApp(firebaseConfig);
-    auth = getAuth(app);
-    db = getFirestore(app);
-  } else {
-    app = getApp();
-    auth = getAuth(app);
-    db = getFirestore(app);
-  }
+if (getApps().length === 0) {
+  app = initializeApp(firebaseConfig);
+} else {
+  app = getApp();
 }
 
-// Initialize on module load
-initializeFirebase();
+auth = getAuth(app);
+db = getFirestore(app);
+
 
 export { app, db, auth };
