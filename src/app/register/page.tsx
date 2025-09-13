@@ -30,13 +30,6 @@ import { LoaderCircle, UserPlus } from 'lucide-react';
 import { Logo } from '@/components/layout/logo';
 import { createUserProfile } from '@/services/user-service';
 import { indianDistricts } from '@/lib/indian-districts';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -188,8 +181,8 @@ export default function RegisterPage() {
                                   <CommandItem
                                     value={district}
                                     key={district}
-                                    onSelect={(currentValue) => {
-                                      form.setValue("location", currentValue === field.value ? "" : currentValue);
+                                    onSelect={() => {
+                                      form.setValue("location", district);
                                     }}
                                   >
                                     <Check
