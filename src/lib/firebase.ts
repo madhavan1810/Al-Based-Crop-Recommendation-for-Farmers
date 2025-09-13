@@ -12,8 +12,20 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app: FirebaseApp = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const auth: Auth = getAuth(app);
-const db: Firestore = getFirestore(app);
+let app: FirebaseApp;
+let auth: Auth;
+let db: Firestore;
+
+// This check is crucial for Next.js environments.
+if (firebaseConfig.apiKey && firebaseConfig.projectId) {
+  app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+  auth = getAuth(app);
+  db = getFirestore(app);
+} else {
+    // In a server-side context where env vars might not be available,
+    // we can throw an error or handle it gracefully.
+    console.error("Firebase config is missing or incomplete. Auth and Firestore will not be available.");
+    // Assign null or dummy objects if needed, though throwing an error is often better.
+}
 
 export { app, db, auth };
