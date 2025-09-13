@@ -27,7 +27,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { LoaderCircle, UserPlus } from 'lucide-react';
 import { Logo } from '@/components/layout/logo';
-import { getFirebaseAuth } from '@/lib/firebase';
+import { auth } from '@/lib/firebase';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -55,7 +55,6 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      const auth = getFirebaseAuth();
       await createUserWithEmailAndPassword(auth, data.email, data.password);
       toast({
         title: 'Registration Successful',
