@@ -734,5 +734,5 @@ export const indianDistricts = [
   "Purba Medinipur, West Bengal",
   "Purulia, West Bengal",
   "South 24 Parganas, West Bengal",
-  "Uttar Dinajpur, West Bengal",
+  "Uttar Dinajpur, West Bengal"
 ];
