@@ -29,12 +29,25 @@ import { useToast } from '@/hooks/use-toast';
 import { LoaderCircle, UserPlus } from 'lucide-react';
 import { Logo } from '@/components/layout/logo';
 import { createUserProfile } from '@/services/user-service';
+import { indianDistricts } from '@/lib/indian-districts';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command';
+
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
   email: z.string().email({ message: 'Please enter a valid email.' }),
   password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
-  location: z.string().min(2, { message: 'Please enter a valid location.' }),
+  location: z.string({ required_error: 'Please select a location.' }),
   landSize: z.coerce.number().min(0, { message: 'Please enter a valid land size.' }),
 });
 
@@ -49,7 +62,6 @@ export default function RegisterPage() {
       name: '',
       email: '',
       password: '',
-      location: '',
       landSize: 0,
     },
   });
@@ -144,11 +156,56 @@ export default function RegisterPage() {
                   control={form.control}
                   name="location"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="flex flex-col">
                       <FormLabel>Location</FormLabel>
-                      <FormControl>
-                        <Input placeholder="e.g., Ranchi, Jharkhand" {...field} />
-                      </FormControl>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant="outline"
+                              role="combobox"
+                              className={cn(
+                                "w-full justify-between",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value
+                                ? indianDistricts.find(
+                                    (district) => district === field.value
+                                  )
+                                : "Select district"}
+                              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-full p-0">
+                          <Command>
+                            <CommandInput placeholder="Search district..." />
+                            <CommandEmpty>No district found.</CommandEmpty>
+                            <CommandGroup>
+                              {indianDistricts.map((district) => (
+                                <CommandItem
+                                  value={district}
+                                  key={district}
+                                  onSelect={() => {
+                                    form.setValue("location", district);
+                                  }}
+                                >
+                                  <Check
+                                    className={cn(
+                                      "mr-2 h-4 w-4",
+                                      district === field.value
+                                        ? "opacity-100"
+                                        : "opacity-0"
+                                    )}
+                                  />
+                                  {district}
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -158,7 +215,7 @@ export default function RegisterPage() {
                   name="landSize"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Land Size (in acres)</FormLabel>
+                      <FormLabel>Land Size (acres)</FormLabel>
                       <FormControl>
                         <Input type="number" placeholder="e.g., 5.5" {...field} />
                       </FormControl>
