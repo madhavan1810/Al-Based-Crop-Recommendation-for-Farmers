@@ -28,13 +28,11 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { LoaderCircle, UserPlus } from 'lucide-react';
 import { Logo } from '@/components/layout/logo';
-import { createUserProfile } from '@/services/user-service';
-import { indianDistricts } from '@/lib/indian-districts';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
-
+import { indianDistricts } from '@/lib/indian-districts';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -65,16 +63,7 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
-      const user = userCredential.user;
-      
-      await createUserProfile(user.uid, {
-        name: data.name,
-        email: data.email,
-        location: data.location,
-        landSize: data.landSize,
-      });
-
+      await createUserWithEmailAndPassword(auth, data.email, data.password);
       toast({
         title: 'Registration Successful',
         description: 'Your account has been created.',
@@ -100,7 +89,7 @@ export default function RegisterPage() {
           <CardTitle className="text-2xl">Register</CardTitle>
           <CardDescription>
             Create a new account to get started with personalized farming advice.
-          </CardDescription>
+          </dCardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>

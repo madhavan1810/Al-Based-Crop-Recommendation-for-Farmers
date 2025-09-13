@@ -1,3 +1,5 @@
+'use client';
+
 import PersonalizedAdviceForm from "@/components/features/personalized-advice-form";
 import { AppShell } from "@/components/layout/app-shell";
 

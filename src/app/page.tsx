@@ -2,23 +2,14 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, Leaf, ScanLine, Sprout, Sun, RefreshCw, LoaderCircle } from 'lucide-react';
-import { useState, useTransition } from 'react';
+import { ArrowRight, Leaf, ScanLine, Sprout, Sun } from 'lucide-react';
 
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import SeedPricesCard from '@/components/features/seed-prices-card';
-import CropPricesCard from '@/components/features/crop-prices-card';
-import { getMarketPrices } from '@/ai/flows/market-price-flow';
-import { useToast } from '@/hooks/use-toast';
 import { AppShell } from '@/components/layout/app-shell';
 
 export default function DashboardPage() {
-  const [isPending, startTransition] = useTransition();
-  const { toast } = useToast();
-  
   const getImage = (id: string) =>
     PlaceHolderImages.find((img) => img.id === id) || PlaceHolderImages[0];
 
@@ -47,30 +38,6 @@ export default function DashboardPage() {
       image: getImage('personalized-advice-card'),
     },
   ];
-
-  const handleRefreshPrices = () => {
-    startTransition(async () => {
-      try {
-        const result = await getMarketPrices({
-          location: 'Jharkhand, India',
-          crops: ['Paddy', 'Wheat', 'Maize', 'Arhar (Tur)', 'Gram'],
-          seeds: ['Paddy', 'Wheat', 'Maize', 'Arhar (Tur)', 'Mustard'],
-        });
-        toast({
-          title: 'Success',
-          description: result.status,
-        });
-        // The cards will auto-refresh due to Firestore's real-time listeners
-      } catch (error) {
-        console.error(error);
-        toast({
-          variant: 'destructive',
-          title: 'Error',
-          description: 'Failed to update market prices.',
-        });
-      }
-    });
-  };
 
   return (
     <AppShell>
@@ -117,23 +84,6 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
           ))}
-        </div>
-        
-        <div className="mb-4 flex items-center justify-end gap-2">
-          <p className="text-sm text-muted-foreground">Market prices not up to date?</p>
-          <Button onClick={handleRefreshPrices} disabled={isPending} variant="outline" size="sm">
-            {isPending ? (
-              <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <RefreshCw className="mr-2 h-4 w-4" />
-            )}
-            Refresh Prices
-          </Button>
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-2">
-          <SeedPricesCard />
-          <CropPricesCard />
         </div>
       </div>
     </AppShell>

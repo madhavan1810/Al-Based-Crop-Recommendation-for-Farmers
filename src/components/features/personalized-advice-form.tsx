@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useEffect, useState, useTransition } from 'react';
@@ -6,7 +5,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { BrainCircuit, LoaderCircle, MessageSquare } from 'lucide-react';
-import { doc, getDoc } from 'firebase/firestore';
 
 import { getPersonalizedFarmingAdvice, type PersonalizedFarmingAdviceOutput } from '@/ai/flows/personalized-farming-advice';
 import { Button } from '@/components/ui/button';
@@ -25,8 +23,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useToast } from '@/hooks/use-toast';
 import { SpeakButton } from './speak-button';
 import { useAuth } from '@/context/auth-context';
-import { db } from '@/lib/firebase';
-import { type UserProfile } from '@/services/user-service';
 
 const formSchema = z.object({
   location: z.string().min(2, { message: 'Please provide a valid location.' }),
@@ -51,18 +47,8 @@ export default function PersonalizedAdviceForm() {
     },
   });
 
-  useEffect(() => {
-    if (user) {
-      const fetchUserData = async () => {
-        const userDoc = await getDoc(doc(db, 'users', user.uid));
-        if (userDoc.exists()) {
-          const userData = userDoc.data() as UserProfile;
-          form.setValue('location', userData.location);
-        }
-      };
-      fetchUserData();
-    }
-  }, [user, form]);
+  // Since user profile is no longer saved, this effect is removed.
+  // The user will have to manually enter their location.
 
   const onSubmit = (data: FormData) => {
     startTransition(async () => {
