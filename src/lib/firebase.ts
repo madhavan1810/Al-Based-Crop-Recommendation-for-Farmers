@@ -11,7 +11,7 @@ const firebaseConfig = {
   appId: "1:755577173726:web:f34edf42b5d53ad4c1744f",
 };
 
-// Initialize Firebase for SSR
+// Initialize Firebase
 const app: FirebaseApp = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const auth: Auth = getAuth(app);
 const db: Firestore = getFirestore(app);
