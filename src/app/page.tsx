@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, Leaf, ScanLine, Sprout, Sun } from 'lucide-react';
+import { ArrowRight, Sprout, ScanLine, Sun } from 'lucide-react';
 
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';

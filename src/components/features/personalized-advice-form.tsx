@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -22,7 +22,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { SpeakButton } from './speak-button';
-import { useAuth } from '@/context/auth-context';
 
 const formSchema = z.object({
   location: z.string().min(2, { message: 'Please provide a valid location.' }),
@@ -36,7 +35,6 @@ export default function PersonalizedAdviceForm() {
   const [isPending, startTransition] = useTransition();
   const [result, setResult] = useState<PersonalizedFarmingAdviceOutput | null>(null);
   const { toast } = useToast();
-  const { user } = useAuth();
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
