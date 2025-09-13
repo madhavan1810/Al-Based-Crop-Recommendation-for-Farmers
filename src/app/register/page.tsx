@@ -40,7 +40,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 
 
 const formSchema = z.object({
@@ -181,28 +181,30 @@ export default function RegisterPage() {
                         <PopoverContent className="w-full p-0">
                           <Command>
                             <CommandInput placeholder="Search district..." />
-                            <CommandEmpty>No district found.</CommandEmpty>
-                            <CommandGroup>
-                              {indianDistricts.map((district) => (
-                                <CommandItem
-                                  value={district}
-                                  key={district}
-                                  onSelect={() => {
-                                    form.setValue("location", district);
-                                  }}
-                                >
-                                  <Check
-                                    className={cn(
-                                      "mr-2 h-4 w-4",
-                                      district === field.value
-                                        ? "opacity-100"
-                                        : "opacity-0"
-                                    )}
-                                  />
-                                  {district}
-                                </CommandItem>
-                              ))}
-                            </CommandGroup>
+                            <CommandList>
+                              <CommandEmpty>No district found.</CommandEmpty>
+                              <CommandGroup>
+                                {indianDistricts.map((district) => (
+                                  <CommandItem
+                                    value={district}
+                                    key={district}
+                                    onSelect={(currentValue) => {
+                                      form.setValue("location", currentValue === field.value ? "" : currentValue);
+                                    }}
+                                  >
+                                    <Check
+                                      className={cn(
+                                        "mr-2 h-4 w-4",
+                                        district === field.value
+                                          ? "opacity-100"
+                                          : "opacity-0"
+                                      )}
+                                    />
+                                    {district}
+                                  </CommandItem>
+                                ))}
+                              </CommandGroup>
+                            </CommandList>
                           </Command>
                         </PopoverContent>
                       </Popover>
