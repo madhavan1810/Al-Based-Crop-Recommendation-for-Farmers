@@ -21,9 +21,9 @@ const DiseaseDetectionInputSchema = z.object({
 export type DiseaseDetectionInput = z.infer<typeof DiseaseDetectionInputSchema>;
 
 const DiseaseDetectionOutputSchema = z.object({
-  disease: z.string().describe("The name of the detected disease. If the plant is healthy, return 'Healthy'."),
-  confidence: z.number().describe('The confidence score of the detection, from 0 to 100.'),
-  treatment: z.string().describe("A concise, actionable recommendation for treating the disease. If the plant is healthy, provide a general care tip."),
+  disease: z.string().describe("The specific name of the detected disease or pest (e.g., 'Powdery Mildew', 'Aphids'). If the plant is healthy, return 'Healthy'."),
+  confidence: z.number().describe('A confidence score (0-100) in the accuracy of the diagnosis. 100 means certainty.'),
+  treatment: z.string().describe("A concise, actionable, and easy-to-follow recommendation for treating the disease. If healthy, provide a relevant care tip (e.g., watering, sunlight)."),
 });
 export type DiseaseDetectionOutput = z.infer<typeof DiseaseDetectionOutputSchema>;
 
@@ -36,10 +36,16 @@ const prompt = ai.definePrompt({
   name: 'diseaseDetectionPrompt',
   input: { schema: DiseaseDetectionInputSchema },
   output: { schema: DiseaseDetectionOutputSchema },
-  prompt: `You are an expert plant pathologist. Analyze the provided image of a plant leaf.
+  prompt: `You are an expert plant pathologist and agricultural diagnostician. Your task is to analyze an image of a plant leaf and provide a precise diagnosis.
 
-Identify any diseases present. If the plant appears healthy, state that. Provide a confidence score for your diagnosis.
-Based on your diagnosis, provide a concise, actionable treatment plan. If the plant is healthy, provide a simple, helpful care tip.
+Follow these steps for your analysis:
+1.  **Initial Observation**: Examine the image closely. Note the plant's overall appearance, leaf color, and any visible patterns.
+2.  **Symptom Identification**: Look for specific symptoms, such as spots (color, size, shape), lesions, wilting, discoloration (yellowing, browning), pests, or fungal growth.
+3.  **Diagnosis**: Based on the symptoms, determine the most likely disease or pest. If no issues are visible, classify the plant as 'Healthy'.
+4.  **Confidence Score**: Assign a confidence level to your diagnosis based on the clarity and uniqueness of the symptoms.
+5.  **Treatment Recommendation**: Provide a simple, actionable treatment plan. For diseases, suggest organic or chemical solutions. For pests, recommend control methods. If healthy, give a relevant care tip.
+
+Analyze the following image and provide your diagnosis.
 
 Image: {{media url=photoDataUri}}`,
 });
