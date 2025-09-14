@@ -79,6 +79,7 @@ export default function DiseaseDetection() {
   };
   
   const isHealthy = result && result.disease.toLowerCase() === 'healthy';
+  const speakableText = result ? `Diagnosis: ${result.disease}. Confidence is ${result.confidence} percent. ${result.description}. Recommended treatment: ${result.treatment}` : '';
 
   return (
     <Card className="mx-auto max-w-2xl">
@@ -150,21 +151,27 @@ export default function DiseaseDetection() {
             <Alert variant={isHealthy ? 'default' : 'destructive'}>
               <Bug className="h-4 w-4" />
               <AlertTitle className="flex items-center justify-between">
-                <span>Detection Complete</span>
-                 <SpeakButton textToSpeak={`Disease detected: ${result.disease}. Confidence: ${result.confidence} percent. ${ isHealthy ? 'The plant appears to be healthy.' : `Recommended treatment: ${result.treatment}`}`} />
+                <span>Diagnosis Result</span>
+                 <SpeakButton textToSpeak={speakableText} />
               </AlertTitle>
               <AlertDescription>
                 <div className="mt-4 space-y-4">
                   <div>
-                    <h3 className="font-semibold">Detected Disease:</h3>
-                    <p className={cn(isHealthy && 'text-green-600 font-medium')}>{result.disease}</p>
+                    <h3 className="font-semibold">Diagnosis:</h3>
+                    <p className={cn('font-bold', isHealthy ? 'text-green-600' : 'text-destructive')}>
+                      {result.disease}
+                    </p>
                   </div>
                    <div>
                     <h3 className="font-semibold">Confidence:</h3>
                     <div className="flex items-center gap-2">
                       <Progress value={result.confidence} className="w-48" />
-                      <span>{result.confidence}%</span>
+                      <span>{result.confidence.toFixed(0)}%</span>
                     </div>
+                  </div>
+                   <div>
+                    <h3 className="font-semibold">AI's Observations:</h3>
+                    <p className="text-sm text-muted-foreground">{result.description}</p>
                   </div>
                   {!isHealthy && (
                     <div>

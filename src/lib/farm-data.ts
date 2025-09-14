@@ -36,6 +36,20 @@ export const farmingData = {
       "season": "Kharif",
       "soil": "Well-drained deep black soils (regur).",
       "notes": "Major cash crop, known as 'white gold'."
+    },
+    {
+        "name": "Potato",
+        "regions": ["Uttar Pradesh", "West Bengal", "Bihar"],
+        "season": "Rabi (October-March)",
+        "soil": "Well-drained sandy loam and silt loam soils.",
+        "notes": "Susceptible to Late Blight disease in cool, moist conditions."
+    },
+    {
+        "name": "Tomato",
+        "regions": ["Andhra Pradesh", "Madhya Pradesh", "Karnataka"],
+        "season": "Kharif and Rabi",
+        "soil": "Well-drained loamy soils.",
+        "notes": "One of the most common vegetable crops, also susceptible to Late Blight."
     }
   ],
   "soilTypes": [
@@ -62,6 +76,15 @@ export const farmingData = {
       "regions": ["Karnataka, Kerala, Tamil Nadu, Madhya Pradesh, hilly areas of Odisha and Assam"],
       "characteristics": "Rich in iron and aluminum, poor in nitrogen, phosphate, and potash. Acidic.",
       "suitableCrops": ["Tea", "Coffee", "Rubber", "Cashew"]
+    }
+  ],
+  "commonDiseases": [
+    {
+        "name": "Late Blight",
+        "affectedCrops": ["Potato", "Tomato"],
+        "symptoms": "Starts as dark, water-soaked spots on leaves. A white, fuzzy mold may appear on the underside of the leaves in humid conditions. Stems can develop dark lesions, and tomato fruits or potato tubers can rot.",
+        "conditions": "Favored by cool, moist weather (10-20°C) with high humidity or rain.",
+        "treatment": "Preventative measures include using certified disease-free seeds, ensuring good air circulation, and avoiding overhead watering. Fungicides like Mancozeb, Chlorothalonil, or copper-based sprays are effective. Remove and destroy infected plants immediately."
     }
   ],
   "fertilizers": [
