@@ -11,7 +11,7 @@ import { AppShell } from '@/components/layout/app-shell';
 import CropPricesCard from '@/components/features/crop-prices-card';
 import SeedPricesCard from '@/components/features/seed-prices-card';
 
-export default function DashboardPage() {
+export default function Page() {
   const getImage = (id: string) =>
     PlaceHolderImages.find((img) => img.id === id) || PlaceHolderImages[0];
 
