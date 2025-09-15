@@ -18,6 +18,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Bot, LoaderCircle, Send, User, Wheat } from 'lucide-react';
 import { VoiceInputButton } from './voice-input-button';
 import { SpeakButton } from './speak-button';
+import { useLocale, useTranslations } from 'next-intl';
 
 type Message = {
   id: number;
@@ -30,6 +31,8 @@ export default function Chatbot() {
   const [input, setInput] = useState('');
   const [isPending, startTransition] = useTransition();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const locale = useLocale();
+  const t = useTranslations('Chatbot');
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -45,8 +48,7 @@ export default function Chatbot() {
     setInput('');
 
     startTransition(async () => {
-      // Hardcoding language to 'en' since multilingual support is removed
-      const response = await multilingualChatbotAssistance({ query: input, language: 'en' });
+      const response = await multilingualChatbotAssistance({ query: input, language: locale });
       const botMessage: Message = { id: Date.now() + 1, role: 'bot', text: response.answer };
       setMessages((prev) => [...prev, botMessage]);
     });
@@ -61,16 +63,16 @@ export default function Chatbot() {
       <DialogTrigger asChild>
         <Button className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-lg" size="icon">
           <Bot className="h-8 w-8" />
-          <span className="sr-only">Open Chatbot</span>
+          <span className="sr-only">{t('openChatbot')}</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-lg p-0">
         <DialogHeader className="p-6 pb-2">
           <DialogTitle className="flex items-center gap-2 font-headline text-2xl">
-            <Wheat className="text-primary" /> FarmBharat.AI Chat
+            <Wheat className="text-primary" /> {t('title')}
           </DialogTitle>
           <DialogDescription>
-            Ask me anything about farming.
+            {t('description')}
           </DialogDescription>
         </DialogHeader>
 
@@ -131,7 +133,7 @@ export default function Chatbot() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                placeholder="Type your question..."
+                placeholder={t('placeholder')}
                 className="pr-10"
               />
               <div className="absolute inset-y-0 right-2 flex items-center">

@@ -15,6 +15,7 @@ import { SpeakButton } from './speak-button';
 import { detectPlantDisease, type DiseaseDetectionOutput } from '@/ai/flows/disease-detection-flow';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 
 export default function DiseaseDetection() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -24,6 +25,7 @@ export default function DiseaseDetection() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const placeholderImage = PlaceHolderImages.find(img => img.id === 'plant-preview') || PlaceHolderImages[0];
   const { toast } = useToast();
+  const t = useTranslations('DiseaseDetectionPage.card');
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -37,12 +39,12 @@ export default function DiseaseDetection() {
         };
         reader.readAsDataURL(file);
       } else {
-        const err = 'Please upload a valid image file.';
+        const err = t('error.invalidFile');
         setError(err);
         setImagePreview(null);
         toast({
             variant: 'destructive',
-            title: 'Invalid File',
+            title: t('error.invalidFileTitle'),
             description: err,
         });
       }
@@ -51,11 +53,11 @@ export default function DiseaseDetection() {
 
   const handleAnalyze = () => {
     if (!imagePreview) {
-      const err = 'Please upload an image first.';
+      const err = t('error.noImage');
       setError(err);
       toast({
             variant: 'destructive',
-            title: 'No Image',
+            title: t('error.noImageTitle'),
             description: err,
       });
       return;
@@ -70,26 +72,26 @@ export default function DiseaseDetection() {
         setResult(res);
       } catch (e) {
         console.error(e);
-        const err = 'An error occurred during analysis. Please try again.';
+        const err = t('error.analysisFailed');
         setError(err);
         toast({
             variant: 'destructive',
-            title: 'Analysis Failed',
-            description: 'An unexpected error occurred. Please try again later.',
+            title: t('error.analysisFailedTitle'),
+            description: t('error.analysisFailedDescription'),
         });
       }
     });
   };
   
   const isHealthy = result && result.disease.toLowerCase() === 'healthy';
-  const speakableText = result ? `Diagnosis: ${result.disease}. Confidence: ${result.confidence} percent. ${result.description}. Recommended Treatment: ${result.treatment}` : '';
+  const speakableText = result ? `${t('results.diagnosis')}: ${result.disease}. ${t('results.confidence')}: ${result.confidence} percent. ${result.description}. ${t('results.treatment')}: ${result.treatment}` : '';
 
   return (
     <Card className="mx-auto max-w-2xl">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
-          <span>Upload Plant Image</span>
-          <Badge variant="outline">AI-Powered</Badge>
+          <span>{t('title')}</span>
+          <Badge variant="outline">{t('badge')}</Badge>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -105,7 +107,7 @@ export default function DiseaseDetection() {
             />
           </div>
           <div className="grid w-full items-center gap-1.5">
-            <Label htmlFor="picture">Plant Image</Label>
+            <Label htmlFor="picture">{t('imageLabel')}</Label>
             <div className="flex gap-2">
               <Input
                 id="picture"
@@ -120,18 +122,18 @@ export default function DiseaseDetection() {
                 onClick={() => fileInputRef.current?.click()}
               >
                 <Upload className="mr-2 h-4 w-4" />
-                Choose File
+                {t('chooseFile')}
               </Button>
               <Button onClick={handleAnalyze} disabled={isAnalyzing || !imagePreview}>
                 {isAnalyzing ? (
                   <>
                     <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
-                    Analyzing...
+                    {t('analyzing')}...
                   </>
                 ) : (
                   <>
                     <ScanLine className="mr-2 h-4 w-4" />
-                    Analyze Plant
+                    {t('analyzePlant')}
                   </>
                 )}
               </Button>
@@ -144,7 +146,7 @@ export default function DiseaseDetection() {
           <div className="pt-4 text-center text-muted-foreground">
             <LoaderCircle className="mx-auto h-8 w-8 animate-spin text-primary" />
             <p className="mt-2 text-sm">
-              Analyzing with Gemini AI...
+              {t('analyzingWithAI')}
             </p>
           </div>
         )}
@@ -154,31 +156,31 @@ export default function DiseaseDetection() {
             <Alert variant={isHealthy ? 'default' : 'destructive'}>
               <Bug className="h-4 w-4" />
               <AlertTitle className="flex items-center justify-between">
-                <span>Diagnosis Result</span>
+                <span>{t('results.title')}</span>
                  <SpeakButton textToSpeak={speakableText} />
               </AlertTitle>
               <AlertDescription>
                 <div className="mt-4 space-y-4">
                   <div>
-                    <h3 className="font-semibold">Diagnosis:</h3>
+                    <h3 className="font-semibold">{t('results.diagnosis')}:</h3>
                     <p className={cn('font-bold', isHealthy ? 'text-green-600' : 'text-destructive')}>
                       {result.disease}
                     </p>
                   </div>
                    <div>
-                    <h3 className="font-semibold">Confidence:</h3>
+                    <h3 className="font-semibold">{t('results.confidence')}:</h3>
                     <div className="flex items-center gap-2">
                       <Progress value={result.confidence} className="w-48" />
                       <span>{result.confidence.toFixed(0)}%</span>
                     </div>
                   </div>
                    <div>
-                    <h3 className="font-semibold">AI's Observations:</h3>
+                    <h3 className="font-semibold">{t('results.observations')}:</h3>
                     <p className="text-sm text-muted-foreground">{result.description}</p>
                   </div>
                   {!isHealthy && (
                     <div>
-                        <h3 className="font-semibold">Recommended Treatment:</h3>
+                        <h3 className="font-semibold">{t('results.treatment')}:</h3>
                         <p>{result.treatment}</p>
                     </div>
                   )}
@@ -190,7 +192,7 @@ export default function DiseaseDetection() {
       </CardContent>
       <CardFooter>
         <p className="text-xs text-muted-foreground">
-          Disclaimer: This tool is for informational purposes only. Always consult with a local agricultural expert for definitive diagnosis.
+          {t('disclaimer')}
         </p>
       </CardFooter>
     </Card>
