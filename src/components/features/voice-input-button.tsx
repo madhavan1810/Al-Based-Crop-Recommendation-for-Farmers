@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Mic, MicOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslations } from 'next-intl';
 
 interface VoiceInputButtonProps {
   onTranscript: (transcript: string) => void;
@@ -11,6 +12,7 @@ interface VoiceInputButtonProps {
 }
 
 export function VoiceInputButton({ onTranscript, lang = 'en-US' }: VoiceInputButtonProps) {
+  const t = useTranslations('ToastErrors');
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const { toast } = useToast();
@@ -39,7 +41,7 @@ export function VoiceInputButton({ onTranscript, lang = 'en-US' }: VoiceInputBut
       toast({
         variant: 'destructive',
         title: 'Voice Error',
-        description: `Could not start voice recognition: ${event.error}`,
+        description: t('voiceError', {error: event.error}),
       });
       setIsListening(false);
     };
@@ -48,14 +50,14 @@ export function VoiceInputButton({ onTranscript, lang = 'en-US' }: VoiceInputBut
     recognition.onend = () => setIsListening(false);
 
     recognitionRef.current = recognition;
-  }, [lang, onTranscript, toast]);
+  }, [lang, onTranscript, toast, t]);
 
   const handleToggleListening = () => {
     if (!recognitionRef.current) {
       toast({
         variant: 'destructive',
         title: 'Unsupported',
-        description: 'Voice input is not supported on your browser.',
+        description: t('unsupported'),
       });
       return;
     }
