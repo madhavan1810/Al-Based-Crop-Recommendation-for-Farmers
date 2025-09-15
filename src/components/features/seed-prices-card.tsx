@@ -2,8 +2,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { collection, onSnapshot } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
 import {
   Card,
   CardContent,
@@ -30,22 +28,33 @@ type SeedPrice = {
 export default function SeedPricesCard() {
   const [seedPrices, setSeedPrices] = useState<SeedPrice[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const seedPricesRef = collection(db, 'seed-prices');
-    const unsubscribe = onSnapshot(seedPricesRef, (querySnapshot) => {
-      const prices: SeedPrice[] = [];
-      querySnapshot.forEach((doc) => {
-        prices.push(doc.data() as SeedPrice);
-      });
-      setSeedPrices(prices);
-      setLoading(false);
-    }, (error) => {
-      console.error("Error fetching seed prices: ", error);
-      setLoading(false);
-    });
+    async function fetchSeedPrices() {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await fetch('/api/prices/seeds');
+        if (!response.ok) {
+          throw new Error('Failed to fetch seed prices');
+        }
+        const data = await response.json();
+        setSeedPrices(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An unknown error occurred');
+        console.error("Error fetching seed prices: ", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    fetchSeedPrices();
 
-    return () => unsubscribe();
+    // Refresh data every 30 seconds
+    const interval = setInterval(fetchSeedPrices, 30000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -63,6 +72,10 @@ export default function SeedPricesCard() {
         {loading ? (
           <div className="flex items-center justify-center h-40">
             <LoaderCircle className="size-8 animate-spin text-primary" />
+          </div>
+        ) : error ? (
+           <div className="flex items-center justify-center h-40">
+            <p className="text-destructive">{error}</p>
           </div>
         ) : seedPrices.length === 0 ? (
            <div className="flex items-center justify-center h-40">

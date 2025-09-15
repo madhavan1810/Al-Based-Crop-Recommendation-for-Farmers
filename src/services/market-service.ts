@@ -1,6 +1,5 @@
 
-import { collection, writeBatch, getDocs, doc } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { db } from '@/lib/db';
 
 type CropPrice = {
   name: string;
@@ -14,38 +13,112 @@ type SeedPrice = {
   price: number;
 };
 
+async function createTables() {
+    const client = await db.connect();
+    try {
+        await client.query(`
+      CREATE TABLE IF NOT EXISTS crop_prices (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) UNIQUE NOT NULL,
+        price REAL NOT NULL,
+        change REAL NOT NULL
+      );
+    `);
+
+        await client.query(`
+      CREATE TABLE IF NOT EXISTS seed_prices (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        variety VARCHAR(255) NOT NULL,
+        price REAL NOT NULL,
+        UNIQUE(name, variety)
+      );
+    `);
+    } finally {
+        client.release();
+    }
+}
+
+// Call createTables on service load to ensure they exist.
+createTables().catch(console.error);
+
+
 export async function updateCropPrices(prices: CropPrice[]): Promise<void> {
-  const batch = writeBatch(db);
-  const cropPricesRef = collection(db, 'crop-prices');
+  const client = await db.connect();
+  try {
+    await client.query('BEGIN');
+    
+    // Clear existing data
+    await client.query('TRUNCATE TABLE crop_prices RESTART IDENTITY');
 
-  const existingDocs = await getDocs(cropPricesRef);
-  existingDocs.forEach((doc) => {
-    batch.delete(doc.ref);
-  });
-
-  prices.forEach((price) => {
-    const docRef = doc(cropPricesRef, price.name.replace(/ /g, '-').toLowerCase());
-    batch.set(docRef, price);
-  });
-
-  await batch.commit();
-  console.log('Crop prices updated in Firestore.');
+    // Insert new data
+    for (const price of prices) {
+      await client.query(
+        'INSERT INTO crop_prices (name, price, change) VALUES ($1, $2, $3)',
+        [price.name, price.price, price.change]
+      );
+    }
+    
+    await client.query('COMMIT');
+    console.log('Crop prices updated in PostgreSQL.');
+  } catch (e) {
+    await client.query('ROLLBACK');
+    console.error('Error updating crop prices in PostgreSQL:', e);
+    throw e;
+  } finally {
+    client.release();
+  }
 }
 
 export async function updateSeedPrices(prices: SeedPrice[]): Promise<void> {
-  const batch = writeBatch(db);
-  const seedPricesRef = collection(db, 'seed-prices');
+  const client = await db.connect();
+  try {
+    await client.query('BEGIN');
+    
+    // Clear existing data
+    await client.query('TRUNCATE TABLE seed_prices RESTART IDENTITY');
 
-  const existingDocs = await getDocs(seedPricesRef);
-  existingDocs.forEach((doc) => {
-    batch.delete(doc.ref);
-  });
+    // Insert new data
+    for (const price of prices) {
+      await client.query(
+        'INSERT INTO seed_prices (name, variety, price) VALUES ($1, $2, $3)',
+        [price.name, price.variety, price.price]
+      );
+    }
 
-  prices.forEach((price) => {
-    const docRef = doc(seedPricesRef, `${price.name}-${price.variety}`.replace(/ /g, '-').toLowerCase());
-    batch.set(docRef, price);
-  });
+    await client.query('COMMIT');
+    console.log('Seed prices updated in PostgreSQL.');
+  } catch (e) {
+    await client.query('ROLLBACK');
+    console.error('Error updating seed prices in PostgreSQL:', e);
+    throw e;
+  } finally {
+    client.release();
+  }
+}
 
-  await batch.commit();
-  console.log('Seed prices updated in Firestore.');
+export async function getCropPrices() {
+  const client = await db.connect();
+  try {
+    const res = await client.query('SELECT name, price, change FROM crop_prices');
+    return res.rows;
+  } catch (e) {
+    console.error('Error fetching crop prices from PostgreSQL', e);
+    throw e;
+  } finally {
+    client.release();
+  }
+}
+
+export async function getSeedPrices() {
+  const client = await db.connect();
+  try {
+    const res = await client.query('SELECT name, variety, price FROM seed_prices');
+    return res.rows;
+  } catch (e) {
+    console.error('Error fetching seed prices from PostgreSQL', e);
+    throw e;
+  } finally {
+    client.release();
+  }
 }

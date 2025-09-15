@@ -2,8 +2,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { collection, onSnapshot } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
 import {
   Card,
   CardContent,
@@ -31,22 +29,33 @@ type CropPrice = {
 export default function CropPricesCard() {
   const [cropPrices, setCropPrices] = useState<CropPrice[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const cropPricesRef = collection(db, 'crop-prices');
-    const unsubscribe = onSnapshot(cropPricesRef, (querySnapshot) => {
-      const prices: CropPrice[] = [];
-      querySnapshot.forEach((doc) => {
-        prices.push(doc.data() as CropPrice);
-      });
-      setCropPrices(prices);
-      setLoading(false);
-    }, (error) => {
-      console.error("Error fetching crop prices: ", error);
-      setLoading(false);
-    });
+    async function fetchCropPrices() {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await fetch('/api/prices/crops');
+        if (!response.ok) {
+          throw new Error('Failed to fetch crop prices');
+        }
+        const data = await response.json();
+        setCropPrices(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An unknown error occurred');
+        console.error("Error fetching crop prices: ", err);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-    return () => unsubscribe();
+    fetchCropPrices();
+    
+    // Refresh data every 30 seconds
+    const interval = setInterval(fetchCropPrices, 30000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -65,6 +74,10 @@ export default function CropPricesCard() {
            <div className="flex items-center justify-center h-40">
              <LoaderCircle className="size-8 animate-spin text-primary" />
            </div>
+        ) : error ? (
+           <div className="flex items-center justify-center h-40">
+            <p className="text-destructive">{error}</p>
+          </div>
         ) : cropPrices.length === 0 ? (
           <div className="flex items-center justify-center h-40">
             <p className="text-muted-foreground">No crop prices found. Please refresh.</p>
