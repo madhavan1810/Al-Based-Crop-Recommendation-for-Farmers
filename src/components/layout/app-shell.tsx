@@ -38,8 +38,6 @@ function LanguageSwitcher() {
   const router = useRouter();
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
-  const { state } = useSidebar();
-
 
   const onSelectChange = (value: string) => {
     startTransition(() => {
@@ -48,19 +46,17 @@ function LanguageSwitcher() {
   };
 
   return (
-     <div className="flex items-center gap-2 p-2">
-      <Languages className="size-8 text-primary" />
-       {state === 'expanded' && (
-          <Select onValueChange={onSelectChange} defaultValue={locale} disabled={isPending}>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder={t('placeholder')} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="en">{t('english')}</SelectItem>
-              <SelectItem value="hi">{t('hindi')}</SelectItem>
-            </SelectContent>
-          </Select>
-       )}
+    <div className="flex items-center gap-2">
+      <Select onValueChange={onSelectChange} defaultValue={locale} disabled={isPending}>
+        <SelectTrigger className="w-32">
+          <Languages className="size-4 text-muted-foreground" />
+          <SelectValue placeholder={t('placeholder')} />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="en">{t('english')}</SelectItem>
+          <SelectItem value="hi">{t('hindi')}</SelectItem>
+        </SelectContent>
+      </Select>
     </div>
   );
 }
@@ -111,7 +107,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter>
-            <LanguageSwitcher />
+            {/* The LanguageSwitcher was here */}
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
@@ -122,6 +118,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               {getCurrentLabel()}
             </h1>
           </div>
+          <LanguageSwitcher />
         </header>
         <main className="flex-1 bg-background">{children}</main>
         <Chatbot />
