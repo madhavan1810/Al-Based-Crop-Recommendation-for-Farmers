@@ -1,124 +1,84 @@
 
-import { db } from '@/lib/db';
+'use server';
 
-type CropPrice = {
-  name: string;
-  price: number;
-  change: number;
+export type CropPrice = {
+    state: string;
+    district: string;
+    market: string;
+    commodity: string;
+    variety: string;
+    arrival_date: string;
+    min_price: number;
+    max_price: number;
+    modal_price: number;
 };
 
-type SeedPrice = {
-  name: string;
-  variety: string;
-  price: number;
+export type SeedPrice = {
+    state: string;
+    district: string;
+    market: string;
+    commodity: string;
+    variety: string;
+    arrival_date: string;
+    min_price: number;
+    max_price: number;
+    modal_price: number;
 };
 
-async function createTables() {
-    const client = await db.connect();
+const API_BASE_URL = 'https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070';
+
+async function fetchMarketData(filters: Record<string, string> = {}) {
+    const apiKey = process.env.DATA_GOV_IN_API_KEY;
+    if (!apiKey) {
+        throw new Error('API key for data.gov.in is not configured.');
+    }
+
+    const params = new URLSearchParams({
+        'api-key': apiKey,
+        'format': 'json',
+        'limit': '20', // Let's limit the results for now
+        ...filters,
+    });
+
+    const url = `${API_BASE_URL}?${params.toString()}`;
+
     try {
-        await client.query(`
-      CREATE TABLE IF NOT EXISTS crop_prices (
-        id SERIAL PRIMARY KEY,
-        name VARCHAR(255) UNIQUE NOT NULL,
-        price REAL NOT NULL,
-        change REAL NOT NULL
-      );
-    `);
-
-        await client.query(`
-      CREATE TABLE IF NOT EXISTS seed_prices (
-        id SERIAL PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
-        variety VARCHAR(255) NOT NULL,
-        price REAL NOT NULL,
-        UNIQUE(name, variety)
-      );
-    `);
-    } finally {
-        client.release();
+        const response = await fetch(url);
+        if (!response.ok) {
+            const errorBody = await response.text();
+            console.error('API Error Response:', errorBody);
+            throw new Error(`Failed to fetch market data. Status: ${response.status}`);
+        }
+        const data = await response.json();
+        if (!data.records || data.records.length === 0) {
+           console.warn(`No records found for the given query: ${url}`);
+           return [];
+        }
+        return data.records;
+    } catch (error) {
+        console.error('Error fetching from data.gov.in API:', error);
+        if (error instanceof Error && error.message.includes('fetch')) {
+            throw new Error('Network error: Could not connect to the market data service.');
+        }
+        throw error;
     }
 }
 
-// Call createTables on service load to ensure they exist.
-createTables().catch(console.error);
 
-
-export async function updateCropPrices(prices: CropPrice[]): Promise<void> {
-  const client = await db.connect();
-  try {
-    await client.query('BEGIN');
+export async function getLatestCropPrices(): Promise<CropPrice[]> {
+    // We can add filters here if needed, e.g., for a specific state or commodity.
+    // For now, we fetch the latest available data.
+    const records = await fetchMarketData();
     
-    // Clear existing data
-    await client.query('TRUNCATE TABLE crop_prices RESTART IDENTITY');
-
-    // Insert new data
-    for (const price of prices) {
-      await client.query(
-        'INSERT INTO crop_prices (name, price, change) VALUES ($1, $2, $3)',
-        [price.name, price.price, price.change]
-      );
-    }
-    
-    await client.query('COMMIT');
-    console.log('Crop prices updated in PostgreSQL.');
-  } catch (e) {
-    await client.query('ROLLBACK');
-    console.error('Error updating crop prices in PostgreSQL:', e);
-    throw e;
-  } finally {
-    client.release();
-  }
+    // The API includes seeds in the same endpoint, so we'll filter for non-seed items.
+    // This is a heuristic, as the API doesn't have a clean category split.
+    return records.filter((r: any) => !r.commodity.toLowerCase().includes('seed'));
 }
 
-export async function updateSeedPrices(prices: SeedPrice[]): Promise<void> {
-  const client = await db.connect();
-  try {
-    await client.query('BEGIN');
+export async function getLatestSeedPrices(): Promise<SeedPrice[]> {
+    // To get seeds, we explicitly filter for commodities that are likely seeds.
+    const records = await fetchMarketData();
     
-    // Clear existing data
-    await client.query('TRUNCATE TABLE seed_prices RESTART IDENTITY');
-
-    // Insert new data
-    for (const price of prices) {
-      await client.query(
-        'INSERT INTO seed_prices (name, variety, price) VALUES ($1, $2, $3)',
-        [price.name, price.variety, price.price]
-      );
-    }
-
-    await client.query('COMMIT');
-    console.log('Seed prices updated in PostgreSQL.');
-  } catch (e) {
-    await client.query('ROLLBACK');
-    console.error('Error updating seed prices in PostgreSQL:', e);
-    throw e;
-  } finally {
-    client.release();
-  }
-}
-
-export async function getCropPrices() {
-  const client = await db.connect();
-  try {
-    const res = await client.query('SELECT name, price, change FROM crop_prices');
-    return res.rows;
-  } catch (e) {
-    console.error('Error fetching crop prices from PostgreSQL', e);
-    throw e;
-  } finally {
-    client.release();
-  }
-}
-
-export async function getSeedPrices() {
-  const client = await db.connect();
-  try {
-    const res = await client.query('SELECT name, variety, price FROM seed_prices');
-    return res.rows;
-  } catch (e) {
-    console.error('Error fetching seed prices from PostgreSQL', e);
-    throw e;
-  } finally {
-    client.release();
-  }
+    // This is a heuristic to find seeds. A better approach might be needed if the API is inconsistent.
+    return records.filter((r: any) => r.commodity.toLowerCase().includes('seed'));
 }

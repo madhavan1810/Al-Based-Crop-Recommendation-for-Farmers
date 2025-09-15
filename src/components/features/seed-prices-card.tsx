@@ -18,12 +18,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Package, LoaderCircle } from 'lucide-react';
+import { getLatestSeedPrices, type SeedPrice } from '@/services/market-service';
 
-type SeedPrice = {
-  name: string;
-  variety: string;
-  price: number;
-};
 
 export default function SeedPricesCard() {
   const [seedPrices, setSeedPrices] = useState<SeedPrice[]>([]);
@@ -32,29 +28,21 @@ export default function SeedPricesCard() {
 
   useEffect(() => {
     async function fetchSeedPrices() {
-      try {
-        setLoading(true);
-        setError(null);
-        const response = await fetch('/api/prices/seeds');
-        if (!response.ok) {
-          throw new Error('Failed to fetch seed prices');
+        try {
+            setLoading(true);
+            setError(null);
+            const data = await getLatestSeedPrices();
+            // The API can return many results, let's show a few.
+            setSeedPrices(data.slice(0, 5));
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'An unknown error occurred');
+            console.error("Error fetching seed prices: ", err);
+        } finally {
+            setLoading(false);
         }
-        const data = await response.json();
-        setSeedPrices(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An unknown error occurred');
-        console.error("Error fetching seed prices: ", err);
-      } finally {
-        setLoading(false);
-      }
     }
     
     fetchSeedPrices();
-
-    // Refresh data every 30 seconds
-    const interval = setInterval(fetchSeedPrices, 30000);
-
-    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -62,10 +50,10 @@ export default function SeedPricesCard() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Package className="size-6 text-primary" />
-          <span>Seed Variety Prices</span>
+          <span>Live Seed Prices</span>
         </CardTitle>
         <CardDescription>
-          Current market prices for popular seed varieties.
+          Latest prices for common seed varieties from India-wide markets.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -75,11 +63,11 @@ export default function SeedPricesCard() {
           </div>
         ) : error ? (
            <div className="flex items-center justify-center h-40">
-            <p className="text-destructive">{error}</p>
+            <p className="text-destructive text-center">{error}</p>
           </div>
         ) : seedPrices.length === 0 ? (
            <div className="flex items-center justify-center h-40">
-            <p className="text-muted-foreground">No seed prices found. Please refresh.</p>
+            <p className="text-muted-foreground">No seed prices found.</p>
           </div>
         ) : (
           <Table>
@@ -91,11 +79,11 @@ export default function SeedPricesCard() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {seedPrices.map((seed) => (
-                <TableRow key={`${seed.name}-${seed.variety}`}>
-                  <TableCell className="font-medium">{seed.name}</TableCell>
+              {seedPrices.map((seed, index) => (
+                <TableRow key={`${seed.commodity}-${index}`}>
+                  <TableCell className="font-medium">{seed.commodity}</TableCell>
                   <TableCell>{seed.variety}</TableCell>
-                  <TableCell className="text-right">₹{seed.price.toLocaleString('en-IN')}</TableCell>
+                  <TableCell className="text-right">₹{seed.modal_price.toLocaleString('en-IN')}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

@@ -19,12 +19,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 import { LineChart, TrendingDown, TrendingUp, LoaderCircle } from 'lucide-react';
+import { getLatestCropPrices, type CropPrice } from '@/services/market-service';
 
-type CropPrice = {
-  name: string;
-  price: number;
-  change: number;
-};
 
 export default function CropPricesCard() {
   const [cropPrices, setCropPrices] = useState<CropPrice[]>([]);
@@ -36,12 +32,9 @@ export default function CropPricesCard() {
       try {
         setLoading(true);
         setError(null);
-        const response = await fetch('/api/prices/crops');
-        if (!response.ok) {
-          throw new Error('Failed to fetch crop prices');
-        }
-        const data = await response.json();
-        setCropPrices(data);
+        const data = await getLatestCropPrices();
+        // The API returns many records, so we'll just show the first 5 for a clean UI.
+        setCropPrices(data.slice(0, 5));
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An unknown error occurred');
         console.error("Error fetching crop prices: ", err);
@@ -51,11 +44,6 @@ export default function CropPricesCard() {
     }
 
     fetchCropPrices();
-    
-    // Refresh data every 30 seconds
-    const interval = setInterval(fetchCropPrices, 30000);
-
-    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -63,10 +51,10 @@ export default function CropPricesCard() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <LineChart className="size-6 text-primary" />
-          <span>Today's Crop Prices</span>
+          <span>Live Mandi Prices</span>
         </CardTitle>
         <CardDescription>
-          Today's Mandi prices for key agricultural commodities.
+          Latest commodity prices from markets across India.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -76,41 +64,27 @@ export default function CropPricesCard() {
            </div>
         ) : error ? (
            <div className="flex items-center justify-center h-40">
-            <p className="text-destructive">{error}</p>
+            <p className="text-destructive text-center">{error}</p>
           </div>
         ) : cropPrices.length === 0 ? (
           <div className="flex items-center justify-center h-40">
-            <p className="text-muted-foreground">No crop prices found. Please refresh.</p>
+            <p className="text-muted-foreground">No crop prices found.</p>
           </div>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>Crop</TableHead>
+                <TableHead>Market</TableHead>
                 <TableHead className="text-right">Price (₹ per Quintal)</TableHead>
-                <TableHead className="text-right">24h Change</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {cropPrices.map((crop) => (
-                <TableRow key={crop.name}>
-                  <TableCell className="font-medium">{crop.name}</TableCell>
-                  <TableCell className="text-right">₹{crop.price.toLocaleString('en-IN')}</TableCell>
-                  <TableCell className="text-right">
-                    <span
-                      className={cn(
-                        'flex items-center justify-end gap-1 text-sm',
-                        crop.change > 0 ? 'text-green-600' : 'text-red-600'
-                      )}
-                    >
-                      {crop.change > 0 ? (
-                        <TrendingUp className="size-4" />
-                      ) : (
-                        <TrendingDown className="size-4" />
-                      )}
-                      {Math.abs(crop.change)}%
-                    </span>
-                  </TableCell>
+              {cropPrices.map((crop, index) => (
+                <TableRow key={`${crop.commodity}-${index}`}>
+                  <TableCell className="font-medium">{crop.commodity}</TableCell>
+                  <TableCell>{crop.market}</TableCell>
+                  <TableCell className="text-right">₹{crop.modal_price.toLocaleString('en-IN')}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
