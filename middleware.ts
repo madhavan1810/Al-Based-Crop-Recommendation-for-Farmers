@@ -1,14 +1,7 @@
-import createMiddleware from 'next-intl/middleware';
- 
-export default createMiddleware({
-  // A list of all locales that are supported
-  locales: ['en', 'hi'],
- 
-  // Used when no locale matches
-  defaultLocale: 'en'
-});
- 
+// This file is intentionally left blank to disable the middleware.
+// The presence of this file can cause issues if not configured correctly.
+// We are leaving it empty to resolve routing errors after removing next-intl.
+export default function middleware() {}
 export const config = {
-  // Match only internationalized pathnames
-  matcher: ['/', '/(hi|en)/:path*']
+  matcher: '/((?!api|_next/static|_next/image|favicon.ico).*)',
 };
