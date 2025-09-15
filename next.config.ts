@@ -6,8 +6,6 @@ const withPWA = require('next-pwa')({
   skipWaiting: true,
 });
 
-const withNextIntl = require('next-intl/plugin')();
-
 const nextConfig: NextConfig = {
   /* config options here */
   typescript: {
@@ -40,4 +38,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withPWA(withNextIntl(nextConfig));
+export default withPWA(nextConfig);

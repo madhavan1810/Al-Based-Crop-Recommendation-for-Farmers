@@ -17,15 +17,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { cn } from '@/lib/utils';
-import { LineChart, TrendingDown, TrendingUp, LoaderCircle } from 'lucide-react';
+import { LoaderCircle, LineChart } from 'lucide-react';
 import { getLatestCropPrices, type CropPrice } from '@/services/market-service';
-import { useTranslations } from 'next-intl';
 
 
 export default function CropPricesCard() {
-  const t = useTranslations('CropPricesCard');
-  const tDashboard = useTranslations('Dashboard');
   const [cropPrices, setCropPrices] = useState<CropPrice[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -39,7 +35,7 @@ export default function CropPricesCard() {
         // The API returns many records, so we'll just show the first 5 for a clean UI.
         setCropPrices(data.slice(0, 5));
       } catch (err) {
-        setError(err instanceof Error ? err.message : t('error'));
+        setError(err instanceof Error ? err.message : "An unknown error occurred");
         console.error("Error fetching crop prices: ", err);
       } finally {
         setLoading(false);
@@ -47,17 +43,17 @@ export default function CropPricesCard() {
     }
 
     fetchCropPrices();
-  }, [t]);
+  }, []);
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <LineChart className="size-6 text-primary" />
-          <span>{tDashboard('liveMandiPrices')}</span>
+          <span>Live Mandi Prices</span>
         </CardTitle>
         <CardDescription>
-          {tDashboard('liveMandiPricesDescription')}
+          Latest commodity prices from markets across India.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -71,15 +67,15 @@ export default function CropPricesCard() {
           </div>
         ) : cropPrices.length === 0 ? (
           <div className="flex items-center justify-center h-40">
-            <p className="text-muted-foreground">{t('noPrices')}</p>
+            <p className="text-muted-foreground">No crop prices found.</p>
           </div>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>{t('crop')}</TableHead>
-                <TableHead>{t('market')}</TableHead>
-                <TableHead className="text-right">{t('price')}</TableHead>
+                <TableHead>Crop</TableHead>
+                <TableHead>Market</TableHead>
+                <TableHead className="text-right">Price (₹ per Quintal)</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

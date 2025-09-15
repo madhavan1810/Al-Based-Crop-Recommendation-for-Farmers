@@ -15,17 +15,9 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { Bot, LoaderCircle, Send, User, Wheat } from 'lucide-react';
 import { VoiceInputButton } from './voice-input-button';
 import { SpeakButton } from './speak-button';
-import { useTranslations } from 'next-intl';
 
 type Message = {
   id: number;
@@ -33,124 +25,9 @@ type Message = {
   text: string;
 };
 
-const languages = [
-    { value: 'en', label: 'English' },
-    { value: 'hi', label: 'Hindi' },
-    { value: 'as', label: 'Assamese' },
-    { value: 'bn', label: 'Bengali' },
-    { value: 'brx', label: 'Bodo' },
-    { value: 'doi', label: 'Dogri' },
-    { value: 'gu', label: 'Gujarati' },
-    { value: 'kn', label: 'Kannada' },
-    { value: 'ks', label: 'Kashmiri' },
-    { value: 'kok', label: 'Konkani' },
-    { value: 'mai', label: 'Maithili' },
-    { value: 'ml', label: 'Malayalam' },
-    { value: 'mni', label: 'Manipuri' },
-    { value: 'mr', label: 'Marathi' },
-    { value: 'ne', label: 'Nepali' },
-    { value: 'or', label: 'Odia' },
-    { value: 'pa', label: 'Punjabi' },
-    { value: 'sa', label: 'Sanskrit' },
-    { value: 'sat', label: 'Santali' },
-    { value: 'sd', label: 'Sindhi' },
-    { value: 'ta', label: 'Tamil' },
-    { value: 'te', label: 'Telugu' },
-    { value: 'ur', label: 'Urdu' },
-    { value: 'ady', label: 'Adi' },
-    { value: 'af', label: 'Afghani' },
-    { value: 'mag', label: 'Magahi' },
-    { value: 'hoc', label: 'Ho' },
-    { value: 'awa', label: 'Awadhi' },
-    { value: 'bh', label: 'Bhojpuri' },
-    { value: 'bjj', label: 'Bajjika' },
-    { value: 'bgc', label: 'Haryanvi' },
-    { value: 'hne', label: 'Chhattisgarhi' },
-    { value: 'gon', label: 'Gondi' },
-    { value: 'kha', label: 'Khasi' },
-    { value: 'lus', label: 'Lushai' },
-    { value: 'kru', label: 'Kurukh' },
-    { value: 'mun', label: 'Mundari' },
-    { value: 'raj', label: 'Rajasthani' },
-    { value: 'lif', label: 'Limbu' },
-    { value: 'lep', label: 'Lepcha' },
-    { value: 'btr', label: 'Baori' },
-    { value: 'bhi', label: 'Bhili' },
-    { value: 'dhd', label: 'Dhodia' },
-    { value: 'gbm', label: 'Garhwali' },
-    { value: 'kfy', label: 'Kumaoni' },
-    { value: 'xnr', label: 'Kangri' },
-    { value: 'kft', label: 'Gaddi' },
-    { value: 'sck', label: 'Sadri' },
-    { value: 'unr', label: 'Mundari' },
-    { value: 'sdr', label: 'Oraon Sadri' },
-    { value: 'sjp', label: 'Surjapuri' },
-    { value: 'sm', label: 'Sema' },
-    { value: 'njo', label: 'Ao' },
-    { value: 'lmn', label: 'Lamgang' },
-    { value: 'thl', label: 'Thadou' },
-    { value: 'anp', label: 'Angika' },
-    { value: 'bnp', label: 'Bishnupriya Manipuri' },
-    { value: 'unx', label: 'Munda' },
-    { value: 'crp', label: 'Creole' },
-    { value: 'dra', label: 'Dravidian' },
-    { value: 'grt', label: 'Garo' },
-    { value: 'kfr', label: 'Kachhi' },
-    { value: 'kfx', label: 'Koli' },
-    { value: 'kxb', label: 'Kharia' },
-    { value: 'lah', label: 'Lahnda' },
-    { value: 'noe', label: 'Nimadi' },
-    { value: 'pgg', label: 'Pangwali' },
-    { value: 'pmy', label: 'Papuan' },
-    { value: 'saora', label: 'Saora' },
-    { value: 'sgw', label: 'Sebat Bet' },
-    { value: 'skt', label: 'Sikkimese' },
-    { value: 'srb', label: 'Sora' },
-    { value: 'tbz', label: 'Tibetan' },
-    { value: 'tcy', label: 'Tulu' },
-    { value: 'trp', label: 'Tripuri' },
-    { value: 'vgr', label: 'Vagri' },
-    { value: 'wbk', label: 'Wa' },
-    { value: 'yid', label: 'Yiddish' },
-    { value: 'zyp', label: 'Zyphe' },
-    { value: 'adp', label: 'Adap' },
-    { value: 'anal', label: 'Anal' },
-    { value: 'ao', label: 'Ao Naga' },
-    { value: 'bgt', label: 'Bodo Gadaba' },
-    { value: 'bhil', label: 'Bhili' },
-    { value: 'chn', label: 'Chin' },
-    { value: 'dim', label: 'Dimasa' },
-    { value: 'gab', label: 'Gabadi' },
-    { value: 'hal', label: 'Halabi' },
-    { value: 'jra', label: 'Juang' },
-    { value: 'karbi', label: 'Karbi' },
-    { value: 'kch', label: 'Khasi' },
-    { value: 'konda', label: 'Konda-Dora' },
-    { value: 'kor', label: 'Korwa' },
-    { value: 'kui', label: 'Kui' },
-    { value: 'lad', label: 'Ladakhi' },
-    { value: 'lotha', label: 'Lotha' },
-    { value: 'malto', label: 'Malto' },
-    { value: 'mik', label: 'Mikir' },
-    { value: 'mis', label: 'Mishing' },
-    { value: 'naga', label: 'Naga' },
-    { value: 'par', label: 'Parji' },
-    { value: 'rab', label: 'Rabha' },
-    { value: 'reng', label: 'Rengma' },
-    { value: 'shina', label: 'Shina' },
-    { value: 'tang', label: 'Tangkhul' },
-    { value: 'thado', label: 'Thado' },
-    { value: 'vai', label: 'Vai' },
-    { value: 'wan', label: 'Wancho' },
-    { value: 'yere', label: 'Yere' },
-    { value: 'zemi', label: 'Zemi' }
-];
-
 export default function Chatbot() {
-  const t = useTranslations('Chatbot');
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
-  const [language, setLanguage] = useState('en');
   const [isPending, startTransition] = useTransition();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
@@ -168,7 +45,8 @@ export default function Chatbot() {
     setInput('');
 
     startTransition(async () => {
-      const response = await multilingualChatbotAssistance({ query: input, language });
+      // Hardcoding language to 'en' since multilingual support is removed
+      const response = await multilingualChatbotAssistance({ query: input, language: 'en' });
       const botMessage: Message = { id: Date.now() + 1, role: 'bot', text: response.answer };
       setMessages((prev) => [...prev, botMessage]);
     });
@@ -183,16 +61,16 @@ export default function Chatbot() {
       <DialogTrigger asChild>
         <Button className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-lg" size="icon">
           <Bot className="h-8 w-8" />
-          <span className="sr-only">{t('openChatbot')}</span>
+          <span className="sr-only">Open Chatbot</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-lg p-0">
         <DialogHeader className="p-6 pb-2">
           <DialogTitle className="flex items-center gap-2 font-headline text-2xl">
-            <Wheat className="text-primary" /> {t('title')}
+            <Wheat className="text-primary" /> FarmBharat.AI Chat
           </DialogTitle>
           <DialogDescription>
-            {t('description')}
+            Ask me anything about farming.
           </DialogDescription>
         </DialogHeader>
 
@@ -220,7 +98,7 @@ export default function Chatbot() {
                   }`}
                 >
                   <p>{message.text}</p>
-                   {message.role === 'bot' && <SpeakButton textToSpeak={message.text} lang={language} />}
+                   {message.role === 'bot' && <SpeakButton textToSpeak={message.text} />}
                 </div>
                 {message.role === 'user' && (
                   <Avatar className="h-8 w-8 border">
@@ -248,28 +126,16 @@ export default function Chatbot() {
 
         <DialogFooter className="p-4 sm:justify-start">
           <div className="flex w-full gap-2">
-            <Select value={language} onValueChange={setLanguage}>
-              <SelectTrigger className="w-32">
-                <SelectValue placeholder="Language" />
-              </SelectTrigger>
-              <SelectContent>
-                {languages.map((lang) => (
-                  <SelectItem key={lang.value} value={lang.value}>
-                    {lang.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
             <div className="relative flex-1">
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                placeholder={t('inputPlaceholder')}
+                placeholder="Type your question..."
                 className="pr-10"
               />
               <div className="absolute inset-y-0 right-2 flex items-center">
-                 <VoiceInputButton onTranscript={handleVoiceInput} lang={language} />
+                 <VoiceInputButton onTranscript={handleVoiceInput} />
               </div>
             </div>
             <Button size="icon" onClick={handleSend} disabled={isPending}>
