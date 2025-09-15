@@ -1,8 +1,8 @@
 
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from '@/navigation';
+import { Link } from '@/navigation';
 import {
   LayoutDashboard,
   ScanLine,
@@ -29,7 +29,6 @@ import { Logo } from './logo';
 import Chatbot from '../features/chatbot';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { useLocale } from 'next-intl';
-import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
 
 
@@ -43,9 +42,8 @@ function LanguageSwitcher() {
 
 
   const onSelectChange = (value: string) => {
-    const newPath = pathname.replace(`/${locale}`, `/${value}`);
     startTransition(() => {
-      router.replace(newPath);
+      router.replace(pathname, {locale: value});
     });
   };
 
@@ -81,9 +79,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   // Helper to get the current page's label
   const getCurrentLabel = () => {
-    const currentPath = pathname.split('/')[2] || '';
-    const item = navItems.find(item => item.href === `/${currentPath}`);
-    return item?.label || t('dashboard');
+    const currentItem = navItems.find(item => item.href === pathname);
+    return currentItem?.label || t('dashboard');
   }
 
   return (
@@ -98,7 +95,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <SidebarMenuItem key={item.href}>
                 <SidebarMenuButton
                   asChild
-                  isActive={pathname.endsWith(item.href)}
+                  isActive={pathname === item.href}
                   tooltip={{
                     children: item.label,
                     className: 'bg-primary text-primary-foreground',
