@@ -17,7 +17,7 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: {locale: string};
 }>) {
-  const messages = await getMessages();
+  const messages = await getMessages({locale});
 
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -31,7 +31,7 @@ export default async function RootLayout({
         <meta name="theme-color" content="#f39c12" />
       </head>
       <body className="font-body antialiased">
-        <NextIntlClientProvider messages={messages}>
+        <NextIntlClientProvider locale={locale} messages={messages}>
           {children}
           <Toaster />
         </NextIntlClientProvider>
