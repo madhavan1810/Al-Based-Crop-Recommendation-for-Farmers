@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useTransition } from 'react';
@@ -43,7 +44,7 @@ const formSchema = z.object({
     .min(10, { message: 'Please provide detailed soil analysis.' }),
   weatherData: z
     .string()
-min(10, { message: 'Please provide detailed weather data.' }),
+    .min(10, { message: 'Please provide detailed weather data.' }),
   district: z.string().min(1, { message: 'Please select a district.' }),
   season: z.string().min(1, { message: 'Please select a season.' }),
 });
