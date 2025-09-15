@@ -10,6 +10,22 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { getHistoricalProductionData } from '@/services/market-service';
+
+const getHistoricalDataTool = ai.defineTool(
+  {
+    name: 'getHistoricalData',
+    description: 'Get historical crop production data for a specific district and season.',
+    inputSchema: z.object({
+      district: z.string().describe('The district to get data for.'),
+      season: z.string().describe('The season (e.g., Kharif, Rabi).'),
+    }),
+    outputSchema: z.any(),
+  },
+  async ({ district, season }) => {
+    return await getHistoricalProductionData(district, season);
+  }
+);
 
 const CropRecommendationInputSchema = z.object({
   soilAnalysis: z
@@ -18,9 +34,8 @@ const CropRecommendationInputSchema = z.object({
   weatherData: z
     .string()
     .describe('Current and historical weather data for the location, including temperature, rainfall, and sunlight.'),
-  historicalYields: z
-    .string()
-    .describe('Historical crop yields for the location, including types of crops and amounts produced.'),
+  district: z.string().describe('The district where the farm is located.'),
+  season: z.string().describe('The current farming season (e.g., Kharif, Rabi).'),
 });
 export type CropRecommendationInput = z.infer<typeof CropRecommendationInputSchema>;
 
@@ -37,7 +52,7 @@ const CropRecommendationOutputSchema = z.object({
 });
 export type CropRecommendationOutput = z.infer<typeof CropRecommendationOutputSchema>;
 
-export async function getCropRecommendations(input: CropRecommendationInput): Promise<CropRecommendationOutput> {
+export async function getCropRecommendations(input: any): Promise<CropRecommendationOutput> {
   return cropRecommendationFlow(input);
 }
 
@@ -45,20 +60,27 @@ const prompt = ai.definePrompt({
   name: 'cropRecommendationPrompt',
   input: {schema: CropRecommendationInputSchema},
   output: {schema: CropRecommendationOutputSchema},
-  prompt: `You are an expert agricultural advisor. Based on the provided soil analysis, weather data, and historical yields, recommend the best crops for the farmer.
+  tools: [getHistoricalDataTool],
+  prompt: `You are an expert agricultural advisor. Your task is to recommend the best crops for a farmer.
+
+First, use the getHistoricalData tool to fetch the historical crop production data for the specified district and season. This data shows what has been successfully grown in the area before.
+
+Then, based on ALL the provided information (historical data, soil analysis, and weather), recommend the best crops.
 
 Soil Analysis: {{{soilAnalysis}}}
 Weather Data: {{{weatherData}}}
-Historical Yields: {{{historicalYields}}}
+District: {{{district}}}
+Season: {{{season}}}
 
 Consider the following factors when making your recommendations:
 
-* Soil type and nutrient levels
-* Climate and growing season
-* Market demand and profitability
-* Risk factors, such as pests, diseases, and weather-related challenges
+*   **Historical Performance**: What crops have high production in the historical data for this district and season?
+*   **Soil Suitability**: Match the crop requirements with the soil analysis data.
+*   **Climate Compatibility**: Ensure the crops are suitable for the local weather conditions.
+*   **Market Demand & Profitability**: Prioritize crops that are generally profitable.
+*   **Risk Factors**: Mention potential risks.
 
-Provide detailed planting instructions for the recommended crops, including timing, spacing, and fertilization. Also, provide an assessment of the risks associated with planting the recommended crops.
+Provide detailed planting instructions for the recommended crops and a brief risk assessment.
 `,
 });
 

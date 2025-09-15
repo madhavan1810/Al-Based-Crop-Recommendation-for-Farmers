@@ -6,12 +6,10 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import {
   BrainCircuit,
-  CloudRain,
   Leaf,
   LoaderCircle,
   ShieldAlert,
   Thermometer,
-  Wind,
 } from 'lucide-react';
 
 import { getCropRecommendations, type CropRecommendationOutput } from '@/ai/flows/crop-recommendations';
@@ -35,6 +33,9 @@ import {
 } from '@/components/ui/accordion';
 import { useToast } from '@/hooks/use-toast';
 import { SpeakButton } from './speak-button';
+import { Input } from '../ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { indianDistricts } from '@/lib/indian-districts';
 
 const formSchema = z.object({
   soilAnalysis: z
@@ -42,10 +43,9 @@ const formSchema = z.object({
     .min(10, { message: 'Please provide detailed soil analysis.' }),
   weatherData: z
     .string()
-    .min(10, { message: 'Please provide detailed weather data.' }),
-  historicalYields: z
-    .string()
-    .min(10, { message: 'Please provide some historical yield data.' }),
+min(10, { message: 'Please provide detailed weather data.' }),
+  district: z.string().min(1, { message: 'Please select a district.' }),
+  season: z.string().min(1, { message: 'Please select a season.' }),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -60,7 +60,8 @@ export default function CropRecommendationForm() {
     defaultValues: {
       soilAnalysis: '',
       weatherData: '',
-      historicalYields: '',
+      district: '',
+      season: '',
     },
   });
 
@@ -89,6 +90,52 @@ export default function CropRecommendationForm() {
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="district"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>District</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select your district" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {indianDistricts.map(d => <SelectItem key={d} value={d.split(',')[0]}>{d}</SelectItem>)}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="season"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Season</FormLabel>
+                       <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a season" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Kharif">Kharif</SelectItem>
+                          <SelectItem value="Rabi">Rabi</SelectItem>
+                          <SelectItem value="Summer">Summer</SelectItem>
+                          <SelectItem value="Whole Year">Whole Year</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
               <FormField
                 control={form.control}
                 name="soilAnalysis"
@@ -129,26 +176,7 @@ export default function CropRecommendationForm() {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="historicalYields"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Historical Yields</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="e.g., Last year: Corn, 4 tons/acre. Two years ago: Soybeans, 1.5 tons/acre."
-                        {...field}
-                        rows={4}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      What have you grown before and how did it perform?
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              
               <Button type="submit" disabled={isPending} className="w-full">
                 {isPending ? (
                   <>
