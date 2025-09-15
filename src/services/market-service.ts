@@ -13,18 +13,6 @@ export type CropPrice = {
     modal_price: number;
 };
 
-export type SeedPrice = {
-    state: string;
-    district: string;
-    market: string;
-    commodity: string;
-    variety: string;
-    arrival_date: string;
-    min_price: number;
-    max_price: number;
-    modal_price: number;
-};
-
 export type ProductionData = {
     state: string;
     district: string;
@@ -79,11 +67,6 @@ async function fetchMarketData(baseUrl: string, filters: Record<string, string> 
 export async function getLatestCropPrices(): Promise<CropPrice[]> {
     const records = await fetchMarketData(PRICE_API_BASE_URL);
     return records.filter((r: any) => !r.commodity.toLowerCase().includes('seed'));
-}
-
-export async function getLatestSeedPrices(): Promise<SeedPrice[]> {
-    const records = await fetchMarketData(PRICE_API_BASE_URL);
-    return records.filter((r: any) => r.commodity.toLowerCase().includes('seed'));
 }
 
 export async function getHistoricalProductionData(district: string, season: string): Promise<ProductionData[]> {
