@@ -12,15 +12,17 @@ import {
 } from '@/components/ui/select';
 import { Globe } from 'lucide-react';
 import { languages } from '@/i18n';
+import { usePathname } from '@/navigation';
 
 export default function LanguageSwitcher() {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const locale = useLocale();
+  const pathname = usePathname();
 
   function onSelectChange(value: string) {
     startTransition(() => {
-      router.replace(`/${value}`);
+      router.replace(pathname, {locale: value});
     });
   }
 

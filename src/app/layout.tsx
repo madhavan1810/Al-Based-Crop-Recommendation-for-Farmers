@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
-import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { NextIntlClientProvider, useMessages } from 'next-intl';
+import { unstable_setRequestLocale } from 'next-intl/server';
 
 export const metadata: Metadata = {
   title: 'FarmBharat.AI',
@@ -10,14 +10,15 @@ export const metadata: Metadata = {
   manifest: '/manifest.json',
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
   params: {locale},
 }: Readonly<{
   children: React.ReactNode;
   params: {locale: string};
 }>) {
-  const messages = await getMessages({locale});
+  unstable_setRequestLocale(locale);
+  const messages = useMessages();
 
   return (
     <html lang={locale} suppressHydrationWarning>
