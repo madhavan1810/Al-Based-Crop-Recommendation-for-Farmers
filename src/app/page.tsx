@@ -23,21 +23,18 @@ export default function Page() {
       description: 'Get tailored crop suggestions based on your farm\'s data.',
       link: '/crop-recommendation',
       icon: <Sprout className="size-8 text-primary" />,
-      image: getImage('crop-recommendation-card'),
     },
     {
       title: 'Plant Disease Detection',
       description: 'Quickly identify plant diseases with our offline-first tool.',
       link: '/disease-detection',
       icon: <ScanLine className="size-8 text-primary" />,
-      image: getImage('disease-detection-card'),
     },
     {
       title: 'Personalized Farming Advice',
       description: 'Receive daily advice optimized for your crops and weather.',
       link: '/personalized-advice',
       icon: <Sun className="size-8 text-primary" />,
-      image: getImage('personalized-advice-card'),
     },
   ];
 
