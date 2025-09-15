@@ -2,19 +2,17 @@
 
 import PersonalizedAdviceForm from "@/components/features/personalized-advice-form";
 import { AppShell } from "@/components/layout/app-shell";
-import { useTranslations } from "next-intl";
 
 export default function PersonalizedAdvicePage() {
-  const t = useTranslations('PersonalizedAdvicePage');
   return (
     <AppShell>
       <div className="flex-1 p-4 md:p-6">
         <div className="mb-6">
           <h1 className="font-headline text-3xl font-bold">
-            {t('title')}
+            Personalized Farming Advice
           </h1>
           <p className="text-muted-foreground">
-            {t('description')}
+            Get daily, AI-generated advice based on your farm's specifics and local weather forecasts.
           </p>
         </div>
         <PersonalizedAdviceForm />

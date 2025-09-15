@@ -22,7 +22,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { SpeakButton } from './speak-button';
-import { useTranslations } from 'next-intl';
 
 const formSchema = z.object({
   location: z.string().min(2, { message: 'Please provide a valid location.' }),
@@ -36,7 +35,6 @@ export default function PersonalizedAdviceForm() {
   const [isPending, startTransition] = useTransition();
   const [result, setResult] = useState<PersonalizedFarmingAdviceOutput | null>(null);
   const { toast } = useToast();
-  const t = useTranslations('PersonalizedAdvicePage.form');
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -57,16 +55,16 @@ export default function PersonalizedAdviceForm() {
         } else {
           toast({
             variant: 'destructive',
-            title: t('error.title'),
-            description: t('error.description'),
+            title: 'Error',
+            description: 'Failed to get advice. Please try again.',
           });
         }
       } catch (error) {
         console.error(error);
         toast({
           variant: 'destructive',
-          title: t('error.title'),
-          description: t('error.weatherUnavailable'),
+          title: 'Error',
+          description: 'Failed to get advice. The weather service might be unavailable.',
         });
       }
     });
@@ -76,7 +74,7 @@ export default function PersonalizedAdviceForm() {
     <div className="grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
       <Card>
         <CardHeader>
-          <CardTitle>{t('title')}</CardTitle>
+          <CardTitle>Your Farm Details</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -86,12 +84,12 @@ export default function PersonalizedAdviceForm() {
                 name="location"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t('location.label')}</FormLabel>
+                    <FormLabel>Location</FormLabel>
                     <FormControl>
-                      <Input placeholder={t('location.placeholder')} {...field} />
+                      <Input placeholder="e.g., Punjab, India" {...field} />
                     </FormControl>
                     <FormDescription>
-                      {t('location.description')}
+                      Your district for local weather data.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -102,9 +100,9 @@ export default function PersonalizedAdviceForm() {
                 name="crop"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t('crop.label')}</FormLabel>
+                    <FormLabel>Current Crop</FormLabel>
                     <FormControl>
-                      <Input placeholder={t('crop.placeholder')} {...field} />
+                      <Input placeholder="e.g., Wheat" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -115,16 +113,16 @@ export default function PersonalizedAdviceForm() {
                 name="soilAnalysis"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t('soilAnalysis.label')}</FormLabel>
+                    <FormLabel>Soil Analysis</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder={t('soilAnalysis.placeholder')}
+                        placeholder="e.g., pH: 6.5, Nitrogen: High, Sandy Loam soil"
                         {...field}
                         rows={4}
                       />
                     </FormControl>
                     <FormDescription>
-                      {t('soilAnalysis.description')}
+                      Provide your latest soil test results or a general description.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -134,12 +132,12 @@ export default function PersonalizedAdviceForm() {
                 {isPending ? (
                   <>
                     <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
-                    {t('submit.loading')}
+                    Generating Advice...
                   </>
                 ) : (
                   <>
                     <BrainCircuit className="mr-2 h-4 w-4" />
-                    {t('submit.idle')}
+                    Get Advice
                   </>
                 )}
               </Button>
@@ -150,16 +148,16 @@ export default function PersonalizedAdviceForm() {
       
       <Card className="flex flex-col">
         <CardHeader>
-          <CardTitle>{t('results.title')}</CardTitle>
+          <CardTitle>Today's Advice</CardTitle>
           <CardDescription>
-            {t('results.description')}
+            Personalized recommendations based on your input and live weather data.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-1 items-center justify-center">
           {isPending && (
             <div className="flex flex-col items-center gap-2 text-muted-foreground">
               <LoaderCircle className="h-8 w-8 animate-spin text-primary" />
-              <span>{t('results.loading')}</span>
+              <span>Checking weather and analyzing...</span>
             </div>
           )}
           {result && (
@@ -173,7 +171,7 @@ export default function PersonalizedAdviceForm() {
           {!isPending && !result && (
             <div className="text-center text-muted-foreground">
               <MessageSquare className="mx-auto h-12 w-12" />
-              <p className="mt-4">{t('results.placeholder')}</p>
+              <p className="mt-4">Your personalized advice will be displayed here.</p>
             </div>
           )}
         </CardContent>

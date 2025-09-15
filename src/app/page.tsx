@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, Sprout, ScanLine, Sun } from 'lucide-react';
-import { useTranslations } from 'next-intl';
 
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
@@ -12,7 +11,6 @@ import { AppShell } from '@/components/layout/app-shell';
 import CropPricesCard from '@/components/features/crop-prices-card';
 
 export default function Page() {
-  const t = useTranslations('Dashboard');
   const getImage = (id: string) =>
     PlaceHolderImages.find((img) => img.id === id) || PlaceHolderImages[0];
 
@@ -20,20 +18,20 @@ export default function Page() {
 
   const featureCards = [
     {
-      title: t('featureCards.cropRecommendation.title'),
-      description: t('featureCards.cropRecommendation.description'),
+      title: "AI Crop Recommendation",
+      description: "Get tailored crop suggestions based on your farm's data.",
       link: '/crop-recommendation',
       icon: <Sprout className="size-8 text-primary" />,
     },
     {
-      title: t('featureCards.diseaseDetection.title'),
-      description: t('featureCards.diseaseDetection.description'),
+      title: "Plant Disease Detection",
+      description: "Quickly identify plant diseases with our offline-first tool.",
       link: '/disease-detection',
       icon: <ScanLine className="size-8 text-primary" />,
     },
     {
-      title: t('featureCards.personalizedAdvice.title'),
-      description: t('featureCards.personalizedAdvice.description'),
+      title: "Personalized Farming Advice",
+      description: "Receive daily advice optimized for your crops and weather.",
       link: '/personalized-advice',
       icon: <Sun className="size-8 text-primary" />,
     },
@@ -55,10 +53,10 @@ export default function Page() {
           <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
           <div className="absolute inset-0 flex flex-col justify-end p-6">
             <h1 className="font-headline text-3xl font-bold md:text-5xl">
-              {t('hero.title')}
+              Welcome to FarmBharat.AI
             </h1>
             <p className="mt-2 max-w-2xl text-lg text-foreground/80">
-              {t('hero.subtitle')}
+              Your smart partner in modern farming. Powerful AI tools to boost your yield and protect your crops.
             </p>
           </div>
         </div>
@@ -78,7 +76,7 @@ export default function Page() {
                 </p>
                 <Button asChild className="mt-4 w-fit self-end">
                   <Link href={feature.link}>
-                    {t('getStarted')} <ArrowRight className="ml-2 size-4" />
+                    Get Started <ArrowRight className="ml-2 size-4" />
                   </Link>
                 </Button>
               </CardContent>
