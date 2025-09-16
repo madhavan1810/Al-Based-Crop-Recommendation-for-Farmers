@@ -1,14 +1,14 @@
 import {getRequestConfig} from 'next-intl/server';
-import { allLocales as locales } from '@/lib/languages';
+import {allLocales} from '@/lib/languages';
  
 export const defaultLocale = 'en';
+export const locales = allLocales.map(l => l.code);
 
 export default getRequestConfig(async ({locale}) => {
   // Validate that the incoming `locale` parameter is valid
-  if (!locales.find(l => l.code === locale)) {
-    // Optionally, you could redirect to a default locale
-    // or show a 404 page. For now, we'll just log an error.
-    console.error(`Invalid locale: ${locale}`);
+  if (!locales.includes(locale)) {
+    console.error(`Invalid locale: ${locale}, falling back to ${defaultLocale}`);
+    locale = defaultLocale;
   }
 
   return {
