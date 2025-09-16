@@ -47,6 +47,10 @@ const formSchema = z.object({
     .min(10, { message: 'Please provide detailed weather data.' }),
   district: z.string().min(1, { message: 'Please select a district.' }),
   season: z.string().min(1, { message: 'Please select a season.' }),
+  topography: z.string().min(1, { message: 'Please select the field topography.' }),
+  cropHistory1: z.string().optional(),
+  cropHistory2: z.string().optional(),
+  cropHistory3: z.string().optional(),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -64,6 +68,10 @@ export default function CropRecommendationForm() {
       weatherData: '',
       district: '',
       season: '',
+      topography: '',
+      cropHistory1: '',
+      cropHistory2: '',
+      cropHistory3: '',
     },
   });
 
@@ -82,6 +90,8 @@ export default function CropRecommendationForm() {
       }
     });
   };
+
+  const commonCrops = ["Rice", "Wheat", "Maize", "Cotton", "Sugarcane", "Soybean", "Potato", "None"];
 
   return (
     <div className="grid gap-8 md:grid-cols-2">
@@ -137,6 +147,92 @@ export default function CropRecommendationForm() {
                   )}
                 />
               </div>
+
+               <FormField
+                  control={form.control}
+                  name="topography"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('topographyLabel')}</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder={t('topographyPlaceholder')} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="Flat">{t('flat')}</SelectItem>
+                          <SelectItem value="Gentle Slope">{t('gentleSlope')}</SelectItem>
+                          <SelectItem value="Steep Slope">{t('steepSlope')}</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <div>
+                    <FormLabel>{t('cropHistoryLabel')}</FormLabel>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                        <FormField
+                        control={form.control}
+                        name="cropHistory1"
+                        render={({ field }) => (
+                            <FormItem>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                <SelectTrigger>
+                                    <SelectValue placeholder={t('season1Placeholder')} />
+                                </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {commonCrops.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                                </SelectContent>
+                            </Select>
+                            </FormItem>
+                        )}
+                        />
+                        <FormField
+                        control={form.control}
+                        name="cropHistory2"
+                        render={({ field }) => (
+                            <FormItem>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                <SelectTrigger>
+                                    <SelectValue placeholder={t('season2Placeholder')} />
+                                </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {commonCrops.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                                </SelectContent>
+                            </Select>
+                            </FormItem>
+                        )}
+                        />
+                        <FormField
+                        control={form.control}
+                        name="cropHistory3"
+                        render={({ field }) => (
+                            <FormItem>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                <SelectTrigger>
+                                    <SelectValue placeholder={t('season3Placeholder')} />
+                                </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {commonCrops.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                                </SelectContent>
+                            </Select>
+                            </FormItem>
+                        )}
+                        />
+                    </div>
+                    <FormDescription className="mt-2">
+                        {t('cropHistoryDescription')}
+                    </FormDescription>
+                </div>
 
               <FormField
                 control={form.control}

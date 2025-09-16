@@ -47,7 +47,7 @@
     "price": "Price (₹ per Quintal)"
   },
   "CropRecommendationForm": {
-    "farmDataTitle": "Farm Data",
+    "farmDataTitle": "Field Data",
     "districtLabel": "District",
     "districtPlaceholder": "Select your district",
     "seasonLabel": "Season",
@@ -69,7 +69,17 @@
     "recommendedCrops": "Recommended Crops",
     "plantingInstructions": "Planting Instructions",
     "riskAssessment": "Risk Assessment",
-    "placeholder": "Your personalized crop recommendations will appear here."
+    "placeholder": "Your personalized crop recommendations will appear here.",
+    "topographyLabel": "Field Topography",
+    "topographyPlaceholder": "Select land's slope",
+    "flat": "Flat",
+    "gentleSlope": "Gentle Slope",
+    "steepSlope": "Steep Slope",
+    "cropHistoryLabel": "Crop History (Last 3 Seasons)",
+    "season1Placeholder": "Last Season",
+    "season2Placeholder": "2 Seasons Ago",
+    "season3Placeholder": "3 Seasons Ago",
+    "cropHistoryDescription": "Select the crops grown in this field previously."
   },
   "DiseaseDetectionCard": {
     "uploadTitle": "Upload Plant Image",
@@ -140,6 +150,8 @@
     "soilHealthDescription": "Keep your soil profile updated for accurate recommendations.",
     "uploadReportButton": "Upload Report",
     "reportYear": "Year",
-    "status": "Status"
+    "status": "Status",
+    "waterSource": "Primary Water Source",
+    "annualBudget": "Annual Farming Budget"
   }
 }

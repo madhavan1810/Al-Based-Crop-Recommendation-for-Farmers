@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { User, Upload } from 'lucide-react';
+import { User, Upload, Droplets, Banknote } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Table,
@@ -30,6 +30,8 @@ export default function ProfilePage() {
     email: 'bharat@example.com',
     location: 'Punjab, India',
     avatarUrl: 'https://picsum.photos/seed/user-avatar/200/200',
+    waterSource: 'Well/Borewell',
+    annualBudget: '₹50,000 - ₹2 Lakhs',
   };
 
   // Mock soil health records
@@ -91,6 +93,24 @@ export default function ProfilePage() {
                   {t('location')}
                 </p>
                 <p>{user.location}</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <Droplets className="h-5 w-5 text-muted-foreground" />
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">
+                    {t('waterSource')}
+                  </p>
+                  <p>{user.waterSource}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Banknote className="h-5 w-5 text-muted-foreground" />
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">
+                    {t('annualBudget')}
+                  </p>
+                  <p>{user.annualBudget}</p>
+                </div>
               </div>
             </CardContent>
           </Card>
