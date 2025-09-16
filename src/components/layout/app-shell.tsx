@@ -7,6 +7,7 @@ import {
   ScanLine,
   Sprout,
   Sun,
+  User,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
@@ -26,6 +27,7 @@ import { Logo } from './logo';
 import Chatbot from '../features/chatbot';
 import LanguageSwitcher from './language-switcher';
 import { Link } from '@/lib/i18n-navigation';
+import { Button } from '../ui/button';
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const t = useTranslations('AppShell');
@@ -43,6 +45,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     // Special case for root which is login
     if (pathname.includes('/login')) return 'Login';
     if (pathname.includes('/register')) return 'Register';
+    if (pathname.includes('/profile')) return t('profile');
     const currentItem = navItems.find(item => pathname.startsWith(item.href));
     return currentItem?.label || 'FarmBharat.AI';
   }
@@ -87,7 +90,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               {getCurrentLabel()}
             </h1>
           </div>
-          <LanguageSwitcher />
+          <div className="flex items-center gap-2">
+            <LanguageSwitcher />
+            {!isAuthPage && (
+              <Button asChild variant="ghost" size="icon">
+                <Link href="/profile">
+                  <User />
+                  <span className="sr-only">{t('profile')}</span>
+                </Link>
+              </Button>
+            )}
+          </div>
         </header>
         <main className="flex-1 bg-background">{children}</main>
         {!isAuthPage && <Chatbot />}

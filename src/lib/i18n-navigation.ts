@@ -19,6 +19,7 @@ export const pathnames: Pathnames<typeof locales> = {
   '/crop-recommendation': '/crop-recommendation',
   '/disease-detection': '/disease-detection',
   '/personalized-advice': '/personalized-advice',
+  '/profile': '/profile',
 };
 
 export const {Link, redirect, usePathname, useRouter, getPathname} =

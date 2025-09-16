@@ -4,7 +4,8 @@
     "dashboard": "Dashboard",
     "cropRecommendation": "Crop Recommendation",
     "diseaseDetection": "Disease Detection",
-    "personalizedAdvice": "Personalized Advice"
+    "personalizedAdvice": "Personalized Advice",
+    "profile": "Profile"
   },
   "Dashboard": {
     "title": "Welcome to FarmBharat.AI",
@@ -130,5 +131,12 @@
     "registerButton": "Create an account",
     "loginPrompt": "Already have an account?",
     "loginLink": "Login"
+  },
+  "ProfilePage": {
+    "title": "My Profile",
+    "userDetails": "User Details",
+    "name": "Name",
+    "email": "Email",
+    "location": "Location"
   }
 }
