@@ -7,9 +7,8 @@ export const locales = allLocales.map(l => l.code);
 export default getRequestConfig(async ({locale}) => {
   // Validate that the incoming `locale` parameter is valid
   if (!locales.includes(locale)) {
-    // Optionally, you could redirect to a default locale
-    // or show a 404 page. For now, we'll just log an error.
-    console.error(`Invalid locale: ${locale}`);
+    console.error(`Invalid locale: ${locale}, falling back to ${defaultLocale}`);
+    locale = defaultLocale;
   }
 
   return {
