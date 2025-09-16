@@ -8,6 +8,7 @@ import {
   Sprout,
   Sun,
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 import {
   SidebarProvider,
@@ -23,30 +24,32 @@ import {
 } from '@/components/ui/sidebar';
 import { Logo } from './logo';
 import Chatbot from '../features/chatbot';
-
+import LanguageSwitcher from './language-switcher';
 
 export function AppShell({ children }: { children: React.ReactNode }) {
+  const t = useTranslations('AppShell');
   const pathname = usePathname();
 
   const navItems = [
-    { href: '/', label: 'Dashboard', icon: LayoutDashboard },
-    { href: '/crop-recommendation', label: 'Crop Recommendation', icon: Sprout },
-    { href: '/disease-detection', label: 'Disease Detection', icon: ScanLine },
-    { href: '/personalized-advice', label: 'Personalized Advice', icon: Sun },
+    { href: '/', label: t('dashboard'), icon: LayoutDashboard },
+    { href: '/crop-recommendation', label: t('cropRecommendation'), icon: Sprout },
+    { href: '/disease-detection', label: t('diseaseDetection'), icon: ScanLine },
+    { href: '/personalized-advice', label: t('personalizedAdvice'), icon: Sun },
   ];
 
   // Helper to get the current page's label
   const getCurrentLabel = () => {
     const currentItem = navItems.find(item => {
-      if (item.href === '/') return pathname === '/';
-      return pathname.startsWith(item.href);
+      // For dashboard, we need an exact match, otherwise the other routes will also match
+      if (item.href === '/') return pathname.split('/').length === 2;
+      return pathname.includes(item.href);
     });
     return currentItem?.label || 'Dashboard';
   }
 
   const isCurrentPage = (href: string) => {
-    if (href === '/') return pathname === '/';
-    return pathname.startsWith(href);
+    if (href === '/') return pathname.split('/').length === 2;
+    return pathname.includes(href);
   };
 
   return (
@@ -87,6 +90,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               {getCurrentLabel()}
             </h1>
           </div>
+          <LanguageSwitcher />
         </header>
         <main className="flex-1 bg-background">{children}</main>
         <Chatbot />
