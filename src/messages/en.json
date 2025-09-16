@@ -134,9 +134,12 @@
   },
   "ProfilePage": {
     "title": "My Profile",
-    "userDetails": "User Details",
-    "name": "Name",
     "email": "Email",
-    "location": "Location"
+    "location": "Location",
+    "soilHealthTitle": "Annual Soil Health Record",
+    "soilHealthDescription": "Keep your soil profile updated for accurate recommendations.",
+    "uploadReportButton": "Upload Report",
+    "reportYear": "Year",
+    "status": "Status"
   }
 }
