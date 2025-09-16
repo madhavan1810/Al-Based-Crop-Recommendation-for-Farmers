@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { allLocales } from '@/lib/languages';
 
 export default function LanguageSwitcher() {
   const t = useTranslations('LanguageSwitcher');
@@ -20,6 +21,7 @@ export default function LanguageSwitcher() {
 
   function onSelectChange(value: string) {
     const newPath = pathname.replace(`/${locale}`, `/${value}`);
+    document.cookie = `NEXT_LOCALE=${value};path=/;max-age=31536000`;
     startTransition(() => {
       router.replace(newPath);
     });
@@ -31,8 +33,9 @@ export default function LanguageSwitcher() {
         <SelectValue placeholder={t('selectLanguage')} />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="en">English</SelectItem>
-        <SelectItem value="hi">हिंदी</SelectItem>
+        {allLocales.map((lang) => (
+          <SelectItem key={lang.code} value={lang.code}>{lang.name}</SelectItem>
+        ))}
       </SelectContent>
     </Select>
   );

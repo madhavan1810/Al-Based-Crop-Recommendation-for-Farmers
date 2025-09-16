@@ -1,0 +1,107 @@
+{
+  "AppShell": {
+    "dashboard": "Dashboard",
+    "cropRecommendation": "Crop Recommendation",
+    "diseaseDetection": "Disease Detection",
+    "personalizedAdvice": "Personalized Advice"
+  },
+  "Dashboard": {
+    "title": "Welcome to FarmBharat.AI",
+    "description": "Your smart partner in modern farming. Powerful AI tools to boost your yield and protect your crops.",
+    "feature1Title": "AI Crop Recommendation",
+    "feature1Description": "Get tailored crop suggestions based on your farm's data.",
+    "feature2Title": "Plant Disease Detection",
+    "feature2Description": "Quickly identify plant diseases with our offline-first tool.",
+    "feature3Title": "Personalized Farming Advice",
+    "feature3Description": "Receive daily advice optimized for your crops and weather.",
+    "getStarted": "Get Started"
+  },
+  "CropRecommendationPage": {
+    "title": "AI Crop Recommendation",
+    "description": "Fill in the details below to receive AI-powered crop recommendations tailored to your farm."
+  },
+  "DiseaseDetectionPage": {
+    "title": "Plant Disease Detection",
+    "description": "Upload an image of a plant leaf to detect diseases using AI. This feature works even when you are offline."
+  },
+  "PersonalizedAdvicePage": {
+    "title": "Personalized Farming Advice",
+    "description": "Get daily, AI-generated advice based on your farm's specifics and local weather forecasts."
+  },
+  "Chatbot": {
+    "title": "FarmBharat.AI Chat",
+    "description": "Ask me anything about farming.",
+    "inputPlaceholder": "Type your question...",
+    "openChatbot": "Open Chatbot"
+  },
+  "CropPricesCard": {
+    "title": "Live Mandi Prices",
+    "description": "Latest commodity prices from markets across India.",
+    "loading": "Loading...",
+    "error": "An unknown error occurred",
+    "noPrices": "No crop prices found.",
+    "crop": "Crop",
+    "market": "Market",
+    "price": "Price (₹ per Quintal)"
+  },
+  "CropRecommendationForm": {
+    "farmDataTitle": "Farm Data",
+    "districtLabel": "District",
+    "districtPlaceholder": "Select your district",
+    "seasonLabel": "Season",
+    "seasonPlaceholder": "Select a season",
+    "kharif": "Kharif",
+    "rabi": "Rabi",
+    "summer": "Summer",
+    "wholeYear": "Whole Year",
+    "soilAnalysisLabel": "Soil Analysis",
+    "soilAnalysisPlaceholder": "e.g., pH: 6.5, Nitrogen: High, Phosphorus: Medium, Potassium: Low",
+    "soilAnalysisDescription": "Enter the results from your latest soil test.",
+    "weatherDataLabel": "Weather & Climate Data",
+    "weatherDataPlaceholder": "e.g., Avg. Temp: 25°C, Annual Rainfall: 1200mm, Sunny days: ~280",
+    "weatherDataDescription": "Describe your local climate conditions.",
+    "getRecommendations": "Get Recommendations",
+    "analyzing": "Analyzing...",
+    "recommendationsTitle": "Recommendations",
+generating": "Generating recommendations...",
+    "recommendedCrops": "Recommended Crops",
+    "plantingInstructions": "Planting Instructions",
+    "riskAssessment": "Risk Assessment",
+    "placeholder": "Your personalized crop recommendations will appear here."
+  },
+  "DiseaseDetectionCard": {
+    "uploadTitle": "Upload Plant Image",
+    "badge": "AI-Powered",
+    "pictureLabel": "Plant Image",
+    "chooseFile": "Choose File",
+    "analyze": "Analyze Plant",
+    "analyzing": "Analyzing...",
+    "analyzingWithAI": "Analyzing with Gemini AI...",
+    "diagnosisResult": "Diagnosis Result",
+    "diagnosisLabel": "Diagnosis:",
+    "confidenceLabel": "Confidence:",
+    "observationsLabel": "AI's Observations:",
+    "treatmentLabel": "Recommended Treatment:",
+    "disclaimer": "Disclaimer: This tool is for informational purposes only. Always consult with a local agricultural expert for definitive diagnosis."
+  },
+  "PersonalizedAdviceForm": {
+    "formTitle": "Your Farm Details",
+    "locationLabel": "Location",
+    "locationPlaceholder": "e.g., Punjab, India",
+    "locationDescription": "Your district for local weather data.",
+    "cropLabel": "Current Crop",
+    "cropPlaceholder": "e.g., Wheat",
+    "soilAnalysisLabel": "Soil Analysis",
+    "soilAnalysisPlaceholder": "e.g., pH: 6.5, Nitrogen: High, Sandy Loam soil",
+    "soilAnalysisDescription": "Provide your latest soil test results or a general description.",
+    "getAdvice": "Get Advice",
+    "generatingAdvice": "Generating Advice...",
+    "adviceTitle": "Today's Advice",
+    "adviceDescription": "Personalized recommendations based on your input and live weather data.",
+    "analyzingWeather": "Checking weather and analyzing...",
+    "placeholder": "Your personalized advice will be displayed here."
+  },
+  "LanguageSwitcher": {
+    "selectLanguage": "Select Language"
+  }
+}
