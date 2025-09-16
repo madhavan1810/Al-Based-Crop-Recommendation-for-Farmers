@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { allLocales } from '../../../i18n';
+import { allLocales } from '@/lib/locales';
 import { usePathname } from '@/lib/i18n-navigation';
 
 export default function LanguageSwitcher() {
