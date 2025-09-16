@@ -1,9 +1,11 @@
+
 {
   "AppShell": {
     "dashboard": "Dashboard",
     "cropRecommendation": "Crop Recommendation",
     "diseaseDetection": "Disease Detection",
-    "personalizedAdvice": "Personalized Advice"
+    "personalizedAdvice": "Personalized Advice",
+    "profile": "Profile"
   },
   "Dashboard": {
     "title": "Welcome to FarmBharat.AI",
@@ -45,7 +47,7 @@
     "price": "Price (₹ per Quintal)"
   },
   "CropRecommendationForm": {
-    "farmDataTitle": "Farm Data",
+    "farmDataTitle": "Field Data",
     "districtLabel": "District",
     "districtPlaceholder": "Select your district",
     "seasonLabel": "Season",
@@ -54,6 +56,16 @@
     "rabi": "Rabi",
     "summer": "Summer",
     "wholeYear": "Whole Year",
+    "topographyLabel": "Field Topography",
+    "topographyPlaceholder": "Select land's slope",
+    "flat": "Flat",
+    "gentleSlope": "Gentle Slope",
+    "steepSlope": "Steep Slope",
+    "cropHistoryLabel": "Crop History (Last 3 Seasons)",
+    "season1Placeholder": "Last Season",
+    "season2Placeholder": "2 Seasons Ago",
+    "season3Placeholder": "3 Seasons Ago",
+    "cropHistoryDescription": "Select the crops grown in this field previously.",
     "soilAnalysisLabel": "Soil Analysis",
     "soilAnalysisPlaceholder": "e.g., pH: 6.5, Nitrogen: High, Phosphorus: Medium, Potassium: Low",
     "soilAnalysisDescription": "Enter the results from your latest soil test.",
@@ -103,5 +115,51 @@
   },
   "LanguageSwitcher": {
     "selectLanguage": "Select Language"
+  },
+  "LoginPage": {
+    "title": "Welcome to FarmBharat.AI",
+    "description": "Access your account to get started."
+  },
+  "RegisterPage": {
+    "title": "Register",
+    "description": "Create a new FarmBharat.AI account."
+  },
+  "LoginForm": {
+    "emailLabel": "Email",
+    "emailPlaceholder": "name@example.com",
+    "passwordLabel": "Password",
+    "loginButton": "Login",
+    "registerPrompt": "Don't have an account?",
+    "registerLink": "Register"
+  },
+  "RegisterForm": {
+    "nameLabel": "Full Name",
+    "namePlaceholder": "Your Name",
+    "emailLabel": "Email",
+    "emailPlaceholder": "name@example.com",
+    "passwordLabel": "Password",
+    "registerButton": "Create an account",
+    "loginPrompt": "Already have an account?",
+    "loginLink": "Login",
+    "soilTypeLabel": "Primary Soil Type",
+    "soilTypePlaceholder": "Select your farm's soil type",
+    "alluvial": "Alluvial",
+    "black": "Black (Regur)",
+    "redAndYellow": "Red and Yellow",
+    "laterite": "Laterite",
+    "other": "Other / I don't know"
+  },
+  "ProfilePage": {
+    "title": "My Profile",
+    "email": "Email",
+    "location": "Location",
+    "soilHealthTitle": "Annual Soil Health Record",
+    "soilHealthDescription": "Keep your soil profile updated for accurate recommendations.",
+    "uploadReportButton": "Upload Report",
+    "reportYear": "Year",
+    "status": "Status",
+    "waterSource": "Primary Water Source",
+    "annualBudget": "Annual Farming Budget",
+    "soilType": "Primary Soil Type"
   }
 }

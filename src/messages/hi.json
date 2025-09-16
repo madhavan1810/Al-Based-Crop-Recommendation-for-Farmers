@@ -1,9 +1,11 @@
+
 {
   "AppShell": {
     "dashboard": "tableau de bord",
     "cropRecommendation": "फसल सिफारिश",
     "diseaseDetection": "रोग पहचान",
-    "personalizedAdvice": "व्यक्तिगत सलाह"
+    "personalizedAdvice": "व्यक्तिगत सलाह",
+    "profile": "प्रोफ़ाइल"
   },
   "Dashboard": {
     "title": "फार्मभारत.एआई में आपका स्वागत है",
@@ -30,7 +32,7 @@
   },
   "Chatbot": {
     "title": "फार्मभारत.एआई चैट",
-    "description": "खेती के बारे में मुझसे کچھ भी पूछें।",
+    "description": "खेती के बारे में मुझसे कुछ भी पूछें।",
     "inputPlaceholder": "अपना सवाल टाइप करें...",
     "openChatbot": "चैटबॉट खोलें"
   },
@@ -54,6 +56,16 @@
     "rabi": "रबी",
     "summer": "गर्मी",
     "wholeYear": "पूरे साल",
+    "topographyLabel": "खेत की स्थलाकृति",
+    "topographyPlaceholder": "भूमि का ढलान चुनें",
+    "flat": "समतल",
+    "gentleSlope": "हल्का ढलान",
+    "steepSlope": "तीव्र ढलान",
+    "cropHistoryLabel": "फसल इतिहास (पिछले 3 मौसम)",
+    "season1Placeholder": "पिछला मौसम",
+    "season2Placeholder": "2 मौसम पहले",
+    "season3Placeholder": "3 मौसम पहले",
+    "cropHistoryDescription": "इस खेत में पहले उगाई गई फसलों का चयन करें।",
     "soilAnalysisLabel": "मृदा विश्लेषण",
     "soilAnalysisPlaceholder": "उदा., पीएच: 6.5, नाइट्रोजन: उच्च, फास्फोरस: मध्यम, पोटेशियम: कम",
     "soilAnalysisDescription": "अपने नवीनतम मृदा परीक्षण के परिणाम दर्ज करें।",
@@ -82,7 +94,7 @@
     "confidenceLabel": "आत्मविश्वास:",
     "observationsLabel": "एआई के अवलोकन:",
     "treatmentLabel": "अनुशंसित उपचार:",
-    "disclaimer": "अस्वीकरण: यह उपकरण केवल सूचनात्मक उद्देश्यों के लिए है। निश्चित निदान کے लिए हमेशा ਇੱਕ स्थानीय कृषि विशेषज्ञ سے صلاح ਲਓ।"
+    "disclaimer": "अस्वीकरण: यह उपकरण केवल सूचनात्मक उद्देश्यों के लिए है। निश्चित निदान के लिए हमेशा एक स्थानीय कृषि विशेषज्ञ से सलाह लें।"
   },
   "PersonalizedAdviceForm": {
     "formTitle": "आपके खेत का विवरण",
@@ -96,12 +108,58 @@
     "soilAnalysisDescription": "अपने नवीनतम मृदा परीक्षण के परिणाम या एक सामान्य विवरण प्रदान करें।",
     "getAdvice": "सलाह लें",
     "generatingAdvice": "सलाह बना रहा है...",
-    "adviceTitle": "आज کی صلاح",
+    "adviceTitle": "आज की सलाह",
     "adviceDescription": "आपके इनपुट और लाइव मौसम डेटा के आधार पर व्यक्तिगत सिफारिशें।",
-    "analyzingWeather": "मौसम کی جانچ اور تجزیہ...",
+    "analyzingWeather": "मौसम की जांच और विश्लेषण...",
     "placeholder": "आपकी व्यक्तिगत सलाह यहां प्रदर्शित होगी।"
   },
   "LanguageSwitcher": {
     "selectLanguage": "भाषा चुने"
+  },
+  "LoginPage": {
+    "title": "फार्मभारत.एआई में आपका स्वागत है",
+    "description": "शुरू करने के लिए अपने खाते तक पहुंचें।"
+  },
+  "RegisterPage": {
+    "title": "पंजीकरण",
+    "description": "एक नया फार्मभारत.एआई खाता बनाएं।"
+  },
+  "LoginForm": {
+    "emailLabel": "ईमेल",
+    "emailPlaceholder": "name@example.com",
+    "passwordLabel": "पासवर्ड",
+    "loginButton": "लॉग इन करें",
+    "registerPrompt": "क्या आपका खाता नहीं है?",
+    "registerLink": "पंजीकरण"
+  },
+  "RegisterForm": {
+    "nameLabel": "पूरा नाम",
+    "namePlaceholder": "आपका नाम",
+    "emailLabel": "ईमेल",
+    "emailPlaceholder": "name@example.com",
+    "passwordLabel": "पासवर्ड",
+    "registerButton": "खाता बनाएं",
+    "loginPrompt": "क्या आपके पास पहले से एक खाता है?",
+    "loginLink": "लॉग इन करें",
+    "soilTypeLabel": "प्राथमिक मिट्टी का प्रकार",
+    "soilTypePlaceholder": "अपने खेत की मिट्टी का प्रकार चुनें",
+    "alluvial": "जलोढ़",
+    "black": "काली (रेगुर)",
+    "redAndYellow": "लाल और पीली",
+    "laterite": "लैटेराइट",
+    "other": "अन्य / मुझे नहीं पता"
+  },
+  "ProfilePage": {
+    "title": "मेरी प्रोफाइल",
+    "email": "ईमेल",
+    "location": "स्थान",
+    "soilHealthTitle": "वार्षिक मृदा स्वास्थ्य रिकॉर्ड",
+    "soilHealthDescription": "सटीक सिफारिशों के लिए अपनी मिट्टी की प्रोफाइल को अपडेट रखें।",
+    "uploadReportButton": "रिपोर्ट अपलोड करें",
+    "reportYear": "वर्ष",
+    "status": "स्थिति",
+    "waterSource": "प्राथमिक जल स्रोत",
+    "annualBudget": "वार्षिक खेती बजट",
+    "soilType": "प्राथमिक मिट्टी का प्रकार"
   }
 }
