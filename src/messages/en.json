@@ -159,6 +159,7 @@
     "reportYear": "Year",
     "status": "Status",
     "waterSource": "Primary Water Source",
-    "annualBudget": "Annual Farming Budget"
+    "annualBudget": "Annual Farming Budget",
+    "soilType": "Primary Soil Type"
   }
 }
