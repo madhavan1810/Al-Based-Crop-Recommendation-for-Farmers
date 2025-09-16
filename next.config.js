@@ -39,4 +39,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withNextIntl(withPWA(nextConfig));
+module.exports = withPWA(withNextIntl(nextConfig));
