@@ -1,21 +1,22 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
-import {NextIntlClientProvider, useMessages} from 'next-intl';
+import {NextIntlClientProvider} from 'next-intl';
+import {getMessages} from 'next-intl/server';
 
 export const metadata: Metadata = {
   title: 'FarmBharat.AI',
   description: 'AI-powered farming assistance.',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
   params: {locale},
 }: Readonly<{
   children: React.ReactNode;
   params: {locale: string};
 }>) {
-  const messages = useMessages();
+  const messages = await getMessages();
 
   return (
     <html lang={locale} suppressHydrationWarning>

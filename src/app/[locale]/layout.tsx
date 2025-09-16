@@ -1,6 +1,6 @@
 import {unstable_setRequestLocale} from 'next-intl/server';
 import { ReactNode } from 'react';
-import { locales } from '../../i18n';
+import { locales } from '../../../i18n';
 
 type Props = {
   children: ReactNode;

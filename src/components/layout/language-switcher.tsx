@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { allLocales } from '@/lib/languages';
+import { allLocales } from '@/i18n';
 
 export default function LanguageSwitcher() {
   const t = useTranslations('LanguageSwitcher');
