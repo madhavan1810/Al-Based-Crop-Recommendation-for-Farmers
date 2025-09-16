@@ -24,7 +24,7 @@ import {
 import { Logo } from './logo';
 import Chatbot from '../features/chatbot';
 import LanguageSwitcher from './language-switcher';
-import { Link } from '@/lib/i1n-navigation';
+import { Link } from '@/lib/i18n-navigation';
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const t = useTranslations('AppShell');

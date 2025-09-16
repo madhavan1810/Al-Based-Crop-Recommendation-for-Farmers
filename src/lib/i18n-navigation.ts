@@ -2,7 +2,7 @@ import {
   createLocalizedPathnamesNavigation,
   Pathnames,
 } from 'next-intl/navigation';
-import {locales} from '../../i18n';
+import {locales} from './locales';
 
 export const localePrefix = 'as-needed';
 
