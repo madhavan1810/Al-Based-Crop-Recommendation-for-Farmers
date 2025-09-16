@@ -1,7 +1,7 @@
 'use client';
 
 import { useLocale, useTranslations } from 'next-intl';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
 import {
   Select,
@@ -10,7 +10,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { allLocales } from '@/i18n';
+import { allLocales } from '../../../i18n';
+import { usePathname } from '@/lib/i18n-navigation';
 
 export default function LanguageSwitcher() {
   const t = useTranslations('LanguageSwitcher');
@@ -20,10 +21,9 @@ export default function LanguageSwitcher() {
   const pathname = usePathname();
 
   function onSelectChange(value: string) {
-    const newPath = pathname.replace(`/${locale}`, `/${value}`);
     document.cookie = `NEXT_LOCALE=${value};path=/;max-age=31536000`;
     startTransition(() => {
-      router.replace(newPath);
+      router.replace(pathname, { locale: value });
     });
   }
 

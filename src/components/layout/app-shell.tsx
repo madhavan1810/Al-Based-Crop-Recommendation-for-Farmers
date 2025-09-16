@@ -1,7 +1,6 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import Link from 'next/link';
 import {
   LayoutDashboard,
   ScanLine,
@@ -25,6 +24,7 @@ import {
 import { Logo } from './logo';
 import Chatbot from '../features/chatbot';
 import LanguageSwitcher from './language-switcher';
+import { Link } from '@/lib/i1n-navigation';
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const t = useTranslations('AppShell');
@@ -39,18 +39,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   // Helper to get the current page's label
   const getCurrentLabel = () => {
-    const currentItem = navItems.find(item => {
-      // For dashboard, we need an exact match, otherwise the other routes will also match
-      if (item.href === '/') return pathname.split('/').length === 2;
-      return pathname.includes(item.href);
-    });
+    const currentItem = navItems.find(item => pathname === item.href);
     return currentItem?.label || 'Dashboard';
   }
-
-  const isCurrentPage = (href: string) => {
-    if (href === '/') return pathname.split('/').length === 2;
-    return pathname.includes(href);
-  };
 
   return (
     <SidebarProvider>
@@ -64,7 +55,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <SidebarMenuItem key={item.href}>
                 <SidebarMenuButton
                   asChild
-                  isActive={isCurrentPage(item.href)}
+                  isActive={pathname === item.href}
                   tooltip={{
                     children: item.label,
                     className: 'bg-primary text-primary-foreground',

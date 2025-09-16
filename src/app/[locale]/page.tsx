@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { ArrowRight, Sprout, ScanLine, Sun } from 'lucide-react';
 import {useTranslations} from 'next-intl';
 
@@ -10,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AppShell } from '@/components/layout/app-shell';
 import CropPricesCard from '@/components/features/crop-prices-card';
+import { Link } from '@/lib/i18n-navigation';
 
 export default function Page() {
   const t = useTranslations('Dashboard');
