@@ -6,7 +6,6 @@ import {NextIntlClientProvider, useMessages} from 'next-intl';
 export const metadata: Metadata = {
   title: 'FarmBharat.AI',
   description: 'AI-powered farming assistance.',
-  manifest: '/manifest.json',
 };
 
 export default function RootLayout({
