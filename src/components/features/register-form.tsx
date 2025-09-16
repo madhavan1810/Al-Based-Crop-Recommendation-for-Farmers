@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,13 +18,15 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { Link } from '@/lib/i18n-navigation';
+import { Link, useRouter } from '@/lib/i18n-navigation';
 import { useToast } from '@/hooks/use-toast';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
   email: z.string().email({ message: 'Please enter a valid email.' }),
   password: z.string().min(8, { message: 'Password must be at least 8 characters.' }),
+  soilType: z.string().min(1, { message: 'Please select a soil type.' }),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -31,6 +34,7 @@ type FormData = z.infer<typeof formSchema>;
 export function RegisterForm() {
   const t = useTranslations('RegisterForm');
   const { toast } = useToast();
+  const router = useRouter();
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -38,6 +42,7 @@ export function RegisterForm() {
       name: '',
       email: '',
       password: '',
+      soilType: '',
     },
   });
 
@@ -49,6 +54,7 @@ export function RegisterForm() {
       description: 'Your account has been created.',
     });
     form.reset();
+    router.push('/dashboard');
   };
 
   return (
@@ -91,6 +97,30 @@ export function RegisterForm() {
                   <FormControl>
                     <Input type="password" {...field} />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="soilType"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('soilTypeLabel')}</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder={t('soilTypePlaceholder')} />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="Alluvial">{t('alluvial')}</SelectItem>
+                      <SelectItem value="Black">{t('black')}</SelectItem>
+                      <SelectItem value="Red and Yellow">{t('redAndYellow')}</SelectItem>
+                      <SelectItem value="Laterite">{t('laterite')}</SelectItem>
+                      <SelectItem value="Other">{t('other')}</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

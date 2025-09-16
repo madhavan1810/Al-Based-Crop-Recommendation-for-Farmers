@@ -140,7 +140,14 @@
     "passwordLabel": "Password",
     "registerButton": "Create an account",
     "loginPrompt": "Already have an account?",
-    "loginLink": "Login"
+    "loginLink": "Login",
+    "soilTypeLabel": "Primary Soil Type",
+    "soilTypePlaceholder": "Select your farm's soil type",
+    "alluvial": "Alluvial",
+    "black": "Black (Regur)",
+    "redAndYellow": "Red and Yellow",
+    "laterite": "Laterite",
+    "other": "Other / I don't know"
   },
   "ProfilePage": {
     "title": "My Profile",

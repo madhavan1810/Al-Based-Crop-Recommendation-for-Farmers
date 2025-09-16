@@ -1,3 +1,4 @@
+
 import { RegisterForm } from '@/components/features/register-form';
 import { AppShell } from '@/components/layout/app-shell';
 import {useTranslations} from 'next-intl';
