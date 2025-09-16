@@ -1,3 +1,4 @@
+
 "use client"
 
 import * as React from "react"
@@ -162,6 +163,7 @@ const Sidebar = React.forwardRef<
     side?: "left" | "right"
     variant?: "sidebar" | "floating" | "inset"
     collapsible?: "offcanvas" | "icon" | "none"
+    hidden?: boolean;
   }
 >(
   (
@@ -171,11 +173,16 @@ const Sidebar = React.forwardRef<
       collapsible = "offcanvas",
       className,
       children,
+      hidden,
       ...props
     },
     ref
   ) => {
     const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
+
+    if (hidden) {
+      return null;
+    }
 
     if (collapsible === "none") {
       return (
@@ -318,11 +325,16 @@ const SidebarInset = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"main">
 >(({ className, ...props }, ref) => {
+  const { open } = useSidebar();
+  const pathname = usePathname();
+  const isAuthPage = pathname === '/' || pathname === '/register';
+
   return (
     <main
       ref={ref}
       className={cn(
         "relative flex min-h-svh flex-1 flex-col bg-background",
+        !isAuthPage && "md:peer-data-[state=expanded]:ml-[16rem]",
         "peer-data-[variant=inset]:min-h-[calc(100svh-theme(spacing.4))] md:peer-data-[variant=inset]:m-2 md:peer-data-[state=collapsed]:peer-data-[variant=inset]:ml-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow",
         className
       )}

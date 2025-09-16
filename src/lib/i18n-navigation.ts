@@ -1,3 +1,4 @@
+
 import {
   createLocalizedPathnamesNavigation,
   Pathnames,
@@ -12,11 +13,12 @@ export const pathnames: Pathnames<typeof locales> = {
   // If all locales use the same pathname, a single
   // external path can be used for all locales.
   '/': '/',
+  '/login': '/login',
+  '/register': '/register',
+  '/dashboard': '/dashboard',
   '/crop-recommendation': '/crop-recommendation',
   '/disease-detection': '/disease-detection',
   '/personalized-advice': '/personalized-advice',
-  '/login': '/login',
-  '/register': '/register',
 };
 
 export const {Link, redirect, usePathname, useRouter, getPathname} =

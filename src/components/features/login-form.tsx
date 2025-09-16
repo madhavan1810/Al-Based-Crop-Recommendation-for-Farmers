@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,7 +18,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { Link } from '@/lib/i18n-navigation';
+import { Link, useRouter } from '@/lib/i18n-navigation';
 import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
@@ -30,6 +31,7 @@ type FormData = z.infer<typeof formSchema>;
 export function LoginForm() {
   const t = useTranslations('LoginForm');
   const { toast } = useToast();
+  const router = useRouter();
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -47,6 +49,7 @@ export function LoginForm() {
       description: 'Welcome back!',
     });
     form.reset();
+    router.push('/dashboard');
   };
 
   return (

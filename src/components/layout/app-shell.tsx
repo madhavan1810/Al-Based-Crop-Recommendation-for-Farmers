@@ -1,3 +1,4 @@
+
 'use client';
 
 import { usePathname } from 'next/navigation';
@@ -31,7 +32,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   const navItems = [
-    { href: '/', label: t('dashboard'), icon: LayoutDashboard },
+    { href: '/dashboard', label: t('dashboard'), icon: LayoutDashboard },
     { href: '/crop-recommendation', label: t('cropRecommendation'), icon: Sprout },
     { href: '/disease-detection', label: t('diseaseDetection'), icon: ScanLine },
     { href: '/personalized-advice', label: t('personalizedAdvice'), icon: Sun },
@@ -39,13 +40,18 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   // Helper to get the current page's label
   const getCurrentLabel = () => {
-    const currentItem = navItems.find(item => pathname === item.href);
-    return currentItem?.label || 'Dashboard';
+    // Special case for root which is login
+    if (pathname.includes('/login')) return 'Login';
+    if (pathname.includes('/register')) return 'Register';
+    const currentItem = navItems.find(item => pathname.startsWith(item.href));
+    return currentItem?.label || 'FarmBharat.AI';
   }
+
+  const isAuthPage = pathname.includes('/login') || pathname.includes('/register');
 
   return (
     <SidebarProvider>
-      <Sidebar>
+      <Sidebar hidden={isAuthPage}>
         <SidebarHeader>
           <Logo />
         </SidebarHeader>
@@ -55,7 +61,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <SidebarMenuItem key={item.href}>
                 <SidebarMenuButton
                   asChild
-                  isActive={pathname === item.href}
+                  isActive={pathname.startsWith(item.href)}
                   tooltip={{
                     children: item.label,
                     className: 'bg-primary text-primary-foreground',
@@ -76,7 +82,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <SidebarInset>
         <header className="flex h-14 items-center justify-between gap-4 border-b bg-background/80 px-4 backdrop-blur-sm md:px-6">
           <div className="flex items-center gap-4">
-            <SidebarTrigger className="md:hidden" />
+            <SidebarTrigger className={isAuthPage ? "invisible" : "md:hidden"} />
             <h1 className="font-headline text-lg font-semibold">
               {getCurrentLabel()}
             </h1>
@@ -84,7 +90,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <LanguageSwitcher />
         </header>
         <main className="flex-1 bg-background">{children}</main>
-        <Chatbot />
+        {!isAuthPage && <Chatbot />}
       </SidebarInset>
     </SidebarProvider>
   );

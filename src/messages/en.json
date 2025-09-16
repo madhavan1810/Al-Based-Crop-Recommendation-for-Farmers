@@ -1,3 +1,4 @@
+
 {
   "AppShell": {
     "dashboard": "Dashboard",
@@ -105,8 +106,8 @@
     "selectLanguage": "Select Language"
   },
   "LoginPage": {
-    "title": "Login",
-    "description": "Access your FarmBharat.AI account."
+    "title": "Welcome to FarmBharat.AI",
+    "description": "Access your account to get started."
   },
   "RegisterPage": {
     "title": "Register",
