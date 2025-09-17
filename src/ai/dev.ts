@@ -1,9 +1,8 @@
 import { config } from 'dotenv';
 config();
 
-import '@/ai/flows/crop-recommendations.ts';
-import '@/ai/flows/multilingual-chatbot-assistance.ts';
-import '@/ai/flows/personalized-farming-advice.ts';
-import '@/ai/flows/disease-detection-flow.ts';
+// This file is the entry point for the Genkit developer UI.
+// It imports all the flows that should be available in the UI.
+import './flows';
 
 export {};
