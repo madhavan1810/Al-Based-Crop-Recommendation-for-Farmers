@@ -1,7 +1,7 @@
 
 'use client';
 
-import { usePathname } from 'next/navigation';
+import { usePathname } from '@/lib/i18n-navigation';
 import {
   LayoutDashboard,
   ScanLine,
@@ -40,17 +40,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     { href: '/personalized-advice', label: t('personalizedAdvice'), icon: Sun },
   ];
 
+  const isAuthPage = pathname === '/login' || pathname === '/register';
+
   // Helper to get the current page's label
   const getCurrentLabel = () => {
-    // Special case for root which is login
-    if (pathname.includes('/login')) return 'Login';
-    if (pathname.includes('/register')) return 'Register';
+    if (isAuthPage) {
+        return pathname === '/login' ? 'Login' : 'Register';
+    }
     if (pathname.includes('/profile')) return t('profile');
     const currentItem = navItems.find(item => pathname.startsWith(item.href));
     return currentItem?.label || 'FarmBharat.AI';
   }
-
-  const isAuthPage = pathname.includes('/login') || pathname.includes('/register');
 
   return (
     <SidebarProvider>
