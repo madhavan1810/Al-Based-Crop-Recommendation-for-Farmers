@@ -8,7 +8,7 @@
     "profile": "Profile"
   },
   "Dashboard": {
-    "title": "Welcome to FarmBharat.AI",
+    "title": "Welcome to KrishiFarm.AI",
     "description": "Your smart partner in modern farming. Powerful AI tools to boost your yield and protect your crops.",
     "feature1Title": "AI Crop Recommendation",
     "feature1Description": "Get tailored crop suggestions based on your farm's data.",
@@ -31,7 +31,7 @@
     "description": "Get daily, AI-generated advice based on your farm's specifics and local weather forecasts."
   },
   "Chatbot": {
-    "title": "FarmBharat.AI Chat",
+    "title": "KrishiFarm.AI Chat",
     "description": "Ask me anything about farming.",
     "inputPlaceholder": "Type your question...",
     "openChatbot": "Open Chatbot"
@@ -117,12 +117,12 @@
     "selectLanguage": "Select Language"
   },
   "LoginPage": {
-    "title": "Welcome to FarmBharat.AI",
+    "title": "Welcome to KrishiFarm.AI",
     "description": "Access your account to get started."
   },
   "RegisterPage": {
     "title": "Register",
-    "description": "Create a new FarmBharat.AI account."
+    "description": "Create a new KrishiFarm.AI account."
   },
   "LoginForm": {
     "emailLabel": "Email",

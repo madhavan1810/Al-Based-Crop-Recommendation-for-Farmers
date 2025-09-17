@@ -92,7 +92,7 @@ export function Logo() {
         </g>
       </svg>
       <h2 className="font-headline text-xl font-semibold text-foreground group-data-[collapsible=icon]:hidden">
-        FarmBharat.AI
+        KrishiFarm.AI
       </h2>
     </div>
   );

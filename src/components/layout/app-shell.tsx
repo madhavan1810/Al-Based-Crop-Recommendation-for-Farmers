@@ -49,7 +49,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     }
     if (pathname.includes('/profile')) return t('profile');
     const currentItem = navItems.find(item => pathname.startsWith(item.href));
-    return currentItem?.label || 'FarmBharat.AI';
+    return currentItem?.label || 'KrishiFarm.AI';
   }
 
   return (
