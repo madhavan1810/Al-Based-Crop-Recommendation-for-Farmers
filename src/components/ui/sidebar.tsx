@@ -2,7 +2,7 @@
 "use client"
 
 import * as React from "react"
-import { usePathname } from "next/navigation"
+import { usePathname } from "@/lib/i18n-navigation"
 import { Slot } from "@radix-ui/react-slot"
 import { VariantProps, cva } from "class-variance-authority"
 import { PanelLeft } from "lucide-react"
@@ -327,7 +327,7 @@ const SidebarInset = React.forwardRef<
   React.ComponentProps<"main">
 >(({ className, ...props }, ref) => {
   const pathname = usePathname();
-  const isAuthPage = pathname === '/login' || pathname === '/register';
+  const isAuthPage = pathname === '/login' || pathname === '/register' || pathname === '/';
 
   return (
     <main
