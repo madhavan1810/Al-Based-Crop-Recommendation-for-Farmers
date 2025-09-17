@@ -326,9 +326,8 @@ const SidebarInset = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"main">
 >(({ className, ...props }, ref) => {
-  const { open } = useSidebar();
   const pathname = usePathname();
-  const isAuthPage = pathname === '/' || pathname === '/register';
+  const isAuthPage = pathname === '/login' || pathname === '/register';
 
   return (
     <main
@@ -774,3 +773,5 @@ export {
   SidebarTrigger,
   useSidebar,
 }
+
+    
