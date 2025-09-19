@@ -2,8 +2,10 @@ import {
   createLocalizedPathnamesNavigation,
   Pathnames,
 } from 'next-intl/navigation';
-import {locales} from './locales';
+import {locales as allLocales} from './locales';
 
+export const locales = allLocales;
+export const defaultLocale = 'en';
 export const localePrefix = 'as-needed';
 
 // The `pathnames` object holds pairs of internal
