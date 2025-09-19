@@ -110,6 +110,7 @@ const personalizedCultivationPlanFlow = ai.defineFlow(
     
     const {output} = await prompt({
         ...input,
+        soilReport: input.soilReport || '', // Ensure soilReport is not undefined
         isSoilReportFile: isFile,
     });
     

@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AppShell } from '@/components/layout/app-shell';
 import CropPricesCard from '@/components/features/crop-prices-card';
+import WeatherCard from '@/components/features/weather-card';
 
 export default function Page() {
   const t = {
@@ -95,7 +96,8 @@ export default function Page() {
             </Card>
           ))}
         </div>
-        <div className="grid grid-cols-1 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <WeatherCard location="Punjab" />
             <CropPricesCard />
         </div>
       </div>

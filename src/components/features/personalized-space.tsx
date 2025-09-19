@@ -35,6 +35,7 @@ import {indianDistricts} from '@/lib/indian-districts';
 import { Progress } from '../ui/progress';
 import { ScrollArea, ScrollBar } from '../ui/scroll-area';
 import { SpeakButton } from './speak-button';
+import WeatherCard from './weather-card';
 
 const formSchema = z.object({
   crop: z.string().min(2, { message: 'Please specify the crop.' }),
@@ -184,7 +185,7 @@ export default function PersonalizedSpace() {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <div className="lg:col-span-1">
+      <div className="lg:col-span-1 space-y-8">
         <Card>
           <CardHeader>
             <CardTitle>{t.formTitle}</CardTitle>
@@ -282,6 +283,9 @@ export default function PersonalizedSpace() {
             </Form>
           </CardContent>
         </Card>
+        {result && form.getValues('district') && (
+            <WeatherCard location={form.getValues('district')} />
+        )}
       </div>
       
       <div className="lg:col-span-2">
