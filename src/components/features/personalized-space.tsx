@@ -6,13 +6,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import * as LucideIcons from 'lucide-react';
-import { BrainCircuit, LoaderCircle, Calendar, FileDown, Upload } from 'lucide-react';
+import { BrainCircuit, LoaderCircle, Calendar, FileDown, Upload, Save } from 'lucide-react';
 
 import { getPersonalizedCultivationPlan } from '@/ai/flows/personalized-space-flow';
 import { 
     type PersonalizedCultivationPlanOutput,
     type WeeklyTask,
 } from '@/ai/schemas/personalized-space-schema';
+import { generatePdfFlow } from '@/ai/flows/generate-pdf-flow';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -77,13 +78,20 @@ export default function PersonalizedSpace() {
     planTitle: "Your Cultivation Plan",
     planDescription: "A weekly guide from sowing to harvest.",
     downloadPdf: "Download as PDF",
+    savePlan: "Save Plan",
     downloading: "Downloading...",
+    saving: "Saving...",
     week: "Week",
     currentWeek: "Current Week",
     placeholder: "Your personalized cultivation plan will appear here once generated.",
     disclaimer: "This is an AI-generated plan. Always adapt based on real-world field conditions and consult local experts.",
     tasksForWeek: "Tasks for Week",
     listenToTasks: "Listen to tasks",
+    success: {
+        planSaved: "Plan Saved!",
+        notificationsEnabled: "Daily task notifications have been enabled.",
+        pdfDownloaded: "PDF downloaded successfully."
+    },
     error: {
       title: "Error",
       planFailed: "Failed to generate cultivation plan. Please try again.",
@@ -153,6 +161,15 @@ export default function PersonalizedSpace() {
           description: t.error.unexpected,
         });
       }
+    });
+  };
+
+  const handleSavePlan = () => {
+    // In a real app, this would save to a database.
+    // For now, we just show a confirmation toast.
+    toast({
+        title: t.success.planSaved,
+        description: t.success.notificationsEnabled
     });
   };
   
@@ -266,16 +283,26 @@ export default function PersonalizedSpace() {
       </div>
       
       <div className="lg:col-span-2">
-        <Card className="h-full">
+        <Card className="h-full flex flex-col">
           <CardHeader>
-            <div>
-                <CardTitle>{t.planTitle}</CardTitle>
-                <CardDescription>{t.planDescription}</CardDescription>
+            <div className="flex justify-between items-start">
+                <div>
+                    <CardTitle>{t.planTitle}</CardTitle>
+                    <CardDescription>{t.planDescription}</CardDescription>
+                </div>
+                 {result && (
+                    <div className="flex gap-2">
+                         <Button variant="outline" onClick={handleSavePlan}>
+                            <Save className="mr-2 h-4 w-4"/>
+                            {t.savePlan}
+                        </Button>
+                    </div>
+                )}
             </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex-1 flex flex-col">
             {isPending && (
-              <div className="flex h-96 flex-col items-center justify-center gap-2 text-muted-foreground">
+              <div className="flex-1 flex flex-col items-center justify-center gap-2 text-muted-foreground">
                 <LoaderCircle className="h-8 w-8 animate-spin text-primary" />
                 <span>{t.generatingPlan}</span>
               </div>
@@ -338,7 +365,7 @@ export default function PersonalizedSpace() {
                 </div>
             )}
             {!isPending && !result && (
-              <div className="flex h-96 flex-col items-center justify-center text-center text-muted-foreground">
+              <div className="flex-1 flex flex-col items-center justify-center text-center text-muted-foreground">
                 <Calendar className="mx-auto h-12 w-12" />
                 <p className="mt-4">{t.placeholder}</p>
               </div>

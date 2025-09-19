@@ -50,7 +50,7 @@ const prompt = ai.definePrompt({
 
 **Cultivation Plan Data:**
 \`\`\`json
-{{{jsonStringify cultivationPlan}}}
+{{{jsonStringify cultivationPlan.cultivationPlan}}}
 \`\`\`
 `,
 });
@@ -107,5 +107,3 @@ const generateAndConvertToPdf = ai.defineFlow(
     return { pdfBase64 };
   }
 );
-
-    
