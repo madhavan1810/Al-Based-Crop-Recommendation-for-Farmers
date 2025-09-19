@@ -31,6 +31,16 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    serverComponentsExternalPackages: [
+      '@genkit-ai/googleai',
+      'firebase-admin',
+      'handlebars', 
+      'dotprompt',
+      '@opentelemetry/instrumentation',
+      'require-in-the-middle'
+    ],
+  },
 };
 
 module.exports = withNextIntl(nextConfig);
