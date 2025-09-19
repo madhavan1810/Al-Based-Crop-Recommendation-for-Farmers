@@ -5,12 +5,10 @@ import React, { useState, useTransition, useRef } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import * as LucideIcons from 'lucide-react';
 import { BrainCircuit, LoaderCircle, Calendar, FileDown, Upload } from 'lucide-react';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 
 import { getPersonalizedCultivationPlan } from '@/ai/flows/personalized-space-flow';
-import { generatePdfFlow } from '@/ai/flows/generate-pdf-flow';
 import { 
     type PersonalizedCultivationPlanOutput,
     type WeeklyTask,
@@ -32,6 +30,9 @@ import { useToast } from '@/hooks/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 import {indianDistricts} from '@/lib/indian-districts';
+import { Progress } from '../ui/progress';
+import { ScrollArea, ScrollBar } from '../ui/scroll-area';
+import { SpeakButton } from './speak-button';
 
 const formSchema = z.object({
   crop: z.string().min(2, { message: 'Please specify the crop.' }),
@@ -50,6 +51,13 @@ function getWeekOfSowing(sowingDate: string): number {
     const week = Math.floor(diff / (1000 * 60 * 60 * 24 * 7)) + 1;
     return week;
 }
+
+const DynamicIcon = ({ name }: { name: string }) => {
+    const Icon = LucideIcons[name as keyof typeof LucideIcons];
+    if (!Icon) return <LucideIcons.Check className="size-8 text-muted-foreground" />;
+    return <Icon className="size-8" />;
+};
+
 
 export default function PersonalizedSpace() {
   const t = {
@@ -74,6 +82,8 @@ export default function PersonalizedSpace() {
     currentWeek: "Current Week",
     placeholder: "Your personalized cultivation plan will appear here once generated.",
     disclaimer: "This is an AI-generated plan. Always adapt based on real-world field conditions and consult local experts.",
+    tasksForWeek: "Tasks for Week",
+    listenToTasks: "Listen to tasks",
     error: {
       title: "Error",
       planFailed: "Failed to generate cultivation plan. Please try again.",
@@ -81,15 +91,12 @@ export default function PersonalizedSpace() {
       unexpected: "An unexpected error occurred. Please try again."
     }
   };
-  const locale = 'en';
   const [isPending, startTransition] = useTransition();
   const [isDownloading, setIsDownloading] = useState(false);
   const [result, setResult] = useState<PersonalizedCultivationPlanOutput | null>(null);
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState('');
-  const planContentRef = useRef<HTMLDivElement>(null);
-
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -128,8 +135,9 @@ export default function PersonalizedSpace() {
           ...data,
           userProfile: "User from " + data.district + ", growing " + data.crop, // Mock profile
         });
-        if (res) {
+        if (res?.cultivationPlan?.length) {
           setResult(res);
+          setSelectedWeek(getWeekOfSowing(data.sowingDate));
         } else {
           toast({
             variant: 'destructive',
@@ -148,53 +156,12 @@ export default function PersonalizedSpace() {
     });
   };
   
-  const handleDownloadPdf = async () => {
-    if (!planContentRef.current || !result) return;
-    setIsDownloading(true);
-
-    try {
-        // 1. Get the HTML content
-        const htmlContent = planContentRef.current.innerHTML;
-
-        // 2. Call the AI flow to get the PDF content
-        const pdfResponse = await generatePdfFlow({
-            htmlContent: htmlContent,
-            language: locale, // Pass the current locale
-            cultivationPlan: result // Pass the full plan data
-        });
-
-        if (pdfResponse.pdfBase64) {
-            // 3. Decode Base64 and trigger download
-            const byteCharacters = atob(pdfResponse.pdfBase64);
-            const byteNumbers = new Array(byteCharacters.length);
-            for (let i = 0; i < byteCharacters.length; i++) {
-                byteNumbers[i] = byteCharacters.charCodeAt(i);
-            }
-            const byteArray = new Uint8Array(byteNumbers);
-            const blob = new Blob([byteArray], { type: 'application/pdf' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `KrishiFarmAI_Cultivation_Plan_${form.getValues('crop')}.pdf`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        } else {
-            throw new Error('PDF generation failed, no content returned.');
-        }
-
-    } catch (error) {
-        console.error('PDF Download Error:', error);
-        toast({
-            variant: 'destructive',
-            title: t.error.title,
-            description: t.error.pdfFailed,
-        });
-    } finally {
-        setIsDownloading(false);
-    }
-  };
-  
   const currentWeek = result ? getWeekOfSowing(form.getValues('sowingDate')) : 0;
+  const totalWeeks = result?.cultivationPlan?.length || 0;
+  const progressPercentage = totalWeeks > 0 ? (Math.min(currentWeek, totalWeeks) / totalWeeks) * 100 : 0;
+  const [selectedWeek, setSelectedWeek] = useState(currentWeek || 1);
+  
+  const selectedWeekData = result?.cultivationPlan[selectedWeek - 1];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -301,23 +268,12 @@ export default function PersonalizedSpace() {
       <div className="lg:col-span-2">
         <Card className="h-full">
           <CardHeader>
-            <div className="flex justify-between items-center">
-                <div>
-                    <CardTitle>{t.planTitle}</CardTitle>
-                    <CardDescription>{t.planDescription}</CardDescription>
-                </div>
-                 {result && (
-                    <Button onClick={handleDownloadPdf} disabled={isDownloading}>
-                        {isDownloading ? (
-                            <><LoaderCircle className="mr-2 h-4 w-4 animate-spin" />{t.downloading}</>
-                        ) : (
-                            <><FileDown className="mr-2 h-4 w-4" />{t.downloadPdf}</>
-                        )}
-                    </Button>
-                )}
+            <div>
+                <CardTitle>{t.planTitle}</CardTitle>
+                <CardDescription>{t.planDescription}</CardDescription>
             </div>
           </CardHeader>
-          <CardContent ref={planContentRef}>
+          <CardContent>
             {isPending && (
               <div className="flex h-96 flex-col items-center justify-center gap-2 text-muted-foreground">
                 <LoaderCircle className="h-8 w-8 animate-spin text-primary" />
@@ -325,26 +281,61 @@ export default function PersonalizedSpace() {
               </div>
             )}
             {result && result.cultivationPlan && (
-              <div className="relative space-y-6">
-                {/* Timeline line */}
-                <div className="absolute left-5 top-0 h-full w-0.5 bg-border -translate-x-1/2"></div>
-
-                {result.cultivationPlan.map((week: WeeklyTask, index) => (
-                  <div key={index} className="relative flex items-start gap-4">
-                     <div className="z-10 flex h-10 w-10 items-center justify-center rounded-full border-2 bg-background font-bold"
-                        style={{borderColor: (index + 1) === currentWeek ? 'hsl(var(--primary))' : 'hsl(var(--border))'}}>
-                        {index + 1}
-                     </div>
-                    <div className="flex-1 pt-1.5">
-                       <p className={cn("font-bold", (index + 1) === currentWeek ? "text-primary" : "")}>
-                            {t.week} {index + 1}: {week.stage}
-                            {(index + 1) === currentWeek && <span className="ml-2 text-xs font-normal text-muted-foreground">({t.currentWeek})</span>}
-                        </p>
-                      <p className="text-sm text-muted-foreground mt-1">{week.tasks}</p>
+                <div className="space-y-4">
+                    <div>
+                        <div className="flex justify-between items-center mb-2">
+                            <span className="text-sm font-medium">{t.week} {Math.min(currentWeek, totalWeeks)} of {totalWeeks}</span>
+                        </div>
+                        <Progress value={progressPercentage} />
                     </div>
-                  </div>
-                ))}
-              </div>
+
+                    <ScrollArea className="w-full whitespace-nowrap">
+                        <div className="flex space-x-4 pb-4">
+                            {result.cultivationPlan.map((week: WeeklyTask, index) => {
+                                const weekNumber = index + 1;
+                                const isPast = weekNumber < currentWeek;
+                                const isActive = weekNumber === currentWeek;
+                                const isSelected = weekNumber === selectedWeek;
+
+                                return (
+                                <button
+                                    key={index}
+                                    onClick={() => setSelectedWeek(weekNumber)}
+                                    className={cn(
+                                        "flex-shrink-0 flex flex-col items-center justify-center space-y-2 p-4 w-28 h-36 rounded-lg border-2 transition-all",
+                                        isPast && "border-gray-200 bg-gray-50 text-gray-400",
+                                        isActive && !isSelected && "border-primary bg-primary/10",
+                                        isSelected && "border-primary bg-primary/20 ring-2 ring-primary",
+                                        !isActive && !isPast && !isSelected && "border-border"
+                                    )}
+                                >
+                                    <div className="relative">
+                                        <DynamicIcon name={week.iconName} />
+                                        {isPast && <LucideIcons.CheckCircle2 className="absolute -top-2 -right-2 size-5 text-green-500 bg-white rounded-full" />}
+                                    </div>
+                                    <span className="font-bold text-sm">{t.week} {weekNumber}</span>
+                                    <span className="text-xs text-center truncate w-full">{week.stage}</span>
+                                </button>
+                                );
+                            })}
+                        </div>
+                        <ScrollBar orientation="horizontal" />
+                    </ScrollArea>
+                    
+                    {selectedWeekData && (
+                        <Card className="mt-4 bg-muted/50">
+                            <CardHeader>
+                                <CardTitle className="flex items-center justify-between">
+                                    <span>{t.tasksForWeek} {selectedWeek}: {selectedWeekData.stage}</span>
+                                    <SpeakButton textToSpeak={`${t.tasksForWeek} ${selectedWeek}. ${selectedWeekData.stage}. ${selectedWeekData.tasks}`} />
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-sm">{selectedWeekData.tasks}</p>
+                            </CardContent>
+                        </Card>
+                    )}
+                </div>
             )}
             {!isPending && !result && (
               <div className="flex h-96 flex-col items-center justify-center text-center text-muted-foreground">
