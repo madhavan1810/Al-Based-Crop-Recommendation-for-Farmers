@@ -1,8 +1,8 @@
-const withNextIntl = require('next-intl/plugin')('./i18n.ts');
+
+const withNextIntl = require('next-intl/plugin')();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -29,6 +29,24 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+    ],
+  },
+   experimental: {
+    // This is required to support our AI-powered features.
+    serverComponentsExternalPackages: [
+      '@genkit-ai/ai',
+      '@genkit-ai/core',
+      '@genkit-ai/googleai',
+      'genkit',
+      'zod',
+      '@opentelemetry/api',
+      '@opentelemetry/exporter-trace-otlp-http',
+      '@opentelemetry/instrumentation',
+      '@opentelemetry/resources',
+      '@opentelemetry/sdk-node',
+      '@opentelemetry/sdk-trace-base',
+      '@opentelemetry/sdk-trace-node',
+      '@opentelemetry/semantic-conventions',
     ],
   },
 };
