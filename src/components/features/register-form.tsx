@@ -1,11 +1,10 @@
-
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useTranslations } from 'next-intl';
-import { UserPlus } from 'lucide-react';
+import { UserPlus, Upload } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -21,12 +20,14 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Link, useRouter } from '@/lib/i18n-navigation';
 import { useToast } from '@/hooks/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import React from 'react';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
   email: z.string().email({ message: 'Please enter a valid email.' }),
   password: z.string().min(8, { message: 'Password must be at least 8 characters.' }),
   soilType: z.string().min(1, { message: 'Please select a soil type.' }),
+  soilReport: z.any().optional(),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -35,6 +36,8 @@ export function RegisterForm() {
   const t = useTranslations('RegisterForm');
   const { toast } = useToast();
   const router = useRouter();
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const [fileName, setFileName] = React.useState('');
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -45,6 +48,14 @@ export function RegisterForm() {
       soilType: '',
     },
   });
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setFileName(file.name);
+      form.setValue('soilReport', file);
+    }
+  };
 
   const onSubmit = (data: FormData) => {
     // This is a mock registration, so we'll just show a success message.
@@ -121,6 +132,36 @@ export function RegisterForm() {
                       <SelectItem value="Other">{t('other')}</SelectItem>
                     </SelectContent>
                   </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="soilReport"
+              render={() => (
+                <FormItem>
+                  <FormLabel>{t('soilReportLabel')}</FormLabel>
+                  <FormControl>
+                    <>
+                      <Input
+                        type="file"
+                        accept=".pdf,image/*"
+                        ref={fileInputRef}
+                        onChange={handleFileChange}
+                        className="hidden"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="w-full justify-start"
+                        onClick={() => fileInputRef.current?.click()}
+                      >
+                        <Upload className="mr-2" />
+                        {fileName || t('soilReportPlaceholder')}
+                      </Button>
+                    </>
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

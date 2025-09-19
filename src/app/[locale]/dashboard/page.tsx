@@ -1,8 +1,7 @@
-
 'use client';
 
 import Image from 'next/image';
-import { ArrowRight, Sprout, ScanLine, Sun } from 'lucide-react';
+import { ArrowRight, Sprout, ScanLine, UserCheck } from 'lucide-react';
 import {useTranslations} from 'next-intl';
 
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -35,8 +34,8 @@ export default function Page() {
     {
       title: t('feature3Title'),
       description: t('feature3Description'),
-      link: '/personalized-advice',
-      icon: <Sun className="size-8 text-primary" />,
+      link: '/personalized-space',
+      icon: <UserCheck className="size-8 text-primary" />,
     },
   ];
 

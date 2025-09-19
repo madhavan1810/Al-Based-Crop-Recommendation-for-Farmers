@@ -1,11 +1,10 @@
-'use client';
 
-import PersonalizedAdviceForm from "@/components/features/personalized-advice-form";
+import PersonalizedSpace from "@/components/features/personalized-space";
 import { AppShell } from "@/components/layout/app-shell";
 import {useTranslations} from 'next-intl';
 
-export default function PersonalizedAdvicePage() {
-  const t = useTranslations('PersonalizedAdvicePage');
+export default function PersonalizedSpacePage() {
+  const t = useTranslations('PersonalizedSpacePage');
   return (
     <AppShell>
       <div className="flex-1 p-4 md:p-6">
@@ -17,7 +16,7 @@ export default function PersonalizedAdvicePage() {
             {t('description')}
           </p>
         </div>
-        <PersonalizedAdviceForm />
+        <PersonalizedSpace />
       </div>
     </AppShell>
   );

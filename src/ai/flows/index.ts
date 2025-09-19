@@ -12,4 +12,5 @@ import './crop-recommendations';
 import './disease-detection-flow';
 import './market-price-flow';
 import './multilingual-chatbot-assistance';
-import './personalized-farming-advice';
+import './personalized-space-flow';
+import './generate-pdf-flow';

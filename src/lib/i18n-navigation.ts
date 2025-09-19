@@ -1,4 +1,3 @@
-
 import {
   createLocalizedPathnamesNavigation,
   Pathnames,
@@ -18,7 +17,7 @@ export const pathnames: Pathnames<typeof locales> = {
   '/dashboard': '/dashboard',
   '/crop-recommendation': '/crop-recommendation',
   '/disease-detection': '/disease-detection',
-  '/personalized-advice': '/personalized-advice',
+  '/personalized-space': '/personalized-space',
   '/profile': '/profile',
 };
 

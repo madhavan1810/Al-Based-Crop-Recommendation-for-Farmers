@@ -1,3 +1,4 @@
+'use client';
 
 import { AppShell } from '@/components/layout/app-shell';
 import { useTranslations } from 'next-intl';
@@ -20,9 +21,13 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import React from 'react';
+import { Input } from '@/components/ui/input';
 
 export default function ProfilePage() {
   const t = useTranslations('ProfilePage');
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const [fileName, setFileName] = React.useState('');
 
   // Mock user data
   const user = {
@@ -44,6 +49,7 @@ export default function ProfilePage() {
       k: '45',
       ph: 6.8,
       status: 'Active',
+      fileName: 'SoilReport_2024.pdf'
     },
     {
       year: 2023,
@@ -52,6 +58,7 @@ export default function ProfilePage() {
       k: '48',
       ph: 6.5,
       status: 'Archived',
+      fileName: 'SoilReport_2023.pdf'
     },
     {
       year: 2022,
@@ -60,8 +67,18 @@ export default function ProfilePage() {
       k: '50',
       ph: 6.7,
       status: 'Archived',
+      fileName: 'SoilReport_2022.pdf'
     },
   ];
+  
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setFileName(file.name);
+      // Here you would typically handle the file upload
+      console.log('Uploading file:', file.name);
+    }
+  };
 
   return (
     <AppShell>
@@ -131,10 +148,19 @@ export default function ProfilePage() {
                 <CardTitle>{t('soilHealthTitle')}</CardTitle>
                 <CardDescription>{t('soilHealthDescription')}</CardDescription>
               </div>
-              <Button>
-                <Upload className="mr-2" />
-                {t('uploadReportButton')}
-              </Button>
+              <>
+                 <Input
+                    type="file"
+                    accept=".pdf,image/*"
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+                <Button onClick={() => fileInputRef.current?.click()}>
+                  <Upload className="mr-2" />
+                  {t('uploadReportButton')}
+                </Button>
+              </>
             </CardHeader>
             <CardContent>
               <Table>
@@ -152,7 +178,7 @@ export default function ProfilePage() {
                   {soilRecords.map((record) => (
                     <TableRow key={record.year}>
                       <TableCell className="font-medium">
-                        {record.year}
+                        {record.year} - <span className="text-muted-foreground">{record.fileName}</span>
                       </TableCell>
                       <TableCell>{record.n}</TableCell>
                       <TableCell>{record.p}</TableCell>

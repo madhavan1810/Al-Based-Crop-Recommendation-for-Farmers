@@ -1,4 +1,3 @@
-
 'use client';
 
 import { usePathname } from '@/lib/i18n-navigation';
@@ -6,7 +5,7 @@ import {
   LayoutDashboard,
   ScanLine,
   Sprout,
-  Sun,
+  UserCheck,
   User,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -37,7 +36,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     { href: '/dashboard', label: t('dashboard'), icon: LayoutDashboard },
     { href: '/crop-recommendation', label: t('cropRecommendation'), icon: Sprout },
     { href: '/disease-detection', label: t('diseaseDetection'), icon: ScanLine },
-    { href: '/personalized-advice', label: t('personalizedAdvice'), icon: Sun },
+    { href: '/personalized-space', label: t('personalizedSpace'), icon: UserCheck },
   ];
 
   const isAuthPage = pathname === '/login' || pathname === '/register';
