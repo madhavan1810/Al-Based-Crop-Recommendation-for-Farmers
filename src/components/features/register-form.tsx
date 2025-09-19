@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -96,9 +97,9 @@ export function RegisterForm() {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('nameLabel')}</FormLabel>
+                  <FormLabel>{t.nameLabel}</FormLabel>
                   <FormControl>
-                    <Input placeholder={t('namePlaceholder')} {...field} />
+                    <Input placeholder={t.namePlaceholder} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -109,9 +110,9 @@ export function RegisterForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('emailLabel')}</FormLabel>
+                  <FormLabel>{t.emailLabel}</FormLabel>
                   <FormControl>
-                    <Input placeholder={t('emailPlaceholder')} {...field} />
+                    <Input placeholder={t.emailPlaceholder} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -122,7 +123,7 @@ export function RegisterForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('passwordLabel')}</FormLabel>
+                  <FormLabel>{t.passwordLabel}</FormLabel>
                   <FormControl>
                     <Input type="password" {...field} />
                   </FormControl>
@@ -135,19 +136,19 @@ export function RegisterForm() {
               name="soilType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('soilTypeLabel')}</FormLabel>
+                  <FormLabel>{t.soilTypeLabel}</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder={t('soilTypePlaceholder')} />
+                        <SelectValue placeholder={t.soilTypePlaceholder} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Alluvial">{t('alluvial')}</SelectItem>
-                      <SelectItem value="Black">{t('black')}</SelectItem>
-                      <SelectItem value="Red and Yellow">{t('redAndYellow')}</SelectItem>
-                      <SelectItem value="Laterite">{t('laterite')}</SelectItem>
-                      <SelectItem value="Other">{t('other')}</SelectItem>
+                      <SelectItem value="Alluvial">{t.alluvial}</SelectItem>
+                      <SelectItem value="Black">{t.black}</SelectItem>
+                      <SelectItem value="Red and Yellow">{t.redAndYellow}</SelectItem>
+                      <SelectItem value="Laterite">{t.laterite}</SelectItem>
+                      <SelectItem value="Other">{t.other}</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -159,7 +160,7 @@ export function RegisterForm() {
               name="soilReport"
               render={() => (
                 <FormItem>
-                  <FormLabel>{t('soilReportLabel')}</FormLabel>
+                  <FormLabel>{t.soilReportLabel}</FormLabel>
                   <FormControl>
                     <>
                       <Input
@@ -176,7 +177,7 @@ export function RegisterForm() {
                         onClick={() => fileInputRef.current?.click()}
                       >
                         <Upload className="mr-2" />
-                        {fileName || t('soilReportPlaceholder')}
+                        {fileName || t.soilReportPlaceholder}
                       </Button>
                     </>
                   </FormControl>
@@ -185,14 +186,14 @@ export function RegisterForm() {
               )}
             />
              <Button type="submit" className="w-full">
-              <UserPlus className="mr-2 h-4 w-4" /> {t('registerButton')}
+              <UserPlus className="mr-2 h-4 w-4" /> {t.registerButton}
             </Button>
           </CardContent>
           <CardFooter className="flex justify-center text-sm">
              <p className="text-muted-foreground">
-              {t('loginPrompt')}{' '}
+              {t.loginPrompt}{' '}
               <Button variant="link" asChild className="p-0">
-                <Link href="/login">{t('loginLink')}</Link>
+                <Link href="/login">{t.loginLink}</Link>
               </Button>
             </p>
           </CardFooter>

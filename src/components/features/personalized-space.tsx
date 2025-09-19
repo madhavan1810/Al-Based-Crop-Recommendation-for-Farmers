@@ -201,8 +201,8 @@ export default function PersonalizedSpace() {
       <div className="lg:col-span-1">
         <Card>
           <CardHeader>
-            <CardTitle>{t('formTitle')}</CardTitle>
-            <CardDescription>{t('formDescription')}</CardDescription>
+            <CardTitle>{t.formTitle}</CardTitle>
+            <CardDescription>{t.formDescription}</CardDescription>
           </CardHeader>
           <CardContent>
             <Form {...form}>
@@ -212,9 +212,9 @@ export default function PersonalizedSpace() {
                   name="crop"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('cropLabel')}</FormLabel>
+                      <FormLabel>{t.cropLabel}</FormLabel>
                       <FormControl>
-                        <Input placeholder={t('cropPlaceholder')} {...field} />
+                        <Input placeholder={t.cropPlaceholder} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -225,11 +225,11 @@ export default function PersonalizedSpace() {
                   name="district"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('districtLabel')}</FormLabel>
+                      <FormLabel>{t.districtLabel}</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder={t('districtPlaceholder')} />
+                            <SelectValue placeholder={t.districtPlaceholder} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -245,11 +245,11 @@ export default function PersonalizedSpace() {
                   name="sowingDate"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('sowingDateLabel')}</FormLabel>
+                      <FormLabel>{t.sowingDateLabel}</FormLabel>
                       <FormControl>
                         <Input type="date" {...field} />
                       </FormControl>
-                       <FormDescription>{t('sowingDateDescription')}</FormDescription>
+                       <FormDescription>{t.sowingDateDescription}</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -259,7 +259,7 @@ export default function PersonalizedSpace() {
                     name="soilReport"
                     render={() => (
                         <FormItem>
-                        <FormLabel>{t('soilReportLabel')}</FormLabel>
+                        <FormLabel>{t.soilReportLabel}</FormLabel>
                         <FormControl>
                             <>
                             <Input
@@ -276,20 +276,20 @@ export default function PersonalizedSpace() {
                                 onClick={() => fileInputRef.current?.click()}
                             >
                                 <Upload className="mr-2" />
-                                {fileName || t('soilReportPlaceholder')}
+                                {fileName || t.soilReportPlaceholder}
                             </Button>
                             </>
                         </FormControl>
-                        <FormDescription>{t('soilReportDescription')}</FormDescription>
+                        <FormDescription>{t.soilReportDescription}</FormDescription>
                         <FormMessage />
                         </FormItem>
                     )}
                 />
                 <Button type="submit" disabled={isPending} className="w-full">
                   {isPending ? (
-                    <><LoaderCircle className="mr-2 h-4 w-4 animate-spin" />{t('generatingPlan')}</>
+                    <><LoaderCircle className="mr-2 h-4 w-4 animate-spin" />{t.generatingPlan}</>
                   ) : (
-                    <><BrainCircuit className="mr-2 h-4 w-4" />{t('getPlan')}</>
+                    <><BrainCircuit className="mr-2 h-4 w-4" />{t.getPlan}</>
                   )}
                 </Button>
               </form>
@@ -303,15 +303,15 @@ export default function PersonalizedSpace() {
           <CardHeader>
             <div className="flex justify-between items-center">
                 <div>
-                    <CardTitle>{t('planTitle')}</CardTitle>
-                    <CardDescription>{t('planDescription')}</CardDescription>
+                    <CardTitle>{t.planTitle}</CardTitle>
+                    <CardDescription>{t.planDescription}</CardDescription>
                 </div>
                  {result && (
                     <Button onClick={handleDownloadPdf} disabled={isDownloading}>
                         {isDownloading ? (
-                            <><LoaderCircle className="mr-2 h-4 w-4 animate-spin" />{t('downloading')}</>
+                            <><LoaderCircle className="mr-2 h-4 w-4 animate-spin" />{t.downloading}</>
                         ) : (
-                            <><FileDown className="mr-2 h-4 w-4" />{t('downloadPdf')}</>
+                            <><FileDown className="mr-2 h-4 w-4" />{t.downloadPdf}</>
                         )}
                     </Button>
                 )}
@@ -321,7 +321,7 @@ export default function PersonalizedSpace() {
             {isPending && (
               <div className="flex h-96 flex-col items-center justify-center gap-2 text-muted-foreground">
                 <LoaderCircle className="h-8 w-8 animate-spin text-primary" />
-                <span>{t('generatingPlan')}</span>
+                <span>{t.generatingPlan}</span>
               </div>
             )}
             {result && result.cultivationPlan && (
@@ -337,8 +337,8 @@ export default function PersonalizedSpace() {
                      </div>
                     <div className="flex-1 pt-1.5">
                        <p className={cn("font-bold", (index + 1) === currentWeek ? "text-primary" : "")}>
-                            {t('week')} {index + 1}: {week.stage}
-                            {(index + 1) === currentWeek && <span className="ml-2 text-xs font-normal text-muted-foreground">({t('currentWeek')})</span>}
+                            {t.week} {index + 1}: {week.stage}
+                            {(index + 1) === currentWeek && <span className="ml-2 text-xs font-normal text-muted-foreground">({t.currentWeek})</span>}
                         </p>
                       <p className="text-sm text-muted-foreground mt-1">{week.tasks}</p>
                     </div>
@@ -349,13 +349,13 @@ export default function PersonalizedSpace() {
             {!isPending && !result && (
               <div className="flex h-96 flex-col items-center justify-center text-center text-muted-foreground">
                 <Calendar className="mx-auto h-12 w-12" />
-                <p className="mt-4">{t('placeholder')}</p>
+                <p className="mt-4">{t.placeholder}</p>
               </div>
             )}
           </CardContent>
           {result && (
             <CardFooter>
-                <p className="text-xs text-muted-foreground">{t('disclaimer')}</p>
+                <p className="text-xs text-muted-foreground">{t.disclaimer}</p>
             </CardFooter>
           )}
         </Card>

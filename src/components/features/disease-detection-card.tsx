@@ -1,3 +1,4 @@
+
 'use client';
 
 import Image from 'next/image';
@@ -103,8 +104,8 @@ export default function DiseaseDetection() {
     <Card className="mx-auto max-w-2xl">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
-          <span>{t('uploadTitle')}</span>
-          <Badge variant="outline">{t('badge')}</Badge>
+          <span>{t.uploadTitle}</span>
+          <Badge variant="outline">{t.badge}</Badge>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -120,7 +121,7 @@ export default function DiseaseDetection() {
             />
           </div>
           <div className="grid w-full items-center gap-1.5">
-            <Label htmlFor="picture">{t('pictureLabel')}</Label>
+            <Label htmlFor="picture">{t.pictureLabel}</Label>
             <div className="flex gap-2">
               <Input
                 id="picture"
@@ -135,18 +136,18 @@ export default function DiseaseDetection() {
                 onClick={() => fileInputRef.current?.click()}
               >
                 <Upload className="mr-2 h-4 w-4" />
-                {t('chooseFile')}
+                {t.chooseFile}
               </Button>
               <Button onClick={handleAnalyze} disabled={isAnalyzing || !imagePreview}>
                 {isAnalyzing ? (
                   <>
                     <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
-                    {t('analyzing')}
+                    {t.analyzing}
                   </>
                 ) : (
                   <>
                     <ScanLine className="mr-2 h-4 w-4" />
-                    {t('analyze')}
+                    {t.analyze}
                   </>
                 )}
               </Button>
@@ -159,7 +160,7 @@ export default function DiseaseDetection() {
           <div className="pt-4 text-center text-muted-foreground">
             <LoaderCircle className="mx-auto h-8 w-8 animate-spin text-primary" />
             <p className="mt-2 text-sm">
-              {t('analyzingWithAI')}
+              {t.analyzingWithAI}
             </p>
           </div>
         )}
@@ -169,31 +170,31 @@ export default function DiseaseDetection() {
             <Alert variant={isHealthy ? 'default' : 'destructive'}>
               <Bug className="h-4 w-4" />
               <AlertTitle className="flex items-center justify-between">
-                <span>{t('diagnosisResult')}</span>
+                <span>{t.diagnosisResult}</span>
                  <SpeakButton textToSpeak={speakableText} />
               </AlertTitle>
               <AlertDescription>
                 <div className="mt-4 space-y-4">
                   <div>
-                    <h3 className="font-semibold">{t('diagnosisLabel')}</h3>
+                    <h3 className="font-semibold">{t.diagnosisLabel}</h3>
                     <p className={cn('font-bold', isHealthy ? 'text-green-600' : 'text-destructive')}>
                       {result.disease}
                     </p>
                   </div>
                    <div>
-                    <h3 className="font-semibold">{t('confidenceLabel')}</h3>
+                    <h3 className="font-semibold">{t.confidenceLabel}</h3>
                     <div className="flex items-center gap-2">
                       <Progress value={result.confidence} className="w-48" />
                       <span>{result.confidence.toFixed(0)}%</span>
                     </div>
                   </div>
                    <div>
-                    <h3 className="font-semibold">{t('observationsLabel')}</h3>
+                    <h3 className="font-semibold">{t.observationsLabel}</h3>
                     <p className="text-sm text-muted-foreground">{result.description}</p>
                   </div>
                   {!isHealthy && (
                     <div>
-                        <h3 className="font-semibold">{t('treatmentLabel')}</h3>
+                        <h3 className="font-semibold">{t.treatmentLabel}</h3>
                         <p>{result.treatment}</p>
                     </div>
                   )}
@@ -205,7 +206,7 @@ export default function DiseaseDetection() {
       </CardContent>
       <CardFooter>
         <p className="text-xs text-muted-foreground">
-          {t('disclaimer')}
+          {t.disclaimer}
         </p>
       </CardFooter>
     </Card>

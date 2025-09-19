@@ -1,3 +1,4 @@
+
 'use client';
 
 import { AppShell } from '@/components/layout/app-shell';
@@ -96,7 +97,7 @@ export default function ProfilePage() {
     <AppShell>
       <div className="flex-1 space-y-6 p-4 md:p-6">
         <div className="mb-6">
-          <h1 className="font-headline text-3xl font-bold">{t('title')}</h1>
+          <h1 className="font-headline text-3xl font-bold">{t.title}</h1>
         </div>
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <Card className="lg:col-span-1">
@@ -114,13 +115,13 @@ export default function ProfilePage() {
             <CardContent className="space-y-4">
               <div className="grid gap-1">
                 <p className="text-sm font-medium text-muted-foreground">
-                  {t('email')}
+                  {t.email}
                 </p>
                 <p>{user.email}</p>
               </div>
               <div className="grid gap-1">
                 <p className="text-sm font-medium text-muted-foreground">
-                  {t('location')}
+                  {t.location}
                 </p>
                 <p>{user.location}</p>
               </div>
@@ -128,7 +129,7 @@ export default function ProfilePage() {
                 <Mountain className="h-5 w-5 text-muted-foreground" />
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">
-                    {t('soilType')}
+                    {t.soilType}
                   </p>
                   <p>{user.soilType}</p>
                 </div>
@@ -137,7 +138,7 @@ export default function ProfilePage() {
                 <Droplets className="h-5 w-5 text-muted-foreground" />
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">
-                    {t('waterSource')}
+                    {t.waterSource}
                   </p>
                   <p>{user.waterSource}</p>
                 </div>
@@ -146,7 +147,7 @@ export default function ProfilePage() {
                 <Banknote className="h-5 w-5 text-muted-foreground" />
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">
-                    {t('annualBudget')}
+                    {t.annualBudget}
                   </p>
                   <p>{user.annualBudget}</p>
                 </div>
@@ -157,8 +158,8 @@ export default function ProfilePage() {
           <Card className="lg:col-span-2">
             <CardHeader className="flex flex-row items-center justify-between">
               <div>
-                <CardTitle>{t('soilHealthTitle')}</CardTitle>
-                <CardDescription>{t('soilHealthDescription')}</CardDescription>
+                <CardTitle>{t.soilHealthTitle}</CardTitle>
+                <CardDescription>{t.soilHealthDescription}</CardDescription>
               </div>
               <>
                  <Input
@@ -170,7 +171,7 @@ export default function ProfilePage() {
                   />
                 <Button onClick={() => fileInputRef.current?.click()}>
                   <Upload className="mr-2" />
-                  {t('uploadReportButton')}
+                  {t.uploadReportButton}
                 </Button>
               </>
             </CardHeader>
@@ -178,12 +179,12 @@ export default function ProfilePage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>{t('reportYear')}</TableHead>
+                    <TableHead>{t.reportYear}</TableHead>
                     <TableHead>N (kg/ha)</TableHead>
                     <TableHead>P (kg/ha)</TableHead>
                     <TableHead>K (kg/ha)</TableHead>
                     <TableHead>pH</TableHead>
-                    <TableHead className="text-right">{t('status')}</TableHead>
+                    <TableHead className="text-right">{t.status}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>

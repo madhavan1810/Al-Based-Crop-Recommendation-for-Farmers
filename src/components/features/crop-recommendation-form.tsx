@@ -130,7 +130,7 @@ export default function CropRecommendationForm() {
     <div className="grid gap-8 md:grid-cols-2">
       <Card>
         <CardHeader>
-          <CardTitle>{t('farmDataTitle')}</CardTitle>
+          <CardTitle>{t.farmDataTitle}</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -141,11 +141,11 @@ export default function CropRecommendationForm() {
                   name="district"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('districtLabel')}</FormLabel>
+                      <FormLabel>{t.districtLabel}</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder={t('districtPlaceholder')} />
+                            <SelectValue placeholder={t.districtPlaceholder} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -161,18 +161,18 @@ export default function CropRecommendationForm() {
                   name="season"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('seasonLabel')}</FormLabel>
+                      <FormLabel>{t.seasonLabel}</FormLabel>
                        <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder={t('seasonPlaceholder')} />
+                            <SelectValue placeholder={t.seasonPlaceholder} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="Kharif">{t('kharif')}</SelectItem>
-                          <SelectItem value="Rabi">{t('rabi')}</SelectItem>
-                          <SelectItem value="Summer">{t('summer')}</SelectItem>
-                          <SelectItem value="Whole Year">{t('wholeYear')}</SelectItem>
+                          <SelectItem value="Kharif">{t.kharif}</SelectItem>
+                          <SelectItem value="Rabi">{t.rabi}</SelectItem>
+                          <SelectItem value="Summer">{t.summer}</SelectItem>
+                          <SelectItem value="Whole Year">{t.wholeYear}</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -186,17 +186,17 @@ export default function CropRecommendationForm() {
                   name="topography"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t('topographyLabel')}</FormLabel>
+                      <FormLabel>{t.topographyLabel}</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder={t('topographyPlaceholder')} />
+                            <SelectValue placeholder={t.topographyPlaceholder} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="Flat">{t('flat')}</SelectItem>
-                          <SelectItem value="Gentle Slope">{t('gentleSlope')}</SelectItem>
-                          <SelectItem value="Steep Slope">{t('steepSlope')}</SelectItem>
+                          <SelectItem value="Flat">{t.flat}</SelectItem>
+                          <SelectItem value="Gentle Slope">{t.gentleSlope}</SelectItem>
+                          <SelectItem value="Steep Slope">{t.steepSlope}</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -205,7 +205,7 @@ export default function CropRecommendationForm() {
                 />
 
                 <div>
-                    <FormLabel>{t('cropHistoryLabel')}</FormLabel>
+                    <FormLabel>{t.cropHistoryLabel}</FormLabel>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
                         <FormField
                         control={form.control}
@@ -215,7 +215,7 @@ export default function CropRecommendationForm() {
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <FormControl>
                                 <SelectTrigger>
-                                    <SelectValue placeholder={t('season1Placeholder')} />
+                                    <SelectValue placeholder={t.season1Placeholder} />
                                 </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
@@ -233,7 +233,7 @@ export default function CropRecommendationForm() {
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <FormControl>
                                 <SelectTrigger>
-                                    <SelectValue placeholder={t('season2Placeholder')} />
+                                    <SelectValue placeholder={t.season2Placeholder} />
                                 </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
@@ -251,7 +251,7 @@ export default function CropRecommendationForm() {
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <FormControl>
                                 <SelectTrigger>
-                                    <SelectValue placeholder={t('season3Placeholder')} />
+                                    <SelectValue placeholder={t.season3Placeholder} />
                                 </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
@@ -263,7 +263,7 @@ export default function CropRecommendationForm() {
                         />
                     </div>
                     <FormDescription className="mt-2">
-                        {t('cropHistoryDescription')}
+                        {t.cropHistoryDescription}
                     </FormDescription>
                 </div>
 
@@ -272,16 +272,16 @@ export default function CropRecommendationForm() {
                 name="soilAnalysis"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t('soilAnalysisLabel')}</FormLabel>
+                    <FormLabel>{t.soilAnalysisLabel}</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder={t('soilAnalysisPlaceholder')}
+                        placeholder={t.soilAnalysisPlaceholder}
                         {...field}
                         rows={4}
                       />
                     </FormControl>
                     <FormDescription>
-                      {t('soilAnalysisDescription')}
+                      {t.soilAnalysisDescription}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -292,16 +292,16 @@ export default function CropRecommendationForm() {
                 name="weatherData"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t('weatherDataLabel')}</FormLabel>
+                    <FormLabel>{t.weatherDataLabel}</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder={t('weatherDataPlaceholder')}
+                        placeholder={t.weatherDataPlaceholder}
                         {...field}
                         rows={4}
                       />
                     </FormControl>
                     <FormDescription>
-                      {t('weatherDataDescription')}
+                      {t.weatherDataDescription}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -312,12 +312,12 @@ export default function CropRecommendationForm() {
                 {isPending ? (
                   <>
                     <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
-                    {t('analyzing')}
+                    {t.analyzing}
                   </>
                 ) : (
                   <>
                     <BrainCircuit className="mr-2 h-4 w-4" />
-                    {t('getRecommendations')}
+                    {t.getRecommendations}
                   </>
                 )}
               </Button>
@@ -327,13 +327,13 @@ export default function CropRecommendationForm() {
       </Card>
       
       <div className="space-y-4">
-        <h2 className="font-headline text-2xl font-bold">{t('recommendationsTitle')}</h2>
+        <h2 className="font-headline text-2xl font-bold">{t.recommendationsTitle}</h2>
         {isPending && (
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-center">
                 <LoaderCircle className="h-8 w-8 animate-spin text-primary" />
-                <p className="ml-4 text-muted-foreground">{t('generating')}</p>
+                <p className="ml-4 text-muted-foreground">{t.generating}</p>
               </div>
             </CardContent>
           </Card>
@@ -342,7 +342,7 @@ export default function CropRecommendationForm() {
           <Accordion type="single" collapsible defaultValue="item-1" className="w-full">
             <AccordionItem value="item-1">
               <AccordionTrigger className="text-lg font-semibold">
-                <Leaf className="mr-2 size-5 text-green-600" />{t('recommendedCrops')}
+                <Leaf className="mr-2 size-5 text-green-600" />{t.recommendedCrops}
               </AccordionTrigger>
               <AccordionContent className="prose prose-sm max-w-none p-2 text-foreground">
                 <div className="flex items-start gap-2">
@@ -353,7 +353,7 @@ export default function CropRecommendationForm() {
             </AccordionItem>
             <AccordionItem value="item-2">
               <AccordionTrigger className="text-lg font-semibold">
-                <Thermometer className="mr-2 size-5 text-red-500" />{t('plantingInstructions')}
+                <Thermometer className="mr-2 size-5 text-red-500" />{t.plantingInstructions}
               </AccordionTrigger>
               <AccordionContent className="prose prose-sm max-w-none p-2 text-foreground">
                 <div className="flex items-start gap-2">
@@ -364,7 +364,7 @@ export default function CropRecommendationForm() {
             </AccordionItem>
             <AccordionItem value="item-3">
               <AccordionTrigger className="text-lg font-semibold">
-                <ShieldAlert className="mr-2 size-5 text-yellow-600" />{t('riskAssessment')}
+                <ShieldAlert className="mr-2 size-5 text-yellow-600" />{t.riskAssessment}
               </AccordionTrigger>
               <AccordionContent className="prose prose-sm max-w-none p-2 text-foreground">
                 <div className="flex items-start gap-2">
@@ -379,7 +379,7 @@ export default function CropRecommendationForm() {
             <Card className="flex h-64 items-center justify-center">
               <CardContent className="p-6 text-center text-muted-foreground">
                 <BrainCircuit className="mx-auto h-12 w-12" />
-                <p className="mt-4">{t('placeholder')}</p>
+                <p className="mt-4">{t.placeholder}</p>
               </CardContent>
             </Card>
         )}

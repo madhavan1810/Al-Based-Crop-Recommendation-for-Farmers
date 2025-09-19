@@ -1,3 +1,4 @@
+
 'use client';
 
 import Image from 'next/image';
@@ -12,15 +13,15 @@ import CropPricesCard from '@/components/features/crop-prices-card';
 
 export default function Page() {
   const t = {
-    title: "Welcome to KrishiFarm.AI",
-    description: "Your smart partner in modern farming. Powerful AI tools to boost your yield and protect your crops.",
-    feature1Title: "AI Crop Recommendation",
+    title: 'Welcome to KrishiFarm.AI',
+    description: 'Your smart partner in modern farming. Powerful AI tools to boost your yield and protect your crops.',
+    feature1Title: 'AI Crop Recommendation',
     feature1Description: "Get tailored crop suggestions based on your farm's data.",
-    feature2Title: "Plant Disease Detection",
-    feature2Description: "Quickly identify plant diseases with our offline-first tool.",
-    feature3Title: "Personalized Cultivation Space",
-    feature3Description: "Generate a complete week-by-week plan for your crop.",
-    getStarted: "Get Started"
+    feature2Title: 'Plant Disease Detection',
+    feature2Description: 'Quickly identify plant diseases with our offline-first tool.',
+    feature3Title: 'Personalized Cultivation Space',
+    feature3Description: 'Generate a complete week-by-week plan for your crop.',
+    getStarted: 'Get Started'
   };
   const getImage = (id: string) =>
     PlaceHolderImages.find((img) => img.id === id) || PlaceHolderImages[0];

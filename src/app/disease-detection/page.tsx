@@ -1,3 +1,4 @@
+
 import DiseaseDetection from '@/components/features/disease-detection-card';
 import { AppShell } from '@/components/layout/app-shell';
 

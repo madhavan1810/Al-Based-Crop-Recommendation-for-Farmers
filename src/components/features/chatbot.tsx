@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect, useRef, useState, useTransition } from 'react';
@@ -67,16 +68,16 @@ export default function Chatbot() {
       <DialogTrigger asChild>
         <Button className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-lg" size="icon">
           <Bot className="h-8 w-8" />
-          <span className="sr-only">{t('openChatbot')}</span>
+          <span className="sr-only">{t.openChatbot}</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-lg p-0">
         <DialogHeader className="p-6 pb-2">
           <DialogTitle className="flex items-center gap-2 font-headline text-2xl">
-            <Wheat className="text-primary" /> {t('title')}
+            <Wheat className="text-primary" /> {t.title}
           </DialogTitle>
           <DialogDescription>
-            {t('description')}
+            {t.description}
           </DialogDescription>
         </DialogHeader>
 
@@ -137,7 +138,7 @@ export default function Chatbot() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                placeholder={t('inputPlaceholder')}
+                placeholder={t.inputPlaceholder}
                 className="pr-10"
               />
               <div className="absolute inset-y-0 right-2 flex items-center">

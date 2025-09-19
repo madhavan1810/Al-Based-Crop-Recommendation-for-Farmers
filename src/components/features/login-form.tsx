@@ -70,9 +70,9 @@ export function LoginForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('emailLabel')}</FormLabel>
+                  <FormLabel>{t.emailLabel}</FormLabel>
                   <FormControl>
-                    <Input placeholder={t('emailPlaceholder')} {...field} />
+                    <Input placeholder={t.emailPlaceholder} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -83,7 +83,7 @@ export function LoginForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('passwordLabel')}</FormLabel>
+                  <FormLabel>{t.passwordLabel}</FormLabel>
                   <FormControl>
                     <Input type="password" {...field} />
                   </FormControl>
@@ -92,14 +92,14 @@ export function LoginForm() {
               )}
             />
              <Button type="submit" className="w-full">
-              <LogIn className="mr-2 h-4 w-4" /> {t('loginButton')}
+              <LogIn className="mr-2 h-4 w-4" /> {t.loginButton}
             </Button>
           </CardContent>
           <CardFooter className="flex justify-center text-sm">
              <p className="text-muted-foreground">
-              {t('registerPrompt')}{' '}
+              {t.registerPrompt}{' '}
               <Button variant="link" asChild className="p-0">
-                <Link href="/register">{t('registerLink')}</Link>
+                <Link href="/register">{t.registerLink}</Link>
               </Button>
             </p>
           </CardFooter>
