@@ -24,7 +24,7 @@ const nextConfig = {
         pathname: '/**',
       },
       {
-        protocol: 'https',
+        protocol: 'https,
         hostname: 'picsum.photos',
         port: '',
         pathname: '/**',
@@ -40,10 +40,10 @@ const nextConfig = {
       '@opentelemetry/instrumentation',
       'require-in-the-middle'
     ],
-    allowedDevOrigins: [
-        "https://6000-firebase-studio-1757467904870.cluster-ubrd2huk7jh6otbgyei4h62ope.cloudworkstations.dev"
-    ]
   },
+  allowedDevOrigins: [
+      "https://6000-firebase-studio-1757467904870.cluster-ubrd2huk7jh6otbgyei4h62ope.cloudworkstations.dev"
+  ]
 };
 
 module.exports = withNextIntl(nextConfig);
