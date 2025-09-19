@@ -5,13 +5,11 @@
  * @fileOverview Converts HTML content of a cultivation plan into a downloadable PDF.
  *
  * - generatePdfFlow - A function that takes HTML and plan data to generate a PDF.
- * - GeneratePdfInput - The input type for the generatePdfFlow.
- * - GeneratePdfOutput - The return type for the generatePdfFlow.
  */
 
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
-import { WeeklyTaskSchema } from './personalized-space-flow';
+import { WeeklyTaskSchema } from '@/ai/schemas/personalized-space-schema';
 
 // Input Schema
 export const GeneratePdfInputSchema = z.object({
@@ -109,3 +107,5 @@ const generateAndConvertToPdf = ai.defineFlow(
     return { pdfBase64 };
   }
 );
+
+    

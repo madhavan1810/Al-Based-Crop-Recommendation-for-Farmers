@@ -5,17 +5,19 @@
  * @fileOverview Generates a personalized, week-by-week cultivation plan for a farmer.
  *
  * - getPersonalizedCultivationPlan - Generates a complete cultivation plan.
- * - PersonalizedCultivationPlanInput - Input schema for the plan generation.
- * - PersonalizedCultivationPlanOutput - Output schema for the plan generation.
  */
 
 import { ai } from '@/ai/genkit';
 import { getWeatherData } from '@/services/weather-service';
 import { z } from 'genkit';
+import { PersonalizedCultivationPlanInputSchema, PersonalizedCultivationPlanOutputSchema } from '@/ai/schemas/personalized-space-schema';
 
 // Register Handlebars helper at the top level
 ai.handlebars.registerHelper('contains', function(context, substring) {
-    return context && context.includes(substring);
+    if (typeof context !== 'string' || typeof substring !== 'string') {
+        return false;
+    }
+    return context.includes(substring);
 });
 
 // Tool to get weather data
@@ -38,34 +40,8 @@ const getWeatherTool = ai.defineTool(
   }
 );
 
-// Input Schema
-const PersonalizedCultivationPlanInputSchema = z.object({
-  crop: z.string().describe('The crop the farmer intends to grow (e.g., "Tomato", "Wheat").'),
-  district: z.string().describe('The district where the farm is located (e.g., "Ludhiana", "Nashik").'),
-  sowingDate: z.string().describe('The planned sowing date for the crop in YYYY-MM-DD format.'),
-  soilReport: z.string().optional().describe(
-    "The farmer's soil report, either as text or a Data URI of a PDF/image. E.g., 'pH: 6.8, N: High, P: Med, K: Low' or 'data:application/pdf;base64,...'"
-  ),
-  userProfile: z.string().describe("A brief summary of the farmer's profile, including location, experience, and resources."),
-});
-export type PersonalizedCultivationPlanInput = z.infer<typeof PersonalizedCultivationPlanInputSchema>;
-
-
-// Output Schema
-export const WeeklyTaskSchema = z.object({
-  stage: z.string().describe('The name of the cultivation stage for this week (e.g., "Land Preparation", "Vegetative Growth", "Flowering", "Harvesting").'),
-  tasks: z.string().describe('A detailed, actionable list of tasks and advice for the farmer to perform during this specific week.'),
-});
-export type WeeklyTask = z.infer<typeof WeeklyTaskSchema>;
-
-const PersonalizedCultivationPlanOutputSchema = z.object({
-  cultivationPlan: z.array(WeeklyTaskSchema).describe('A week-by-week plan for the entire crop cycle.'),
-});
-export type PersonalizedCultivationPlanOutput = z.infer<typeof PersonalizedCultivationPlanOutputSchema>;
-
-
 // The exported wrapper function
-export async function getPersonalizedCultivationPlan(input: PersonalizedCultivationPlanInput): Promise<PersonalizedCultivationPlanOutput> {
+export async function getPersonalizedCultivationPlan(input: z.infer<typeof PersonalizedCultivationPlanInputSchema>): Promise<z.infer<typeof PersonalizedCultivationPlanOutputSchema>> {
   return personalizedCultivationPlanFlow(input);
 }
 
@@ -130,3 +106,5 @@ const personalizedCultivationPlanFlow = ai.defineFlow(
     return output;
   }
 );
+
+    

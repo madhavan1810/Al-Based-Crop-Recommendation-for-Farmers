@@ -10,12 +10,12 @@ import { useTranslations, useLocale } from 'next-intl';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
-import {
-  getPersonalizedCultivationPlan,
-  type PersonalizedCultivationPlanOutput,
-  type WeeklyTask,
-} from '@/ai/flows/personalized-space-flow';
+import { getPersonalizedCultivationPlan } from '@/ai/flows/personalized-space-flow';
 import { generatePdfFlow } from '@/ai/flows/generate-pdf-flow';
+import { 
+    type PersonalizedCultivationPlanOutput,
+    type WeeklyTask,
+} from '@/ai/schemas/personalized-space-schema';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -336,3 +336,5 @@ export default function PersonalizedSpace() {
     </div>
   );
 }
+
+    
