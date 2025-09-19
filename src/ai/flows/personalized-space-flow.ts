@@ -13,6 +13,11 @@ import { ai } from '@/ai/genkit';
 import { getWeatherData } from '@/services/weather-service';
 import { z } from 'genkit';
 
+// Register Handlebars helper at the top level
+ai.handlebars.registerHelper('contains', function(context, substring) {
+    return context && context.includes(substring);
+});
+
 // Tool to get weather data
 const getWeatherTool = ai.defineTool(
   {
@@ -118,11 +123,6 @@ const personalizedCultivationPlanFlow = ai.defineFlow(
     outputSchema: PersonalizedCultivationPlanOutputSchema,
   },
   async (input) => {
-    // Helper to check for substring in Handlebars
-    ai.handlebars.registerHelper('contains', function(context, substring) {
-        return context && context.includes(substring);
-    });
-      
     const { output } = await prompt(input);
     if (!output) {
       throw new Error('Failed to generate a cultivation plan.');
