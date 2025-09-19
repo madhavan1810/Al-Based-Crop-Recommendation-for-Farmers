@@ -71,17 +71,27 @@ const prompt = ai.definePrompt({
     *   **stage:** A short, clear label for the cultivation stage (e.g., "Land Prep," "Sowing," "Growth," "Harvest").
     *   **tasks:** A concise, simple, and actionable to-do list for that week. Use simple language.
     *   **iconName:** For each week, select the MOST IMPORTANT action and assign a corresponding Lucide icon name from the list below. This icon will be the primary visual cue for the week's tasks.
-        *   \`Tractor\`: For land preparation, plowing.
-        *   \`Bean\`: For seed selection or treatment.
-        *   \`Droplets\`: For irrigation or water management.
-        *   \`Package\`: For fertilizer application.
-        *   \`Shield\`: For pest/disease prevention.
-        *   \`Bug\`: For pest/disease treatment.
-        *   \`Scissors\`: For pruning or weeding.
-        *   \`Flower\`: For flowering stage.
-        *   \`Wheat\`: For harvesting.
-        *   \`Archive\`: For post-harvest activities.
-        *   \`ClipboardCheck\`: For general inspection or monitoring.
+    *   **dailyTasks:** Create a 7-day breakdown of tasks for the week, starting with Monday. For each day, provide a short task and a relevant icon. If a day has no specific task, you can label it "Rest Day" or "Monitoring" and use a relevant icon like 'Calendar' or 'ClipboardCheck'.
+
+**Lucide Icon List for Weekly Icons:**
+*   \`Tractor\`: For land preparation, plowing.
+*   \`Bean\`: For seed selection or treatment.
+*   \`Droplets\`: For irrigation or water management.
+*   \`Package\`: For fertilizer application.
+*   \`Shield\`: For pest/disease prevention.
+*   \`Bug\`: For pest/disease treatment.
+*   \`Scissors\`: For pruning or weeding.
+*   \`Flower\`: For flowering stage.
+*   \`Wheat\`: For harvesting.
+*   \`Archive\`: For post-harvest activities.
+*   \`ClipboardCheck\`: For general inspection or monitoring.
+
+**Lucide Icon List for Daily Icons:**
+*   Use any relevant icon from the weekly list, plus:
+*   \`Calendar\`: For rest days or days with no specific, active tasks.
+*   \`Sun\`: For monitoring weather/sunlight.
+*   \`CloudRain\`: If irrigation depends on rainfall.
+*   \`Check\`: For completing a simple check or task.
 
 **Output Format:**
 Respond ONLY with the JSON object that adheres to the \`PersonalizedCultivationPlanOutput\` schema. The entire plan must be contained within the \`cultivationPlan\` array.

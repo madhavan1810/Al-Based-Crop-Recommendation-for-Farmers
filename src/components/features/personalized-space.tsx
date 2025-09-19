@@ -12,6 +12,7 @@ import { getPersonalizedCultivationPlan } from '@/ai/flows/personalized-space-fl
 import { 
     type PersonalizedCultivationPlanOutput,
     type WeeklyTask,
+    type DailyTask,
 } from '@/ai/schemas/personalized-space-schema';
 import { generatePdfFlow } from '@/ai/flows/generate-pdf-flow';
 
@@ -53,10 +54,10 @@ function getWeekOfSowing(sowingDate: string): number {
     return week;
 }
 
-const DynamicIcon = ({ name }: { name: string }) => {
+const DynamicIcon = ({ name, className }: { name: string; className?: string }) => {
     const Icon = LucideIcons[name as keyof typeof LucideIcons];
-    if (!Icon) return <LucideIcons.Check className="size-8 text-muted-foreground" />;
-    return <Icon className="size-8" />;
+    if (!Icon) return <LucideIcons.Check className={cn("size-8 text-muted-foreground", className)} />;
+    return <Icon className={cn("size-8", className)} />;
 };
 
 
@@ -86,6 +87,7 @@ export default function PersonalizedSpace() {
     placeholder: "Your personalized cultivation plan will appear here once generated.",
     disclaimer: "This is an AI-generated plan. Always adapt based on real-world field conditions and consult local experts.",
     tasksForWeek: "Tasks for Week",
+    dailyPlan: "Daily Plan",
     listenToTasks: "Listen to tasks",
     success: {
         planSaved: "Plan Saved!",
@@ -358,7 +360,21 @@ export default function PersonalizedSpace() {
                                 </CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <p className="text-sm">{selectedWeekData.tasks}</p>
+                                <p className="text-sm text-muted-foreground">{selectedWeekData.tasks}</p>
+                                <div className="mt-4">
+                                  <h4 className="font-semibold mb-2">{t.dailyPlan}</h4>
+                                  <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 text-center">
+                                    {selectedWeekData.dailyTasks.map((day: DailyTask, index: number) => (
+                                      <div key={index} className="flex flex-col items-center p-2 rounded-lg border bg-background/50">
+                                        <p className="font-bold text-xs">{day.day}</p>
+                                        <div className="my-2">
+                                          <DynamicIcon name={day.iconName} className="size-6 text-primary" />
+                                        </div>
+                                        <p className="text-xs text-muted-foreground">{day.tasks || 'No specific task'}</p>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
                             </CardContent>
                         </Card>
                     )}

@@ -15,10 +15,18 @@ export type PersonalizedCultivationPlanInput = z.infer<typeof PersonalizedCultiv
 
 
 // Output Schema
+export const DailyTaskSchema = z.object({
+    day: z.string().describe('The day of the week (e.g., "Monday", "Tuesday").'),
+    tasks: z.string().describe('A simple, actionable task for that specific day. If there are no tasks, return an empty string.'),
+    iconName: z.string().describe('The name of a Lucide icon that best represents the primary action for the day (e.g., "Droplets", "Bug", "ClipboardCheck"). Use "Calendar" for no-task days.'),
+});
+export type DailyTask = z.infer<typeof DailyTaskSchema>;
+
 export const WeeklyTaskSchema = z.object({
   stage: z.string().describe('A short, simple name of the cultivation stage for this week (e.g., "Land Prep", "Growth", "Harvesting").'),
   tasks: z.string().describe('A detailed, actionable list of tasks and advice for the farmer to perform during this specific week. Use simple language.'),
   iconName: z.string().describe('The name of a Lucide icon that best represents the primary action for the week (e.g., "Tractor", "Droplets", "Bug", "Wheat").'),
+  dailyTasks: z.array(DailyTaskSchema).describe('A 7-day breakdown of tasks for the week, starting with Monday.'),
 });
 export type WeeklyTask = z.infer<typeof WeeklyTaskSchema>;
 
@@ -26,5 +34,4 @@ export const PersonalizedCultivationPlanOutputSchema = z.object({
   cultivationPlan: z.array(WeeklyTaskSchema).describe('A week-by-week plan for the entire crop cycle.'),
 });
 export type PersonalizedCultivationPlanOutput = z.infer<typeof PersonalizedCultivationPlanOutputSchema>;
-
     
