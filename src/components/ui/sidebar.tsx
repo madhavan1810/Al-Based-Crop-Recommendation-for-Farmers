@@ -2,7 +2,6 @@
 "use client"
 
 import * as React from "react"
-import { usePathname } from "@/lib/i18n-navigation"
 import { Slot } from "@radix-ui/react-slot"
 import { VariantProps, cva } from "class-variance-authority"
 import { PanelLeft } from "lucide-react"

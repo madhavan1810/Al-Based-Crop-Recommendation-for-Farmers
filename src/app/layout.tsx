@@ -27,7 +27,7 @@ export default async function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
           rel="stylesheet"
         />
-        <meta name="theme-color" content="#f39c12" />
+        <meta name="theme-color" content="#50C878" />
       </head>
       <body className="font-body antialiased">
         <NextIntlClientProvider locale={locale} messages={messages}>

@@ -5,7 +5,9 @@
     "cropRecommendation": "Crop Recommendation",
     "diseaseDetection": "Disease Detection",
     "personalizedAdvice": "Personalized Advice",
-    "profile": "Profile"
+    "profile": "Profile",
+    "login": "Login",
+    "register": "Register"
   },
   "Dashboard": {
     "title": "Welcome to KrishiFarm.AI",

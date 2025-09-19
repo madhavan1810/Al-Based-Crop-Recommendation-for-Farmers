@@ -44,9 +44,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   // Helper to get the current page's label
   const getCurrentLabel = () => {
-    if (isAuthPage) {
-        return pathname === '/login' ? 'Login' : 'Register';
-    }
+    if (pathname === '/login') return t('login');
+    if (pathname === '/register') return t('register');
     if (pathname.includes('/profile')) return t('profile');
     const currentItem = navItems.find(item => pathname.startsWith(item.href));
     return currentItem?.label || 'KrishiFarm.AI';

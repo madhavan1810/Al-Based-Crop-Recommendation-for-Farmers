@@ -5,7 +5,9 @@
     "cropRecommendation": "फसल सिफारिश",
     "diseaseDetection": "रोग पहचान",
     "personalizedAdvice": "व्यक्तिगत सलाह",
-    "profile": "प्रोफ़ाइल"
+    "profile": "प्रोफ़ाइल",
+    "login": "लॉग इन करें",
+    "register": "पंजीकरण"
   },
   "Dashboard": {
     "title": "कृषि फार्म.एआई में आपका स्वागत है",
