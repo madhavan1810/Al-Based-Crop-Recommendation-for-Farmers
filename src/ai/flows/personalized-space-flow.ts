@@ -55,7 +55,7 @@ The plan must be highly personalized and actionable. Use all the information pro
 *   **User Profile:** {{{userProfile}}}
 {{#if soilReport}}
 *   **Soil Report Data:**
-    {{#if (contains soilReport "data:")}}
+    {{#if isSoilReportFile}}
         You have been provided an image or PDF of the soil report. Analyze it to extract key details like pH, N, P, K levels, and soil type.
         Soil Report File: {{media url=soilReport}}
     {{else}}
@@ -91,22 +91,18 @@ const personalizedCultivationPlanFlow = ai.defineFlow(
     outputSchema: PersonalizedCultivationPlanOutputSchema,
   },
   async (input) => {
-    const { output } = await prompt(input, {
-        // Register Handlebars helper in the context of the prompt execution
-        helpers: {
-            contains: (context: string, substring: string) => {
-                if (typeof context !== 'string' || typeof substring !== 'string') {
-                    return false;
-                }
-                return context.includes(substring);
-            }
-        }
+    
+    const isFile = !!input.soilReport && input.soilReport.startsWith('data:');
+
+    const {output} = await prompt({
+        ...input,
+        isSoilReportFile: isFile,
     });
+    
     if (!output) {
       throw new Error('Failed to generate a cultivation plan.');
     }
     return output;
   }
 );
-
     
