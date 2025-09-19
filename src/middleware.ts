@@ -19,6 +19,7 @@ export const config = {
     '/(hi|bn|mr|te|ta|gu|ur|kn|or|ml|pa|as|mai|sat|ks|ne|sd|kok|dgo|mni|brx|sa|en)/:path*',
 
     // Enable redirects that add a locale prefix
-    '/((?!_next|.*\\..*|api).*)'
+    // and exclude assets and API routes
+    '/((?!api|_next/static|_next/image|favicon.ico).*)'
   ]
 };
