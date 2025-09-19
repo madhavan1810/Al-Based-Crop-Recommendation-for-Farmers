@@ -1,3 +1,4 @@
+
 'use client';
 
 import { usePathname } from 'next/navigation';
@@ -102,7 +103,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <Button asChild variant="ghost" size="icon">
                 <Link href="/profile">
                   <User />
-                  <span className="sr-only">{t('profile')}</span>
+                  <span className="sr-only">{t.profile}</span>
                 </Link>
               </Button>
             )}
