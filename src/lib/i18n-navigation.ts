@@ -2,9 +2,9 @@ import {
   createLocalizedPathnamesNavigation,
   Pathnames,
 } from 'next-intl/navigation';
-import {locales as allLocales} from './locales';
+import { allLocales } from './locales';
 
-export const locales = allLocales;
+export const locales = allLocales.map(l => l.code);
 export const defaultLocale = 'en';
 export const localePrefix = 'as-needed';
 
