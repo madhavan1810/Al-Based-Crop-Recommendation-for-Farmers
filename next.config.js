@@ -1,5 +1,4 @@
-
-const withNextIntl = require('next-intl/plugin')('./src/i18n.ts');
+const withNextIntl = require('next-intl/plugin')();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -35,15 +34,15 @@ const nextConfig = {
     serverComponentsExternalPackages: [
       '@genkit-ai/googleai',
       'firebase-admin',
-      'handlebars', 
+      'handlebars',
       'dotprompt',
       '@opentelemetry/instrumentation',
-      'require-in-the-middle'
+      'require-in-the-middle',
     ],
   },
   allowedDevOrigins: [
-      "https://6000-firebase-studio-1757467904870.cluster-ubrd2huk7jh6otbgyei4h62ope.cloudworkstations.dev"
-  ]
+    'https://6000-firebase-studio-1757467904870.cluster-ubrd2huk7jh6otbgyei4h62ope.cloudworkstations.dev',
+  ],
 };
 
 module.exports = withNextIntl(nextConfig);

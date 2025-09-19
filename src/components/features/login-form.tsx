@@ -4,8 +4,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { useTranslations } from 'next-intl';
 import { LogIn } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
 
 import { Button } from '@/components/ui/button';
 import {
@@ -18,7 +20,6 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { Link, useRouter } from '@/lib/i18n-navigation';
 import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
@@ -29,7 +30,14 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 export function LoginForm() {
-  const t = useTranslations('LoginForm');
+  const t = {
+    emailLabel: "Email",
+    emailPlaceholder: "name@example.com",
+    passwordLabel: "Password",
+    loginButton: "Login",
+    registerPrompt: "Don't have an account?",
+    registerLink: "Register"
+  };
   const { toast } = useToast();
   const router = useRouter();
 

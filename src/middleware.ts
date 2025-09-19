@@ -1,25 +1,19 @@
 import createMiddleware from 'next-intl/middleware';
-import {locales, localePrefix, pathnames, defaultLocale} from './lib/i18n-navigation';
- 
+import { locales, defaultLocale } from './lib/locales';
+
 export default createMiddleware({
-  defaultLocale,
+  // A list of all locales that are supported
   locales,
-  pathnames,
-  localePrefix
+
+  // Used when no locale matches
+  defaultLocale,
 });
- 
+
 export const config = {
   // Match only internationalized pathnames
   matcher: [
-    // Enable a redirect to a matching locale at the root
-    '/',
-
-    // Set a cookie to remember the previous locale for
-    // all requests that have a locale prefix
-    '/(hi|bn|mr|te|ta|gu|ur|kn|or|ml|pa|as|mai|sat|ks|ne|sd|kok|dgo|mni|brx|sa|en)/:path*',
-
-    // Enable redirects that add a locale prefix
-    // and exclude assets and API routes
-    '/((?!api|_next/static|_next/image|favicon.ico).*)'
-  ]
+    // Match all pathnames except for
+    // - … if they start with `/api`, `/_next` or `.` (e.g. `favicon.ico`)
+    '/((?!api|_next|.*\\..*).*)',
+  ],
 };

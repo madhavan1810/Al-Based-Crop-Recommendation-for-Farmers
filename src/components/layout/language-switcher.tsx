@@ -1,8 +1,6 @@
 'use client';
 
-import { useLocale, useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
-import { useTransition } from 'react';
+import { useState } from 'react';
 import {
   Select,
   SelectContent,
@@ -10,27 +8,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { allLocales } from '@/lib/locales';
-import { usePathname } from '@/lib/i18n-navigation';
 
 export default function LanguageSwitcher() {
-  const t = useTranslations('LanguageSwitcher');
-  const [isPending, startTransition] = useTransition();
-  const locale = useLocale();
-  const router = useRouter();
-  const pathname = usePathname();
+  const t = {
+    selectLanguage: 'Select Language'
+  };
+  const [locale, setLocale] = useState('en');
 
   function onSelectChange(value: string) {
-    document.cookie = `NEXT_LOCALE=${value};path=/;max-age=31536000`;
-    startTransition(() => {
-      router.replace(pathname, { locale: value });
-    });
+    setLocale(value);
+    // In a real app, you'd likely want to change the actual locale here.
+    // For now, this is a visual-only change.
   }
 
+  // A simplified list of languages for this single-language version
+  const allLocales = [
+    { code: 'en', name: 'English' },
+  ];
+
   return (
-    <Select defaultValue={locale} onValueChange={onSelectChange} disabled={isPending}>
+    <Select defaultValue={locale} onValueChange={onSelectChange} disabled>
       <SelectTrigger className="w-fit">
-        <SelectValue placeholder={t('selectLanguage')} />
+        <SelectValue placeholder={t.selectLanguage} />
       </SelectTrigger>
       <SelectContent>
         {allLocales.map((lang) => (

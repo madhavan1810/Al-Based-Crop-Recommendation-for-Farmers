@@ -36,7 +36,6 @@ import { useToast } from '@/hooks/use-toast';
 import { SpeakButton } from './speak-button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { indianDistricts } from '@/lib/indian-districts';
-import {useTranslations} from 'next-intl';
 
 const formSchema = z.object({
   soilAnalysis: z
@@ -56,7 +55,41 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 export default function CropRecommendationForm() {
-  const t = useTranslations('CropRecommendationForm');
+  const t = {
+    farmDataTitle: "Field Data",
+    districtLabel: "District",
+    districtPlaceholder: "Select your district",
+    seasonLabel: "Season",
+    seasonPlaceholder: "Select a season",
+    kharif: "Kharif",
+    rabi: "Rabi",
+    summer: "Summer",
+    wholeYear: "Whole Year",
+    topographyLabel: "Field Topography",
+    topographyPlaceholder: "Select land's slope",
+    flat: "Flat",
+    gentleSlope: "Gentle Slope",
+    steepSlope: "Steep Slope",
+    cropHistoryLabel: "Crop History (Last 3 Seasons)",
+    season1Placeholder: "Last Season",
+    season2Placeholder: "2 Seasons Ago",
+    season3Placeholder: "3 Seasons Ago",
+    cropHistoryDescription: "Select the crops grown in this field previously.",
+    soilAnalysisLabel: "Soil Analysis",
+    soilAnalysisPlaceholder: "e.g., pH: 6.5, Nitrogen: High, Phosphorus: Medium, Potassium: Low",
+    soilAnalysisDescription: "Enter the results from your latest soil test.",
+    weatherDataLabel: "Weather & Climate Data",
+    weatherDataPlaceholder: "e.g., Avg. Temp: 25°C, Annual Rainfall: 1200mm, Sunny days: ~280",
+    weatherDataDescription: "Describe your local climate conditions.",
+    getRecommendations: "Get Recommendations",
+    analyzing: "Analyzing...",
+    recommendationsTitle: "Recommendations",
+    generating: "Generating recommendations...",
+    recommendedCrops: "Recommended Crops",
+    plantingInstructions: "Planting Instructions",
+    riskAssessment: "Risk Assessment",
+    placeholder: "Your personalized crop recommendations will appear here."
+  };
   const [isPending, startTransition] = useTransition();
   const [result, setResult] = useState<CropRecommendationOutput | null>(null);
   const { toast } = useToast();

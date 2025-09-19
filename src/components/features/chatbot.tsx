@@ -18,7 +18,6 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Bot, LoaderCircle, Send, User, Wheat } from 'lucide-react';
 import { VoiceInputButton } from './voice-input-button';
 import { SpeakButton } from './speak-button';
-import {useTranslations, useLocale} from 'next-intl';
 
 type Message = {
   id: number;
@@ -27,8 +26,13 @@ type Message = {
 };
 
 export default function Chatbot() {
-  const t = useTranslations('Chatbot');
-  const locale = useLocale();
+  const t = {
+    title: "KrishiFarm.AI Chat",
+    description: "Ask me anything about farming.",
+    inputPlaceholder: "Type your question...",
+    openChatbot: "Open Chatbot"
+  };
+  const locale = 'en';
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isPending, startTransition] = useTransition();

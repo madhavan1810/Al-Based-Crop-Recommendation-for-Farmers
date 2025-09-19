@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { BrainCircuit, LoaderCircle, Calendar, FileDown, Upload } from 'lucide-react';
-import { useTranslations, useLocale } from 'next-intl';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
@@ -53,8 +52,36 @@ function getWeekOfSowing(sowingDate: string): number {
 }
 
 export default function PersonalizedSpace() {
-  const t = useTranslations('PersonalizedSpace');
-  const locale = useLocale();
+  const t = {
+    formTitle: "Cultivation Details",
+    formDescription: "Provide your farm's details to generate a plan.",
+    cropLabel: "Crop to Cultivate",
+    cropPlaceholder: "e.g., Tomato, Wheat",
+    districtLabel: "District",
+    districtPlaceholder: "Select your district",
+    sowingDateLabel: "Planned Sowing Date",
+    sowingDateDescription: "This helps track your weekly progress.",
+    soilReportLabel: "Soil Health Report (Optional)",
+    soilReportPlaceholder: "Upload PDF or Image",
+    soilReportDescription: "Uploading a report provides more accurate advice.",
+    getPlan: "Generate Cultivation Plan",
+    generatingPlan: "Generating Plan...",
+    planTitle: "Your Cultivation Plan",
+    planDescription: "A weekly guide from sowing to harvest.",
+    downloadPdf: "Download as PDF",
+    downloading: "Downloading...",
+    week: "Week",
+    currentWeek: "Current Week",
+    placeholder: "Your personalized cultivation plan will appear here once generated.",
+    disclaimer: "This is an AI-generated plan. Always adapt based on real-world field conditions and consult local experts.",
+    error: {
+      title: "Error",
+      planFailed: "Failed to generate cultivation plan. Please try again.",
+      pdfFailed: "Failed to generate PDF. Please try again later.",
+      unexpected: "An unexpected error occurred. Please try again."
+    }
+  };
+  const locale = 'en';
   const [isPending, startTransition] = useTransition();
   const [isDownloading, setIsDownloading] = useState(false);
   const [result, setResult] = useState<PersonalizedCultivationPlanOutput | null>(null);
@@ -106,16 +133,16 @@ export default function PersonalizedSpace() {
         } else {
           toast({
             variant: 'destructive',
-            title: t('error.title'),
-            description: t('error.planFailed'),
+            title: t.error.title,
+            description: t.error.planFailed,
           });
         }
       } catch (error) {
         console.error(error);
         toast({
           variant: 'destructive',
-          title: t('error.title'),
-          description: t('error.unexpected'),
+          title: t.error.title,
+          description: t.error.unexpected,
         });
       }
     });
@@ -159,8 +186,8 @@ export default function PersonalizedSpace() {
         console.error('PDF Download Error:', error);
         toast({
             variant: 'destructive',
-            title: t('error.title'),
-            description: t('error.pdfFailed'),
+            title: t.error.title,
+            description: t.error.pdfFailed,
         });
     } finally {
         setIsDownloading(false);
@@ -336,5 +363,3 @@ export default function PersonalizedSpace() {
     </div>
   );
 }
-
-    

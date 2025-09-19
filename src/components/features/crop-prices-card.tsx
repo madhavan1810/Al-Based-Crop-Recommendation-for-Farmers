@@ -19,11 +19,18 @@ import {
 } from '@/components/ui/table';
 import { LoaderCircle, LineChart } from 'lucide-react';
 import { getLatestCropPrices, type CropPrice } from '@/services/market-service';
-import {useTranslations} from 'next-intl';
-
 
 export default function CropPricesCard() {
-  const t = useTranslations('CropPricesCard');
+  const t = {
+    title: "Live Mandi Prices",
+    description: "Latest commodity prices from markets across India.",
+    loading: "Loading...",
+    error: "An unknown error occurred",
+    noPrices: "No crop prices found.",
+    crop: "Crop",
+    market: "Market",
+    price: "Price (₹ per Quintal)"
+  };
   const [cropPrices, setCropPrices] = useState<CropPrice[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

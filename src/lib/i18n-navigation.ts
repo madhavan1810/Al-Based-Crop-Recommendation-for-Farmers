@@ -2,17 +2,11 @@ import {
   createLocalizedPathnamesNavigation,
   Pathnames,
 } from 'next-intl/navigation';
-import { allLocales } from './locales';
+import { locales } from '@/lib/locales';
 
-export const locales = allLocales.map(l => l.code);
-export const defaultLocale = 'en';
-export const localePrefix = 'as-needed';
+export const localePrefix = 'always'; // Default
 
-// The `pathnames` object holds pairs of internal
-// and external paths, separated by locale.
-export const pathnames: Pathnames<typeof locales> = {
-  // If all locales use the same pathname, a single
-  // external path can be used for all locales.
+export const pathnames = {
   '/': '/',
   '/login': '/login',
   '/register': '/register',
@@ -21,7 +15,7 @@ export const pathnames: Pathnames<typeof locales> = {
   '/disease-detection': '/disease-detection',
   '/personalized-space': '/personalized-space',
   '/profile': '/profile',
-};
+} satisfies Pathnames<typeof locales>;
 
-export const {Link, redirect, usePathname, useRouter, getPathname} =
-  createLocalizedPathnamesNavigation({locales, localePrefix, pathnames});
+export const { Link, redirect, usePathname, useRouter } =
+  createLocalizedPathnamesNavigation({ locales, localePrefix, pathnames });

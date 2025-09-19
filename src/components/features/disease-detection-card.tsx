@@ -15,10 +15,23 @@ import { SpeakButton } from './speak-button';
 import { detectPlantDisease, type DiseaseDetectionOutput } from '@/ai/flows/disease-detection-flow';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
-import {useTranslations} from 'next-intl';
 
 export default function DiseaseDetection() {
-  const t = useTranslations('DiseaseDetectionCard');
+  const t = {
+    uploadTitle: "Upload Plant Image",
+    badge: "AI-Powered",
+    pictureLabel: "Plant Image",
+    chooseFile: "Choose File",
+    analyze: "Analyze Plant",
+    analyzing: "Analyzing...",
+    analyzingWithAI: "Analyzing with Gemini AI...",
+    diagnosisResult: "Diagnosis Result",
+    diagnosisLabel: "Diagnosis:",
+    confidenceLabel: "Confidence:",
+    observationsLabel: "AI's Observations:",
+    treatmentLabel: "Recommended Treatment:",
+    disclaimer: "Disclaimer: This tool is for informational purposes only. Always consult with a local agricultural expert for definitive diagnosis."
+  };
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isAnalyzing, startTransition] = useTransition();
   const [result, setResult] = useState<DiseaseDetectionOutput | null>(null);

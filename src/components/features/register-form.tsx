@@ -3,8 +3,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { useTranslations } from 'next-intl';
 import { UserPlus, Upload } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -17,7 +18,6 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { Link, useRouter } from '@/lib/i18n-navigation';
 import { useToast } from '@/hooks/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import React from 'react';
@@ -33,7 +33,25 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 export function RegisterForm() {
-  const t = useTranslations('RegisterForm');
+  const t = {
+    nameLabel: "Full Name",
+    namePlaceholder: "Your Name",
+    emailLabel: "Email",
+    emailPlaceholder: "name@example.com",
+    passwordLabel: "Password",
+    registerButton: "Create an account",
+    loginPrompt: "Already have an account?",
+    loginLink: "Login",
+    soilTypeLabel: "Primary Soil Type",
+    soilTypePlaceholder: "Select your farm's soil type",
+    alluvial: "Alluvial",
+    black: "Black (Regur)",
+    redAndYellow: "Red and Yellow",
+    laterite: "Laterite",
+    other: "Other / I don't know",
+    soilReportLabel: "Soil Health Report (Optional)",
+    soilReportPlaceholder: "Upload PDF or Image"
+  };
   const { toast } = useToast();
   const router = useRouter();
   const fileInputRef = React.useRef<HTMLInputElement>(null);

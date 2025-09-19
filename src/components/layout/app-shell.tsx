@@ -1,6 +1,8 @@
 'use client';
 
-import { usePathname } from '@/lib/i18n-navigation';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
+
 import {
   LayoutDashboard,
   ScanLine,
@@ -8,7 +10,6 @@ import {
   UserCheck,
   User,
 } from 'lucide-react';
-import { useTranslations } from 'next-intl';
 
 import {
   SidebarProvider,
@@ -25,27 +26,34 @@ import {
 import { Logo } from './logo';
 import Chatbot from '../features/chatbot';
 import LanguageSwitcher from './language-switcher';
-import { Link } from '@/lib/i18n-navigation';
 import { Button } from '../ui/button';
 
 export function AppShell({ children }: { children: React.ReactNode }) {
-  const t = useTranslations('AppShell');
+  const t = {
+    dashboard: "Dashboard",
+    cropRecommendation: "Crop Recommendation",
+    diseaseDetection: "Disease Detection",
+    personalizedSpace: "Personalized Space",
+    profile: "Profile",
+    login: "Login",
+    register: "Register"
+  };
   const pathname = usePathname();
 
   const navItems = [
-    { href: '/dashboard', label: t('dashboard'), icon: LayoutDashboard },
-    { href: '/crop-recommendation', label: t('cropRecommendation'), icon: Sprout },
-    { href: '/disease-detection', label: t('diseaseDetection'), icon: ScanLine },
-    { href: '/personalized-space', label: t('personalizedSpace'), icon: UserCheck },
+    { href: '/dashboard', label: t.dashboard, icon: LayoutDashboard },
+    { href: '/crop-recommendation', label: t.cropRecommendation, icon: Sprout },
+    { href: '/disease-detection', label: t.diseaseDetection, icon: ScanLine },
+    { href: '/personalized-space', label: t.personalizedSpace, icon: UserCheck },
   ];
 
   const isAuthPage = pathname === '/login' || pathname === '/register';
 
   // Helper to get the current page's label
   const getCurrentLabel = () => {
-    if (pathname === '/login') return t('login');
-    if (pathname === '/register') return t('register');
-    if (pathname.includes('/profile')) return t('profile');
+    if (pathname === '/login') return t.login;
+    if (pathname === '/register') return t.register;
+    if (pathname.includes('/profile')) return t.profile;
     const currentItem = navItems.find(item => pathname.startsWith(item.href));
     return currentItem?.label || 'KrishiFarm.AI';
   }
