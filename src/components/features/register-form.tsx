@@ -8,6 +8,7 @@ import { UserPlus, Upload } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
+import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -55,6 +56,7 @@ export function RegisterForm() {
   };
   const { toast } = useToast();
   const router = useRouter();
+  const { signUpWithEmail } = useAuth();
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = React.useState('');
 
@@ -76,15 +78,24 @@ export function RegisterForm() {
     }
   };
 
-  const onSubmit = (data: FormData) => {
-    // This is a mock registration, so we'll just show a success message.
-    console.log('Mock Register Attempt:', data);
-    toast({
-      title: 'Registration Successful',
-      description: 'Your account has been created.',
-    });
-    form.reset();
-    router.push('/dashboard');
+  const onSubmit = async (data: FormData) => {
+    try {
+      await signUpWithEmail(data.email, data.password, data.name, {
+        soilType: data.soilType,
+      });
+      toast({
+        title: 'Registration Successful',
+        description: 'Your account has been created.',
+      });
+      router.push('/dashboard');
+    } catch (error) {
+      console.error('Registration error:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Registration Failed',
+        description: 'Failed to create account. Please try again.',
+      });
+    }
   };
 
   return (

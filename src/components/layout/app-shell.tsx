@@ -10,6 +10,7 @@ import {
   Sprout,
   UserCheck,
   User,
+  Tractor,
 } from 'lucide-react';
 
 import {
@@ -28,6 +29,7 @@ import { Logo } from './logo';
 import Chatbot from '../features/chatbot';
 import LanguageSwitcher from './language-switcher';
 import { Button } from '../ui/button';
+import { useAuth } from '@/context/AuthContext';
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const t = {
@@ -37,15 +39,18 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     personalizedSpace: "Personalized Space",
     profile: "Profile",
     login: "Login",
-    register: "Register"
+    register: "Register",
+    farms: "My Farms"
   };
   const pathname = usePathname();
+  const { user, signOut } = useAuth();
 
   const navItems = [
     { href: '/dashboard', label: t.dashboard, icon: LayoutDashboard },
     { href: '/crop-recommendation', label: t.cropRecommendation, icon: Sprout },
     { href: '/disease-detection', label: t.diseaseDetection, icon: ScanLine },
     { href: '/personalized-space', label: t.personalizedSpace, icon: UserCheck },
+    { href: '/farms', label: t.farms, icon: Tractor },
   ];
 
   const isAuthPage = pathname === '/login' || pathname === '/register';
@@ -54,6 +59,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const getCurrentLabel = () => {
     if (pathname === '/login') return t.login;
     if (pathname === '/register') return t.register;
+    if (pathname.includes('/farms')) return t.farms;
     if (pathname.includes('/profile')) return t.profile;
     const currentItem = navItems.find(item => pathname.startsWith(item.href));
     return currentItem?.label || 'KrishiFarm.AI';
@@ -100,12 +106,19 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
             {!isAuthPage && (
-              <Button asChild variant="ghost" size="icon">
-                <Link href="/profile">
-                  <User />
-                  <span className="sr-only">{t.profile}</span>
-                </Link>
-              </Button>
+              <>
+                <Button asChild variant="ghost" size="icon">
+                  <Link href="/profile">
+                    <User />
+                    <span className="sr-only">{t.profile}</span>
+                  </Link>
+                </Button>
+                {user && (
+                  <Button variant="outline" size="sm" onClick={signOut}>
+                    Sign Out
+                  </Button>
+                )}
+              </>
             )}
           </div>
         </header>

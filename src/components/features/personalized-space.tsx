@@ -36,6 +36,8 @@ import { Progress } from '../ui/progress';
 import { ScrollArea, ScrollBar } from '../ui/scroll-area';
 import { SpeakButton } from './speak-button';
 import WeatherCard from './weather-card';
+import { useAuth } from '@/context/AuthContext';
+import { saveCultivationPlan } from '@/lib/firestore';
 
 const formSchema = z.object({
   crop: z.string().min(2, { message: 'Please specify the crop.' }),
@@ -108,6 +110,7 @@ export default function PersonalizedSpace() {
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState('');
+  const { user } = useAuth();
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -167,13 +170,32 @@ export default function PersonalizedSpace() {
     });
   };
 
-  const handleSavePlan = () => {
-    // In a real app, this would save to a database.
-    // For now, we just show a confirmation toast.
-    toast({
+  const handleSavePlan = async () => {
+    if (!result || !user) return;
+    
+    try {
+      const formData = form.getValues();
+      await saveCultivationPlan({
+        ownerId: user.uid,
+        cropType: formData.crop,
+        district: formData.district,
+        sowingDate: new Date(formData.sowingDate) as any,
+        planData: result,
+        status: 'active',
+      });
+      
+      toast({
         title: t.success.planSaved,
         description: t.success.notificationsEnabled
-    });
+      });
+    } catch (error) {
+      console.error('Error saving plan:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Save Failed',
+        description: 'Failed to save cultivation plan. Please try again.',
+      });
+    }
   };
   
   const currentWeek = result ? getWeekOfSowing(form.getValues('sowingDate')) : 0;

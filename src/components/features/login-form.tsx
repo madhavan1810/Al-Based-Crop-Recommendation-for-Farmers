@@ -8,6 +8,7 @@ import { LogIn } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
+import { useAuth } from '@/context/AuthContext';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -40,6 +41,7 @@ export function LoginForm() {
   };
   const { toast } = useToast();
   const router = useRouter();
+  const { signInWithEmail, signInWithGoogle } = useAuth();
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -49,15 +51,40 @@ export function LoginForm() {
     },
   });
 
-  const onSubmit = (data: FormData) => {
-    // This is a mock login, so we'll just show a success message.
-    console.log('Mock Login Attempt:', data);
-    toast({
-      title: 'Login Successful',
-      description: 'Welcome back!',
-    });
-    form.reset();
-    router.push('/dashboard');
+  const onSubmit = async (data: FormData) => {
+    try {
+      await signInWithEmail(data.email, data.password);
+      toast({
+        title: 'Login Successful',
+        description: 'Welcome back!',
+      });
+      router.push('/dashboard');
+    } catch (error) {
+      console.error('Login error:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Login Failed',
+        description: 'Invalid email or password. Please try again.',
+      });
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithGoogle();
+      toast({
+        title: 'Login Successful',
+        description: 'Welcome back!',
+      });
+      router.push('/dashboard');
+    } catch (error) {
+      console.error('Google sign-in error:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Login Failed',
+        description: 'Failed to sign in with Google. Please try again.',
+      });
+    }
   };
 
   return (
@@ -93,6 +120,9 @@ export function LoginForm() {
             />
              <Button type="submit" className="w-full">
               <LogIn className="mr-2 h-4 w-4" /> {t.loginButton}
+            </Button>
+            <Button type="button" variant="outline" className="w-full" onClick={handleGoogleSignIn}>
+              Sign in with Google
             </Button>
           </CardContent>
           <CardFooter className="flex justify-center text-sm">

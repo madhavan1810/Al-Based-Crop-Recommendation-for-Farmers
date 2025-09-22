@@ -11,6 +11,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AppShell } from '@/components/layout/app-shell';
 import CropPricesCard from '@/components/features/crop-prices-card';
 import WeatherCard from '@/components/features/weather-card';
+import { FarmOverview } from '@/components/features/farm-overview';
+import { RecentSensorReadings } from '@/components/features/recent-sensor-readings';
+import { CropStatus } from '@/components/features/crop-status';
 
 export default function Page() {
   const t = {
@@ -95,6 +98,11 @@ export default function Page() {
               </CardContent>
             </Card>
           ))}
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <FarmOverview />
+            <RecentSensorReadings />
+            <CropStatus />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <WeatherCard location="Punjab" />
